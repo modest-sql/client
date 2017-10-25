@@ -31,20 +31,21 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.sql_text = new System.Windows.Forms.TextBox();
             this.run_button = new System.Windows.Forms.Button();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 177);
+            this.dataGridView1.Location = new System.Drawing.Point(354, 177);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(540, 592);
             this.dataGridView1.TabIndex = 0;
             // 
             // sql_text
             // 
-            this.sql_text.Location = new System.Drawing.Point(12, 12);
+            this.sql_text.Location = new System.Drawing.Point(354, 12);
             this.sql_text.Multiline = true;
             this.sql_text.Name = "sql_text";
             this.sql_text.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -53,7 +54,7 @@
             // 
             // run_button
             // 
-            this.run_button.Location = new System.Drawing.Point(558, 12);
+            this.run_button.Location = new System.Drawing.Point(256, 12);
             this.run_button.Name = "run_button";
             this.run_button.Size = new System.Drawing.Size(75, 23);
             this.run_button.TabIndex = 2;
@@ -61,11 +62,21 @@
             this.run_button.UseVisualStyleBackColor = true;
             this.run_button.Click += new System.EventHandler(this.run_button_Click);
             // 
+            // listBox1
+            // 
+            this.listBox1.Enabled = false;
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(12, 50);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(336, 719);
+            this.listBox1.TabIndex = 3;
+            // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(642, 781);
+            this.ClientSize = new System.Drawing.Size(906, 781);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.run_button);
             this.Controls.Add(this.sql_text);
             this.Controls.Add(this.dataGridView1);
@@ -82,6 +93,7 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.TextBox sql_text;
         private System.Windows.Forms.Button run_button;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }
 

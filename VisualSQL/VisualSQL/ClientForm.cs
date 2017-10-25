@@ -48,11 +48,17 @@ namespace VisualSQL
             if (sql_text.Text != "")
             {
                 string json;
+                string db_data;
                 string sql_string = sql_text.Text;
                 if (testing)
                 {
                     json = @"[{""Name"":""AAA"",""Age"":""22"",""Job"":""PPP""},{""Name"":""BBB"",""Age"":""25"",""Job"":""QQQ""},{""Name"":""CCC"",""Age"":""38"",""Job"":""RRR""}]";
+                    db_data = @"{""Name"": ""Mocca DB"",""ColumnNames"": [""First Name"", ""Second Name"", ""First Last Name"", ""Second Last Name"", ""Age"", ""Married""],""ColumnTypes"": [""char[100]"", ""char[100]"", ""char[100]"", ""char[100]"", ""int"", ""boolean""]}";
                     sql_text.Text = ipAddress + ":" + portNumber;
+
+                    DB_Metadata db_meta = new DB_Metadata();
+                    db_meta = JsonConvert.DeserializeObject<DB_Metadata>(db_data);
+                    fill_db_meta(db_meta);
                 }
                 else
                 {
@@ -64,6 +70,39 @@ namespace VisualSQL
                 var table = JsonConvert.DeserializeObject<DataTable>(json);
                 dataGridView1.DataSource = table;
             }
+        }
+
+        private void fill_db_meta(DB_Metadata dbMeta)
+        {
+            check_column_type_integrity(dbMeta);
+
+            /*ListViewItem listitem = new ListViewItem(dbMeta.Name);
+            for (int i = 0; i < dbMeta.ColumnNames.Length; i++)
+            {
+                string NewSubItem = dbMeta.ColumnNames[i] + "(" + dbMeta.ColumnTypes[i] + ")";
+                listitem.SubItems.Add(NewSubItem);
+            }
+            listBox1.Items.Add(listitem);*/
+
+            /*ListViewItem listitemName = new ListViewItem(dbMeta.Name);
+            listBox1.Items.Add(listitemName);
+            for (int i = 0; i < dbMeta.ColumnNames.Length; i++)
+            {
+                ListViewItem listitem = new ListViewItem(dbMeta.ColumnNames[i] + "(" + dbMeta.ColumnTypes[i] + ")");
+                listBox1.Items.Add(listitem);
+            }*/
+
+            listBox1.Items.Add(dbMeta.Name);
+            for (int i = 0; i < dbMeta.ColumnNames.Length; i++)
+            {
+                listBox1.Items.Add(dbMeta.ColumnNames[i] + "(" + dbMeta.ColumnTypes[i] + ")");
+            }
+        }
+
+        private void check_column_type_integrity(DB_Metadata dbMeta)
+        {
+            if (dbMeta.ColumnNames.Length != dbMeta.ColumnTypes.Length)
+                throw new Exception("Hey! Column count and type count don't match!");
         }
 
         private void close_connection()
@@ -95,5 +134,12 @@ namespace VisualSQL
             //---send the text---
             nwStream.Write(bytesToSend, 0, bytesToSend.Length);
         }
+    }
+
+    class DB_Metadata
+    {
+        public string Name { get; set; }
+        public string[] ColumnNames { get; set; }
+        public string[] ColumnTypes { get; set; }
     }
 }
