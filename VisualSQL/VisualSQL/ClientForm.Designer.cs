@@ -64,7 +64,6 @@
             // 
             // listBox1
             // 
-            this.listBox1.Enabled = false;
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(12, 50);
             this.listBox1.Name = "listBox1";

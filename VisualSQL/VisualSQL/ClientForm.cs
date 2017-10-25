@@ -16,15 +16,17 @@ namespace VisualSQL
     {
         private string ipAddress;
         private string portNumber;
-        private bool testing = false;
+        private bool testing = true;
         private TcpClient client;
         private NetworkStream nwStream;
+        private DB_Meta_Manager current_metadata = new DB_Meta_Manager();
 
         public ClientForm()
         {
             InitializeComponent();
             this.Text = "Modest SQL Client";
             PopUp_Connection();
+            this.listBox1.MouseDoubleClick += new MouseEventHandler(listBox1_MouseDoubleClick);
         }
 
         private void PopUp_Connection()
@@ -53,13 +55,14 @@ namespace VisualSQL
                 if (testing)
                 {
                     json = @"[{""Name"":""AAA"",""Age"":""22"",""Job"":""PPP""},{""Name"":""BBB"",""Age"":""25"",""Job"":""QQQ""},{""Name"":""CCC"",""Age"":""38"",""Job"":""RRR""}]";
-                    //db_data = @"{""Name"": ""Mocca DB"",""ColumnNames"": [""First Name"", ""Second Name"", ""First Last Name"", ""Second Last Name"", ""Age"", ""Married""],""ColumnTypes"": [""char[100]"", ""char[100]"", ""char[100]"", ""char[100]"", ""int"", ""boolean""]}";
                     db_data = @"{""DB_Name"": ""Mocca DB"",""Tables"": [{""Table_Name"": ""Employee"", ""ColumnNames"": [""First Name"", ""Second Name"", ""First Last Name"", ""Second Last Name"", ""Age"", ""Married""],""ColumnTypes"": [""char[100]"", ""char[100]"", ""char[100]"", ""char[100]"", ""int"", ""boolean""]},{""Table_Name"": ""Department"", ""ColumnNames"": [""Department Name"", ""Description"", ""Address""],""ColumnTypes"": [""char[100]"", ""char[100]"", ""char[100]""]}]}";
                     sql_text.Text = ipAddress + ":" + portNumber;
 
                     DB_Metadata db_meta = new DB_Metadata();
                     db_meta = JsonConvert.DeserializeObject<DB_Metadata>(db_data);
-                    fill_db_meta(db_meta);
+                    update_new_metadata(db_meta);
+                    draw_db_meta();
+                    //fill_db_meta(db_meta);
                 }
                 else
                 {
@@ -73,31 +76,67 @@ namespace VisualSQL
             }
         }
 
+        void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            int index = listBox1.IndexFromPoint(e.Location);
+            if (index != System.Windows.Forms.ListBox.NoMatches)
+            {
+                MessageBox.Show(index.ToString());
+            }
+        }
+
+        private void draw_db_meta()
+        {
+            if (current_metadata.meta_dictionary.Count != 0)
+            {
+                foreach(var elem in current_metadata.meta_dictionary)
+                {
+                    if (elem.Value.showing)
+                    {
+                        switch (elem.Value.type)
+                        {
+                            case metadata_type.DB_NAME:
+                                listBox1.Items.Add(elem.Value.value);
+                                break;
+                            case metadata_type.DB_TABLE:
+                                listBox1.Items.Add("\t" + elem.Value.value);
+                                break;
+                            case metadata_type.COLUMN_NAME:
+                                listBox1.Items.Add("\t\t" + elem.Value.value);
+                                break;
+                            case metadata_type.COLUMN_TYPE:
+                                listBox1.Items.Add("\t\t\t" + elem.Value.value);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void update_new_metadata(DB_Metadata db_meta)
+        {
+            int counter = 0;
+            check_column_type_integrity(db_meta);
+            current_metadata.metadata = db_meta;
+            current_metadata.meta_dictionary.Clear();
+            current_metadata.meta_dictionary.Add(counter, new DB_Value_Struct(db_meta.DB_Name, metadata_type.DB_NAME, true));
+            counter++;
+            foreach (var table in db_meta.Tables)
+            {
+                current_metadata.meta_dictionary.Add(counter, new DB_Value_Struct(table.Table_Name, metadata_type.DB_TABLE, true));
+                counter++;
+
+                for (int i = 0; i < table.ColumnNames.Length; i++)
+                {
+                    current_metadata.meta_dictionary.Add(counter, new DB_Value_Struct(table.ColumnNames[i] + " (" + table.ColumnTypes[i] + ")", metadata_type.COLUMN_NAME, false));
+                    counter++;
+                }
+            }
+        }
+
         private void fill_db_meta(DB_Metadata dbMeta)
         {
             check_column_type_integrity(dbMeta);
-
-            /*ListViewItem listitem = new ListViewItem(dbMeta.Name);
-            for (int i = 0; i < dbMeta.ColumnNames.Length; i++)
-            {
-                string NewSubItem = dbMeta.ColumnNames[i] + "(" + dbMeta.ColumnTypes[i] + ")";
-                listitem.SubItems.Add(NewSubItem);
-            }
-            listBox1.Items.Add(listitem);*/
-
-            /*ListViewItem listitemName = new ListViewItem(dbMeta.Name);
-            listBox1.Items.Add(listitemName);
-            for (int i = 0; i < dbMeta.ColumnNames.Length; i++)
-            {
-                ListViewItem listitem = new ListViewItem(dbMeta.ColumnNames[i] + "(" + dbMeta.ColumnTypes[i] + ")");
-                listBox1.Items.Add(listitem);
-            }*/
-
-            /*listBox1.Items.Add(dbMeta.Name);
-            for (int i = 0; i < dbMeta.ColumnNames.Length; i++)
-            {
-                listBox1.Items.Add(dbMeta.ColumnNames[i] + "(" + dbMeta.ColumnTypes[i] + ")");
-            }*/
 
             listBox1.Items.Add(dbMeta.DB_Name);
             foreach (var table in dbMeta.Tables)
@@ -112,8 +151,6 @@ namespace VisualSQL
 
         private void check_column_type_integrity(DB_Metadata dbMeta)
         {
-            /*if (dbMeta.ColumnNames.Length != dbMeta.ColumnTypes.Length)
-                throw new Exception("Hey! Column count and type count don't match!");*/
             foreach (var table in dbMeta.Tables)
             {
                 if (table.ColumnNames.Length != table.ColumnTypes.Length)
@@ -149,6 +186,40 @@ namespace VisualSQL
 
             //---send the text---
             nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+        }
+    }
+
+    enum metadata_type
+    {
+        DB_NAME,
+        DB_TABLE,
+        COLUMN_NAME,
+        COLUMN_TYPE
+    }
+
+    class DB_Meta_Manager
+    {
+        public DB_Metadata metadata { get; set; }
+        public Dictionary<int, DB_Value_Struct> meta_dictionary { get; set; }
+
+        public DB_Meta_Manager()
+        {
+            metadata = new DB_Metadata();
+            meta_dictionary = new Dictionary<int, DB_Value_Struct>();
+        }
+    }
+
+    struct DB_Value_Struct
+    {
+        public string value;
+        public metadata_type type;
+        public bool showing;
+
+        public DB_Value_Struct(string value, metadata_type m_type, bool show) : this()
+        {
+            this.value = value;
+            this.type = m_type;
+            this.showing = show;
         }
     }
 
