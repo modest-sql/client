@@ -16,7 +16,7 @@ namespace VisualSQL
     {
         private string ipAddress;
         private string portNumber;
-        private bool testing = true;
+        private bool testing = false;
         private TcpClient client;
         private NetworkStream nwStream;
 
