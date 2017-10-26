@@ -27,6 +27,7 @@ namespace VisualSQL
             this.Text = "Modest SQL Client";
             PopUp_Connection();
             this.listBox1.MouseDoubleClick += new MouseEventHandler(listBox1_MouseDoubleClick);
+            console_log.AppendText("Console log:");
         }
 
         private void PopUp_Connection()
@@ -52,27 +53,70 @@ namespace VisualSQL
                 string json;
                 string db_data;
                 string sql_string = sql_text.Text;
+                //sql_text.Text = "";
+                console_send(sql_string);
                 if (testing)
                 {
                     json = @"[{""Name"":""AAA"",""Age"":""22"",""Job"":""PPP""},{""Name"":""BBB"",""Age"":""25"",""Job"":""QQQ""},{""Name"":""CCC"",""Age"":""38"",""Job"":""RRR""}]";
                     db_data = @"{""DB_Name"": ""Mocca DB"",""Tables"": [{""Table_Name"": ""Employee"", ""ColumnNames"": [""First Name"", ""Second Name"", ""First Last Name"", ""Second Last Name"", ""Age"", ""Married""],""ColumnTypes"": [""char[100]"", ""char[100]"", ""char[100]"", ""char[100]"", ""int"", ""boolean""]},{""Table_Name"": ""Department"", ""ColumnNames"": [""Department Name"", ""Description"", ""Address""],""ColumnTypes"": [""char[100]"", ""char[100]"", ""char[100]""]}]}";
-                    sql_text.Text = ipAddress + ":" + portNumber;
+                    //sql_text.Text = ipAddress + ":" + portNumber;
+                    console_receive("response from fake server, don't believe what I tell you, but you succeeded!");
 
                     DB_Metadata db_meta = new DB_Metadata();
                     db_meta = JsonConvert.DeserializeObject<DB_Metadata>(db_data);
                     update_new_metadata(db_meta);
                     draw_db_meta();
+                    var table = JsonConvert.DeserializeObject<DataTable>(json);
+                    dataGridView1.DataSource = table;
                 }
                 else
                 {
                     open_connection();
                     send_sql_text(sql_string);
                     json = read_server_response();
+                    //console_receive(json);
+                    flashy_console_receive(json);
                     close_connection();
                 }
-                var table = JsonConvert.DeserializeObject<DataTable>(json);
-                dataGridView1.DataSource = table;
+                //var table = JsonConvert.DeserializeObject<DataTable>(json);
+                //dataGridView1.DataSource = table;
             }
+        }
+
+        private void flashy_console_receive(string str)
+        {
+            var trimmed = str.Trim('\0');
+            trimmed = trimmed.Trim('[');
+            trimmed = trimmed.Trim(']');
+            var des = JsonConvert.DeserializeObject<server_response>(trimmed);
+            //sql_text.Text = des.Error;
+            if (des.Error != "no error")
+            {
+                console_log.Select(console_log.TextLength, 0);
+                console_log.SelectionColor = Color.Red;
+                console_log.AppendText(Environment.NewLine + "received: " + des.Error);
+                console_log.SelectionColor = Color.Black;
+            }
+            else
+            {
+                console_log.Select(console_log.TextLength, 0);
+                console_log.SelectionColor = Color.Blue;
+                console_log.AppendText(Environment.NewLine + "received: success, no error");
+                console_log.SelectionColor = Color.Black;
+            }
+            console_log.ScrollToCaret();
+        }
+
+        private void console_receive(string str)
+        {
+            console_log.AppendText(Environment.NewLine + "received: " + str);
+            console_log.ScrollToCaret();
+        }
+
+        private void console_send(string str)
+        {
+            console_log.AppendText(Environment.NewLine + "sending: " + str);
+            console_log.ScrollToCaret();
         }
 
         void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -378,5 +422,10 @@ namespace VisualSQL
         public string Table_Name { get; set; }
         public string[] ColumnNames { get; set; }
         public string[] ColumnTypes { get; set; }
+    }
+
+    class server_response
+    {
+        public string Error { get; set; }
     }
 }

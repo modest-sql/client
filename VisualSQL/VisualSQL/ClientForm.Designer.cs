@@ -32,6 +32,7 @@
             this.sql_text = new System.Windows.Forms.TextBox();
             this.run_button = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
+            this.console_log = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -40,7 +41,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(354, 177);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(540, 592);
+            this.dataGridView1.Size = new System.Drawing.Size(540, 488);
             this.dataGridView1.TabIndex = 0;
             // 
             // sql_text
@@ -67,14 +68,25 @@
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(12, 50);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(336, 719);
+            this.listBox1.Size = new System.Drawing.Size(336, 615);
             this.listBox1.TabIndex = 3;
+            // 
+            // console_log
+            // 
+            this.console_log.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.console_log.Location = new System.Drawing.Point(12, 671);
+            this.console_log.Name = "console_log";
+            this.console_log.ReadOnly = true;
+            this.console_log.Size = new System.Drawing.Size(882, 218);
+            this.console_log.TabIndex = 4;
+            this.console_log.Text = "";
             // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(906, 781);
+            this.ClientSize = new System.Drawing.Size(906, 901);
+            this.Controls.Add(this.console_log);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.run_button);
             this.Controls.Add(this.sql_text);
@@ -93,6 +105,7 @@
         private System.Windows.Forms.TextBox sql_text;
         private System.Windows.Forms.Button run_button;
         private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.RichTextBox console_log;
     }
 }
 
