@@ -16,10 +16,10 @@ namespace VisualSQL
     {
         private string ipAddress;
         private string portNumber;
-        private bool testing = true;
+        private bool testing = false;
         private TcpClient client;
         private NetworkStream nwStream;
-        private DB_Meta_Manager current_metadata = new DB_Meta_Manager();
+        private List<Metadata> current_metadata = new List<Metadata>();
 
         public ClientForm()
         {
@@ -62,7 +62,6 @@ namespace VisualSQL
                     db_meta = JsonConvert.DeserializeObject<DB_Metadata>(db_data);
                     update_new_metadata(db_meta);
                     draw_db_meta();
-                    //fill_db_meta(db_meta);
                 }
                 else
                 {
@@ -79,35 +78,177 @@ namespace VisualSQL
         void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             int index = listBox1.IndexFromPoint(e.Location);
-            if (index != System.Windows.Forms.ListBox.NoMatches)
+            if (index != ListBox.NoMatches)
             {
-                MessageBox.Show(index.ToString());
+                switch (current_metadata[index].metadata_type)
+                {
+                    case metadata_type.DB_NAME:
+                        switch_database(current_metadata[index].value_name);
+                        break;
+                    case metadata_type.DB_TABLE:
+                        switch_table(current_metadata[index].value_name, index);
+                        break;
+                    case metadata_type.COLUMN_NAME:
+                        switch_column(current_metadata[index].value_name, index);
+                        break;
+                }
             }
+            draw_db_meta();
+        }
+
+        private void switch_column(string column_name, int index)
+        {
+            int counter = index;
+            string parent_database = "";
+            string parent_table = "";
+            while (counter >= 0)
+            {
+                if (current_metadata[counter].metadata_type == metadata_type.DB_TABLE)
+                {
+                    parent_table = current_metadata[counter].value_name;
+                    break;
+                }
+                counter--;
+            }
+            while (counter >= 0)
+            {
+                if (current_metadata[counter].metadata_type == metadata_type.DB_NAME)
+                {
+                    parent_database = current_metadata[counter].value_name;
+                    break;
+                }
+                counter--;
+            }
+            foreach (var meta in current_metadata)
+            {
+                if (meta.value_name == parent_database && meta.metadata_type == metadata_type.DB_NAME)
+                {
+                    foreach (var table in ((DataBase)meta).tables)
+                    {
+                        if (table.value_name == parent_table)
+                        {
+                            foreach (var column in table.columns)
+                            {
+                                if (column.value_name == column_name)
+                                {
+                                    column.expanded = !column.expanded;
+                                    break;
+                                }    
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        private void switch_table(string table_name, int index)
+        {
+            int counter = index;
+            string parent_database = "";
+            while (counter >= 0)
+            {
+                if (current_metadata[counter].metadata_type == metadata_type.DB_NAME)
+                {
+                    parent_database = current_metadata[counter].value_name;
+                    break;
+                }
+                counter--;
+            }
+            foreach (var meta in current_metadata)
+            {
+                if (meta.value_name == parent_database && meta.metadata_type == metadata_type.DB_NAME)
+                {
+                    foreach (var table in ((DataBase) meta).tables)
+                    {
+                        if (table.value_name == table_name)
+                        {
+                            table.expanded = !table.expanded;
+                            foreach (var column in table.columns)
+                            {
+                                column.expanded = false;
+                                column.column_type.expanded = false;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        private void switch_database(string db_name)
+        {
+            foreach (var meta in current_metadata)
+            {
+                if (meta.value_name == db_name && meta.metadata_type == metadata_type.DB_NAME)
+                {
+                    meta.expanded = !meta.expanded;
+                    foreach (var table in ((DataBase) meta).tables)
+                    {
+                        table.expanded = false;
+                        foreach (var column in table.columns)
+                        {
+                            column.expanded = false;
+                            column.column_type.expanded = false;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        private void update_current_meta()
+        {
+            List<Metadata> updated_metadata = new List<Metadata>();
+
+            foreach (var meta in current_metadata)
+            {
+                if (meta.metadata_type == metadata_type.DB_NAME)
+                {
+                    updated_metadata.Add(meta);
+                    if (meta.expanded)
+                    {
+                        foreach (var table in ((DataBase)meta).tables)
+                        {
+                            updated_metadata.Add(table);
+                            if (table.expanded)
+                            {
+                                foreach (var column in table.columns)
+                                {
+                                    updated_metadata.Add(column);
+                                    if (column.expanded)
+                                        updated_metadata.Add(column.column_type);
+                                }
+                            }
+                        }
+                    }
+                }    
+            }
+            current_metadata = updated_metadata;
         }
 
         private void draw_db_meta()
         {
-            if (current_metadata.meta_dictionary.Count != 0)
+            listBox1.Items.Clear();
+            update_current_meta();
+            if (current_metadata.Count != 0)
             {
-                foreach(var elem in current_metadata.meta_dictionary)
+                foreach (var meta in current_metadata)
                 {
-                    if (elem.Value.showing)
+                    switch (meta.metadata_type)
                     {
-                        switch (elem.Value.type)
-                        {
-                            case metadata_type.DB_NAME:
-                                listBox1.Items.Add(elem.Value.value);
-                                break;
-                            case metadata_type.DB_TABLE:
-                                listBox1.Items.Add("\t" + elem.Value.value);
-                                break;
-                            case metadata_type.COLUMN_NAME:
-                                listBox1.Items.Add("\t\t" + elem.Value.value);
-                                break;
-                            case metadata_type.COLUMN_TYPE:
-                                listBox1.Items.Add("\t\t\t" + elem.Value.value);
-                                break;
-                        }
+                        case metadata_type.DB_NAME:
+                            listBox1.Items.Add(meta.value_name);
+                            break;
+                        case metadata_type.DB_TABLE:
+                            listBox1.Items.Add("\t" + meta.value_name);
+                            break;
+                        case metadata_type.COLUMN_NAME:
+                            listBox1.Items.Add("\t\t" + meta.value_name);
+                            break;
+                        case metadata_type.COLUMN_TYPE:
+                            listBox1.Items.Add("\t\t\t" + meta.value_name);
+                            break;
                     }
                 }
             }
@@ -115,38 +256,40 @@ namespace VisualSQL
 
         private void update_new_metadata(DB_Metadata db_meta)
         {
-            int counter = 0;
             check_column_type_integrity(db_meta);
-            current_metadata.metadata = db_meta;
-            current_metadata.meta_dictionary.Clear();
-            current_metadata.meta_dictionary.Add(counter, new DB_Value_Struct(db_meta.DB_Name, metadata_type.DB_NAME, true));
-            counter++;
-            foreach (var table in db_meta.Tables)
-            {
-                current_metadata.meta_dictionary.Add(counter, new DB_Value_Struct(table.Table_Name, metadata_type.DB_TABLE, true));
-                counter++;
+            current_metadata.Clear();
+            DataBase db = BuildDatabase(db_meta);
+            fill_new_meta_list(db);
+        }
 
-                for (int i = 0; i < table.ColumnNames.Length; i++)
-                {
-                    current_metadata.meta_dictionary.Add(counter, new DB_Value_Struct(table.ColumnNames[i] + " (" + table.ColumnTypes[i] + ")", metadata_type.COLUMN_NAME, false));
-                    counter++;
-                }
+        private void fill_new_meta_list(DataBase db)
+        {
+            current_metadata.Add(db);
+
+            foreach (var table in db.tables)
+            {
+                current_metadata.Add(table);
             }
         }
 
-        private void fill_db_meta(DB_Metadata dbMeta)
+        private DataBase BuildDatabase(DB_Metadata dbMeta)
         {
-            check_column_type_integrity(dbMeta);
+            DataBase db = new DataBase() { metadata_type = metadata_type.DB_NAME, expanded = true, value_name = dbMeta.DB_Name };
 
-            listBox1.Items.Add(dbMeta.DB_Name);
             foreach (var table in dbMeta.Tables)
             {
-                listBox1.Items.Add("\t" + table.Table_Name);
+                Table tbl = new Table() { metadata_type = metadata_type.DB_TABLE, value_name = table.Table_Name, expanded = false };
+
                 for (int i = 0; i < table.ColumnNames.Length; i++)
                 {
-                    listBox1.Items.Add("\t\t" + table.ColumnNames[i] + " (" + table.ColumnTypes[i] + ")");
+                    Column clm = new Column() {metadata_type = metadata_type.COLUMN_NAME, expanded = false, value_name = table.ColumnNames[i] };
+                    Column_Type clm_type = new Column_Type() {metadata_type = metadata_type.COLUMN_TYPE, expanded = false, value_name = table.ColumnTypes[i] };
+                    clm.column_type = clm_type;
+                    tbl.columns.Add(clm);
                 }
+                db.tables.Add(tbl);
             }
+            return db;
         }
 
         private void check_column_type_integrity(DB_Metadata dbMeta)
@@ -189,38 +332,39 @@ namespace VisualSQL
         }
     }
 
+    abstract class Metadata
+    {
+        public string value_name { get; set; }
+        public metadata_type metadata_type { get; set; }
+        public bool expanded { get; set; }
+    }
+
+    class DataBase : Metadata
+    {
+        public List<Table> tables = new List<Table>();
+    }
+
+    class Table : Metadata
+    {
+        public List<Column> columns = new List<Column>();
+    }
+
+    class Column : Metadata
+    {
+        public Column_Type column_type;
+    }
+
+    class Column_Type : Metadata
+    {
+        
+    }
+
     enum metadata_type
     {
         DB_NAME,
         DB_TABLE,
         COLUMN_NAME,
         COLUMN_TYPE
-    }
-
-    class DB_Meta_Manager
-    {
-        public DB_Metadata metadata { get; set; }
-        public Dictionary<int, DB_Value_Struct> meta_dictionary { get; set; }
-
-        public DB_Meta_Manager()
-        {
-            metadata = new DB_Metadata();
-            meta_dictionary = new Dictionary<int, DB_Value_Struct>();
-        }
-    }
-
-    struct DB_Value_Struct
-    {
-        public string value;
-        public metadata_type type;
-        public bool showing;
-
-        public DB_Value_Struct(string value, metadata_type m_type, bool show) : this()
-        {
-            this.value = value;
-            this.type = m_type;
-            this.showing = show;
-        }
     }
 
     class DB_Metadata
