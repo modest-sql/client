@@ -60,7 +60,8 @@ namespace VisualSQL
                     json = @"[{""Name"":""AAA"",""Age"":""22"",""Job"":""PPP""},{""Name"":""BBB"",""Age"":""25"",""Job"":""QQQ""},{""Name"":""CCC"",""Age"":""38"",""Job"":""RRR""}]";
                     db_data = @"{""DB_Name"": ""Mocca DB"",""Tables"": [{""Table_Name"": ""Employee"", ""ColumnNames"": [""First Name"", ""Second Name"", ""First Last Name"", ""Second Last Name"", ""Age"", ""Married""],""ColumnTypes"": [""char[100]"", ""char[100]"", ""char[100]"", ""char[100]"", ""int"", ""boolean""]},{""Table_Name"": ""Department"", ""ColumnNames"": [""Department Name"", ""Description"", ""Address""],""ColumnTypes"": [""char[100]"", ""char[100]"", ""char[100]""]}]}";
                     //sql_text.Text = ipAddress + ":" + portNumber;
-                    console_receive("response from fake server, don't believe what I tell you, but you succeeded!");
+                    //console_receive("response from fake server, don't believe what I tell you, but you succeeded!");
+                    flashy_testing_console_receive();
 
                     DB_Metadata db_meta = new DB_Metadata();
                     db_meta = JsonConvert.DeserializeObject<DB_Metadata>(db_data);
@@ -81,6 +82,18 @@ namespace VisualSQL
                 //var table = JsonConvert.DeserializeObject<DataTable>(json);
                 //dataGridView1.DataSource = table;
             }
+        }
+
+        private void flashy_testing_console_receive()
+        {
+            console_log.AppendText(Environment.NewLine + "received: response from fake server, ");
+            console_log.Select(console_log.TextLength, 0);
+            console_log.SelectionColor = Color.Red;
+            console_log.AppendText("don't believe what I tell you, ");
+            console_log.Select(console_log.TextLength, 0);
+            console_log.SelectionColor = Color.Blue;
+            console_log.AppendText("but you succeeded!");
+            console_log.SelectionColor = Color.Black;
         }
 
         private void flashy_console_receive(string str)
@@ -115,6 +128,8 @@ namespace VisualSQL
 
         private void console_send(string str)
         {
+            console_log.Select(console_log.TextLength, 0);
+            console_log.SelectionColor = Color.Black;
             console_log.AppendText(Environment.NewLine + "sending: " + str);
             console_log.ScrollToCaret();
         }
