@@ -28,79 +28,78 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.ip_textBox = new System.Windows.Forms.TextBox();
+            this.ip_label = new System.Windows.Forms.Label();
+            this.ok_button = new System.Windows.Forms.Button();
+            this.port_label = new System.Windows.Forms.Label();
+            this.port_textBox = new System.Windows.Forms.TextBox();
+            this.localhost_button = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // textBox1
+            // ip_textBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(87, 12);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(185, 20);
-            this.textBox1.TabIndex = 0;
+            this.ip_textBox.Location = new System.Drawing.Point(87, 12);
+            this.ip_textBox.Name = "ip_textBox";
+            this.ip_textBox.Size = new System.Drawing.Size(185, 20);
+            this.ip_textBox.TabIndex = 0;
             // 
-            // label1
+            // ip_label
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(58, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "IP Address";
+            this.ip_label.AutoSize = true;
+            this.ip_label.Location = new System.Drawing.Point(12, 15);
+            this.ip_label.Name = "ip_label";
+            this.ip_label.Size = new System.Drawing.Size(58, 13);
+            this.ip_label.TabIndex = 1;
+            this.ip_label.Text = "IP Address";
             // 
-            // button1
+            // ok_button
             // 
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(197, 94);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "OK";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.ok_button.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.ok_button.Location = new System.Drawing.Point(197, 94);
+            this.ok_button.Name = "ok_button";
+            this.ok_button.Size = new System.Drawing.Size(75, 23);
+            this.ok_button.TabIndex = 3;
+            this.ok_button.Text = "OK";
+            this.ok_button.UseVisualStyleBackColor = true;
             // 
-            // label2
+            // port_label
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 58);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(66, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Port Number";
+            this.port_label.AutoSize = true;
+            this.port_label.Location = new System.Drawing.Point(12, 58);
+            this.port_label.Name = "port_label";
+            this.port_label.Size = new System.Drawing.Size(66, 13);
+            this.port_label.TabIndex = 4;
+            this.port_label.Text = "Port Number";
             // 
-            // textBox2
+            // port_textBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(87, 55);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(185, 20);
-            this.textBox2.TabIndex = 2;
+            this.port_textBox.Location = new System.Drawing.Point(87, 55);
+            this.port_textBox.Name = "port_textBox";
+            this.port_textBox.Size = new System.Drawing.Size(185, 20);
+            this.port_textBox.TabIndex = 2;
             // 
-            // button2
+            // localhost_button
             // 
-            this.button2.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button2.Location = new System.Drawing.Point(15, 94);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Localhost";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.localhost_button.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.localhost_button.Location = new System.Drawing.Point(15, 94);
+            this.localhost_button.Name = "localhost_button";
+            this.localhost_button.Size = new System.Drawing.Size(75, 23);
+            this.localhost_button.TabIndex = 5;
+            this.localhost_button.Text = "Localhost";
+            this.localhost_button.UseVisualStyleBackColor = true;
+            this.localhost_button.Click += new System.EventHandler(this.LocalhostClick);
             // 
             // PopupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 144);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.localhost_button);
+            this.Controls.Add(this.port_label);
+            this.Controls.Add(this.port_textBox);
+            this.Controls.Add(this.ok_button);
+            this.Controls.Add(this.ip_label);
+            this.Controls.Add(this.ip_textBox);
             this.Name = "PopupForm";
             this.Text = "PopupForm";
             this.ResumeLayout(false);
@@ -110,11 +109,11 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox ip_textBox;
+        private System.Windows.Forms.Label ip_label;
+        private System.Windows.Forms.Button ok_button;
+        private System.Windows.Forms.Label port_label;
+        private System.Windows.Forms.TextBox port_textBox;
+        private System.Windows.Forms.Button localhost_button;
     }
 }

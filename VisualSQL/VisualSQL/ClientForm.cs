@@ -26,7 +26,7 @@ namespace VisualSQL
             InitializeComponent();
             this.Text = "Modest SQL Client";
             PopUp_Connection();
-            this.listBox1.MouseDoubleClick += new MouseEventHandler(listBox1_MouseDoubleClick);
+            this.metadata_listBox.MouseDoubleClick += new MouseEventHandler(metadata_listBox_MouseDoubleClick);
             console_log.AppendText("Console log:");
         }
 
@@ -68,7 +68,7 @@ namespace VisualSQL
                     update_new_metadata(db_meta);
                     draw_db_meta();
                     var table = JsonConvert.DeserializeObject<DataTable>(json);
-                    dataGridView1.DataSource = table;
+                    table_dataGridView.DataSource = table;
                 }
                 else
                 {
@@ -134,9 +134,9 @@ namespace VisualSQL
             console_log.ScrollToCaret();
         }
 
-        void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
+        void metadata_listBox_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            int index = listBox1.IndexFromPoint(e.Location);
+            int index = metadata_listBox.IndexFromPoint(e.Location);
             if (index != ListBox.NoMatches)
             {
                 switch (current_metadata[index].metadata_type)
@@ -288,7 +288,7 @@ namespace VisualSQL
 
         private void draw_db_meta()
         {
-            listBox1.Items.Clear();
+            metadata_listBox.Items.Clear();
             update_current_meta();
             if (current_metadata.Count != 0)
             {
@@ -297,16 +297,16 @@ namespace VisualSQL
                     switch (meta.metadata_type)
                     {
                         case metadata_type.DB_NAME:
-                            listBox1.Items.Add(meta.value_name);
+                            metadata_listBox.Items.Add(meta.value_name);
                             break;
                         case metadata_type.DB_TABLE:
-                            listBox1.Items.Add("\t" + meta.value_name);
+                            metadata_listBox.Items.Add("\t" + meta.value_name);
                             break;
                         case metadata_type.COLUMN_NAME:
-                            listBox1.Items.Add("\t\t" + meta.value_name);
+                            metadata_listBox.Items.Add("\t\t" + meta.value_name);
                             break;
                         case metadata_type.COLUMN_TYPE:
-                            listBox1.Items.Add("\t\t\t" + meta.value_name);
+                            metadata_listBox.Items.Add("\t\t\t" + meta.value_name);
                             break;
                     }
                 }
