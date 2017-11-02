@@ -17,7 +17,7 @@ namespace VisualSQL
     {
         private string ipAddress;
         private string portNumber;
-        private bool testing = false;
+        private bool testing = true;
         private TcpClient client;
         private NetworkStream nwStream;
         private List<Metadata> current_metadata = new List<Metadata>();
@@ -26,13 +26,15 @@ namespace VisualSQL
         {
             InitializeComponent();
             this.Text = "Modest SQL Client";
-            PopUp_Connection();
-            while (!connection_success())
+            if (!testing)
             {
-                MessageBox.Show("Could not establish connection with IP address and port number, please try again.");
                 PopUp_Connection();
+                while (!connection_success())
+                {
+                    MessageBox.Show("Could not establish connection with IP address and port number, please try again.");
+                    PopUp_Connection();
+                }
             }
-                
             this.metadata_listBox.MouseDoubleClick += new MouseEventHandler(metadata_listBox_MouseDoubleClick);
             console_log.AppendText("Console log:");
         }
@@ -390,7 +392,8 @@ namespace VisualSQL
 
         private void close_connection()
         {
-            client.Close();
+            if (!testing)
+                client.Close();
         }
 
         private void open_connection()
