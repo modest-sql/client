@@ -10,6 +10,7 @@ namespace VisualSQL
         public PopupForm()
         {
             InitializeComponent();
+            ControlBox = false;
         }
 
         private void LocalhostClick(object sender, EventArgs e)

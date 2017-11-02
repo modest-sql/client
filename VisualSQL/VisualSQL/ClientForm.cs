@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -388,6 +389,27 @@ namespace VisualSQL
 
             //---send the text---
             nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+        }
+
+        private void load_button_Click(object sender, EventArgs e)
+        {
+            FileDialog load_fileDialog = new OpenFileDialog();
+            load_fileDialog.DefaultExt = "sql";
+            load_fileDialog.Filter = "SQL files (*.sql)|*.sql|Text files (*.txt)|*.txt";
+            DialogResult result = load_fileDialog.ShowDialog();
+            if (load_fileDialog.FileName != "" && result == DialogResult.OK)
+                sql_text.Text = File.ReadAllText(load_fileDialog.FileName);
+        }
+
+        private void save_button_Click(object sender, EventArgs e)
+        {
+            FileDialog save_fileDialog = new SaveFileDialog();
+            save_fileDialog.FileName = "MySQL";
+            save_fileDialog.DefaultExt = "sql";
+            save_fileDialog.Filter = "SQL file (*.sql)|*.sql|Text file (*.txt)|*.txt";
+            DialogResult result = save_fileDialog.ShowDialog();
+            if (save_fileDialog.FileName != "" && result == DialogResult.OK && sql_text.Text != "")
+                File.WriteAllText(save_fileDialog.FileName, sql_text.Text);
         }
     }
 

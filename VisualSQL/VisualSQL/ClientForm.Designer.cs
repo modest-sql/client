@@ -33,20 +33,23 @@
             this.run_button = new System.Windows.Forms.Button();
             this.metadata_listBox = new System.Windows.Forms.ListBox();
             this.console_log = new System.Windows.Forms.RichTextBox();
+            this.metadata_label = new System.Windows.Forms.Label();
+            this.load_button = new System.Windows.Forms.Button();
+            this.save_button = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.table_dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // table_dataGridView
             // 
             this.table_dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.table_dataGridView.Location = new System.Drawing.Point(354, 177);
+            this.table_dataGridView.Location = new System.Drawing.Point(354, 215);
             this.table_dataGridView.Name = "table_dataGridView";
-            this.table_dataGridView.Size = new System.Drawing.Size(540, 488);
+            this.table_dataGridView.Size = new System.Drawing.Size(540, 450);
             this.table_dataGridView.TabIndex = 0;
             // 
             // sql_text
             // 
-            this.sql_text.Location = new System.Drawing.Point(354, 12);
+            this.sql_text.Location = new System.Drawing.Point(354, 50);
             this.sql_text.Multiline = true;
             this.sql_text.Name = "sql_text";
             this.sql_text.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -55,11 +58,11 @@
             // 
             // run_button
             // 
-            this.run_button.Location = new System.Drawing.Point(256, 12);
+            this.run_button.Location = new System.Drawing.Point(354, 21);
             this.run_button.Name = "run_button";
-            this.run_button.Size = new System.Drawing.Size(75, 23);
+            this.run_button.Size = new System.Drawing.Size(86, 23);
             this.run_button.TabIndex = 2;
-            this.run_button.Text = "Run";
+            this.run_button.Text = "Execute Query";
             this.run_button.UseVisualStyleBackColor = true;
             this.run_button.Click += new System.EventHandler(this.run_button_Click);
             // 
@@ -81,11 +84,43 @@
             this.console_log.TabIndex = 4;
             this.console_log.Text = "";
             // 
+            // metadata_label
+            // 
+            this.metadata_label.AutoSize = true;
+            this.metadata_label.Location = new System.Drawing.Point(12, 34);
+            this.metadata_label.Name = "metadata_label";
+            this.metadata_label.Size = new System.Drawing.Size(90, 13);
+            this.metadata_label.TabIndex = 5;
+            this.metadata_label.Text = "Current Database";
+            // 
+            // load_button
+            // 
+            this.load_button.Location = new System.Drawing.Point(446, 21);
+            this.load_button.Name = "load_button";
+            this.load_button.Size = new System.Drawing.Size(75, 23);
+            this.load_button.TabIndex = 6;
+            this.load_button.Text = "Load";
+            this.load_button.UseVisualStyleBackColor = true;
+            this.load_button.Click += new System.EventHandler(this.load_button_Click);
+            // 
+            // save_button
+            // 
+            this.save_button.Location = new System.Drawing.Point(527, 21);
+            this.save_button.Name = "save_button";
+            this.save_button.Size = new System.Drawing.Size(75, 23);
+            this.save_button.TabIndex = 7;
+            this.save_button.Text = "Save";
+            this.save_button.UseVisualStyleBackColor = true;
+            this.save_button.Click += new System.EventHandler(this.save_button_Click);
+            // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(906, 901);
+            this.Controls.Add(this.save_button);
+            this.Controls.Add(this.load_button);
+            this.Controls.Add(this.metadata_label);
             this.Controls.Add(this.console_log);
             this.Controls.Add(this.metadata_listBox);
             this.Controls.Add(this.run_button);
@@ -106,6 +141,9 @@
         private System.Windows.Forms.Button run_button;
         private System.Windows.Forms.ListBox metadata_listBox;
         private System.Windows.Forms.RichTextBox console_log;
+        private System.Windows.Forms.Label metadata_label;
+        private System.Windows.Forms.Button load_button;
+        private System.Windows.Forms.Button save_button;
     }
 }
 
