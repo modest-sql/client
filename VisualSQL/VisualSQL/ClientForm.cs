@@ -102,12 +102,7 @@ namespace VisualSQL
                 }
                 else
                 {
-                    //open_connection();
                     send_sql_text(sql_string);
-                    //json = read_server_response();
-                    //console_receive(json);
-                    //flashy_console_receive(json);
-                    //close_connection();
                 }
                 //var table = JsonConvert.DeserializeObject<DataTable>(json);
                 //dataGridView1.DataSource = table;
@@ -450,25 +445,25 @@ namespace VisualSQL
 
         private void StartListening()
         {
-            /*if (console_log.InvokeRequired)
-            {
-                console_log.Invoke(new MethodInvoker(delegate { name = console_log.Text; }));
-            }
-            else
-            {
-                
-            }*/
             try
             {
-                flashy_console_receive(read_server_response());
+                ThreadUpdate(read_server_response());
             }
             catch (Exception e)
             {
-                console_log.Select(console_log.TextLength, 0);
-                console_log.SelectionColor = Color.Red;
-                console_log.AppendText(Environment.NewLine + "received: " + e.Message);
-                console_log.SelectionColor = Color.Black;
+                MessageBox.Show(e.Message);
             }
+        }
+
+        delegate void ThreadUpdateDelegate(string val);
+
+        private void ThreadUpdate(string updateVal)
+        {
+            if (console_log.InvokeRequired)
+                console_log.Invoke(new ThreadUpdateDelegate(ThreadUpdate), updateVal);
+            else
+                flashy_console_receive(updateVal);
+
         }
     }
 
