@@ -552,7 +552,7 @@ namespace VisualSQL
             else
             {
                 connected_pictureBox.BackColor = Color.Red;
-                connected_label.Text = "Disconnected";
+                connected_label.Text = "Disconnected, attempting to reconnect";
             }
         }
 
@@ -563,6 +563,16 @@ namespace VisualSQL
         delegate void MetadataUpdatedelegate(string val);
 
         delegate void ChangeConnectedColor(bool val);
+
+        delegate void CycleDisconnectedColor();
+
+        private void CycleUpdate()
+        {
+            if (connected_label.InvokeRequired)
+                connected_label.Invoke(new CycleDisconnectedColor(CycleUpdate));
+            else
+                disconnected_cycle();
+        }
 
         private void ConnectedUpdate(Boolean updateVal)
         {
@@ -607,11 +617,24 @@ namespace VisualSQL
                 {
                     while (!connection_success())
                     {
-                        
+                        CycleUpdate();
+                        Thread.Sleep(300);
                     }
                     ConnectedUpdate(true);
                 }
             }
+        }
+
+        private void disconnected_cycle()
+        {
+            if (connected_label.Text == "Disconnected, attempting to reconnect")
+                connected_label.Text = "Disconnected, attempting to reconnect.";
+            else if (connected_label.Text == "Disconnected, attempting to reconnect.")
+                connected_label.Text = "Disconnected, attempting to reconnect..";
+            else if (connected_label.Text == "Disconnected, attempting to reconnect..")
+                connected_label.Text = "Disconnected, attempting to reconnect...";
+            else if (connected_label.Text == "Disconnected, attempting to reconnect...")
+                connected_label.Text = "Disconnected, attempting to reconnect";
         }
 
         private void PingServer()
