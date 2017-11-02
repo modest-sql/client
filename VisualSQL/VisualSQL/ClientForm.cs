@@ -27,8 +27,12 @@ namespace VisualSQL
             InitializeComponent();
             this.Text = "Modest SQL Client";
             PopUp_Connection();
-            /*while (!connection_success())
-                PopUp_Connection();*/
+            while (!connection_success())
+            {
+                MessageBox.Show("Could not establish connection with IP address and port number, please try again.");
+                PopUp_Connection();
+            }
+                
             this.metadata_listBox.MouseDoubleClick += new MouseEventHandler(metadata_listBox_MouseDoubleClick);
             console_log.AppendText("Console log:");
         }
@@ -37,19 +41,26 @@ namespace VisualSQL
         {
             try
             {
-
+                open_connection();
             }
             catch (Exception)
             {
-                
+                return false;
                 throw;
             }
             return true;
         }
 
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            close_connection();
+            base.OnFormClosing(e);
+        }
+
         private void PopUp_Connection()
         {
             PopupForm popup = new PopupForm();
+            popup.StartPosition = FormStartPosition.CenterParent;
             popup.Text = "TCP Connection";
             DialogResult dialogresult = popup.ShowDialog();
             ipAddress = popup.ipAddress;
@@ -89,12 +100,12 @@ namespace VisualSQL
                 }
                 else
                 {
-                    open_connection();
+                    //open_connection();
                     send_sql_text(sql_string);
                     json = read_server_response();
                     //console_receive(json);
                     flashy_console_receive(json);
-                    close_connection();
+                    //close_connection();
                 }
                 //var table = JsonConvert.DeserializeObject<DataTable>(json);
                 //dataGridView1.DataSource = table;
