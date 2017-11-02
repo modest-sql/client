@@ -36,6 +36,7 @@
             this.metadata_label = new System.Windows.Forms.Label();
             this.load_button = new System.Windows.Forms.Button();
             this.save_button = new System.Windows.Forms.Button();
+            this.tcp_listener = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.table_dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -73,6 +74,7 @@
             this.metadata_listBox.Name = "metadata_listBox";
             this.metadata_listBox.Size = new System.Drawing.Size(336, 615);
             this.metadata_listBox.TabIndex = 3;
+            this.metadata_listBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.metadata_listBox_MouseDoubleClick);
             // 
             // console_log
             // 
@@ -113,6 +115,10 @@
             this.save_button.UseVisualStyleBackColor = true;
             this.save_button.Click += new System.EventHandler(this.save_button_Click);
             // 
+            // tcp_listener
+            // 
+            this.tcp_listener.DoWork += new System.ComponentModel.DoWorkEventHandler(this.tcp_listener_DoWork);
+            // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -144,6 +150,7 @@
         private System.Windows.Forms.Label metadata_label;
         private System.Windows.Forms.Button load_button;
         private System.Windows.Forms.Button save_button;
+        private System.ComponentModel.BackgroundWorker tcp_listener;
     }
 }
 

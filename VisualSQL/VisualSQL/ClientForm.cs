@@ -17,7 +17,7 @@ namespace VisualSQL
     {
         private string ipAddress;
         private string portNumber;
-        private bool testing = true;
+        private bool testing = false;
         private TcpClient client;
         private NetworkStream nwStream;
         private List<Metadata> current_metadata = new List<Metadata>();
@@ -35,8 +35,8 @@ namespace VisualSQL
                     PopUp_Connection();
                 }
             }
-            this.metadata_listBox.MouseDoubleClick += new MouseEventHandler(metadata_listBox_MouseDoubleClick);
             console_log.AppendText("Console log:");
+            tcp_listener.RunWorkerAsync();
         }
 
         private bool connection_success()
@@ -104,9 +104,9 @@ namespace VisualSQL
                 {
                     //open_connection();
                     send_sql_text(sql_string);
-                    json = read_server_response();
+                    //json = read_server_response();
                     //console_receive(json);
-                    flashy_console_receive(json);
+                    //flashy_console_receive(json);
                     //close_connection();
                 }
                 //var table = JsonConvert.DeserializeObject<DataTable>(json);
@@ -440,6 +440,35 @@ namespace VisualSQL
             DialogResult result = save_fileDialog.ShowDialog();
             if (save_fileDialog.FileName != "" && result == DialogResult.OK && sql_text.Text != "")
                 File.WriteAllText(save_fileDialog.FileName, sql_text.Text);
+        }
+
+        private void tcp_listener_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while(true)
+                StartListening();
+        }
+
+        private void StartListening()
+        {
+            /*if (console_log.InvokeRequired)
+            {
+                console_log.Invoke(new MethodInvoker(delegate { name = console_log.Text; }));
+            }
+            else
+            {
+                
+            }*/
+            try
+            {
+                flashy_console_receive(read_server_response());
+            }
+            catch (Exception e)
+            {
+                console_log.Select(console_log.TextLength, 0);
+                console_log.SelectionColor = Color.Red;
+                console_log.AppendText(Environment.NewLine + "received: " + e.Message);
+                console_log.SelectionColor = Color.Black;
+            }
         }
     }
 
