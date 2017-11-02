@@ -30,7 +30,7 @@
         {
             this.ip_textBox = new System.Windows.Forms.TextBox();
             this.ip_label = new System.Windows.Forms.Label();
-            this.ok_button = new System.Windows.Forms.Button();
+            this.connect_button = new System.Windows.Forms.Button();
             this.port_label = new System.Windows.Forms.Label();
             this.port_textBox = new System.Windows.Forms.TextBox();
             this.localhost_button = new System.Windows.Forms.Button();
@@ -52,15 +52,15 @@
             this.ip_label.TabIndex = 1;
             this.ip_label.Text = "IP Address";
             // 
-            // ok_button
+            // connect_button
             // 
-            this.ok_button.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.ok_button.Location = new System.Drawing.Point(197, 94);
-            this.ok_button.Name = "ok_button";
-            this.ok_button.Size = new System.Drawing.Size(75, 23);
-            this.ok_button.TabIndex = 3;
-            this.ok_button.Text = "OK";
-            this.ok_button.UseVisualStyleBackColor = true;
+            this.connect_button.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.connect_button.Location = new System.Drawing.Point(197, 94);
+            this.connect_button.Name = "connect_button";
+            this.connect_button.Size = new System.Drawing.Size(75, 23);
+            this.connect_button.TabIndex = 3;
+            this.connect_button.Text = "Connect";
+            this.connect_button.UseVisualStyleBackColor = true;
             // 
             // port_label
             // 
@@ -80,7 +80,6 @@
             // 
             // localhost_button
             // 
-            this.localhost_button.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.localhost_button.Location = new System.Drawing.Point(15, 94);
             this.localhost_button.Name = "localhost_button";
             this.localhost_button.Size = new System.Drawing.Size(75, 23);
@@ -97,7 +96,7 @@
             this.Controls.Add(this.localhost_button);
             this.Controls.Add(this.port_label);
             this.Controls.Add(this.port_textBox);
-            this.Controls.Add(this.ok_button);
+            this.Controls.Add(this.connect_button);
             this.Controls.Add(this.ip_label);
             this.Controls.Add(this.ip_textBox);
             this.Name = "PopupForm";
@@ -111,7 +110,7 @@
 
         private System.Windows.Forms.TextBox ip_textBox;
         private System.Windows.Forms.Label ip_label;
-        private System.Windows.Forms.Button ok_button;
+        private System.Windows.Forms.Button connect_button;
         private System.Windows.Forms.Label port_label;
         private System.Windows.Forms.TextBox port_textBox;
         private System.Windows.Forms.Button localhost_button;

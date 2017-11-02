@@ -27,8 +27,24 @@ namespace VisualSQL
             InitializeComponent();
             this.Text = "Modest SQL Client";
             PopUp_Connection();
+            /*while (!connection_success())
+                PopUp_Connection();*/
             this.metadata_listBox.MouseDoubleClick += new MouseEventHandler(metadata_listBox_MouseDoubleClick);
             console_log.AppendText("Console log:");
+        }
+
+        private bool connection_success()
+        {
+            try
+            {
+
+            }
+            catch (Exception)
+            {
+                
+                throw;
+            }
+            return true;
         }
 
         private void PopUp_Connection()
