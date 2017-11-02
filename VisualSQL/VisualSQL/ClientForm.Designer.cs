@@ -37,7 +37,11 @@
             this.load_button = new System.Windows.Forms.Button();
             this.save_button = new System.Windows.Forms.Button();
             this.tcp_listener = new System.ComponentModel.BackgroundWorker();
+            this.connected_pictureBox = new System.Windows.Forms.PictureBox();
+            this.connected_label = new System.Windows.Forms.Label();
+            this.tcp_ping = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.table_dataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.connected_pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // table_dataGridView
@@ -119,11 +123,34 @@
             // 
             this.tcp_listener.DoWork += new System.ComponentModel.DoWorkEventHandler(this.tcp_listener_DoWork);
             // 
+            // connected_pictureBox
+            // 
+            this.connected_pictureBox.Location = new System.Drawing.Point(15, 12);
+            this.connected_pictureBox.Name = "connected_pictureBox";
+            this.connected_pictureBox.Size = new System.Drawing.Size(17, 17);
+            this.connected_pictureBox.TabIndex = 9;
+            this.connected_pictureBox.TabStop = false;
+            // 
+            // connected_label
+            // 
+            this.connected_label.AutoSize = true;
+            this.connected_label.Location = new System.Drawing.Point(38, 12);
+            this.connected_label.Name = "connected_label";
+            this.connected_label.Size = new System.Drawing.Size(59, 13);
+            this.connected_label.TabIndex = 10;
+            this.connected_label.Text = "Connected";
+            // 
+            // tcp_ping
+            // 
+            this.tcp_ping.DoWork += new System.ComponentModel.DoWorkEventHandler(this.tcp_ping_DoWork);
+            // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(906, 901);
+            this.Controls.Add(this.connected_label);
+            this.Controls.Add(this.connected_pictureBox);
             this.Controls.Add(this.save_button);
             this.Controls.Add(this.load_button);
             this.Controls.Add(this.metadata_label);
@@ -135,6 +162,7 @@
             this.Name = "ClientForm";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.table_dataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.connected_pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -151,6 +179,9 @@
         private System.Windows.Forms.Button load_button;
         private System.Windows.Forms.Button save_button;
         private System.ComponentModel.BackgroundWorker tcp_listener;
+        private System.Windows.Forms.PictureBox connected_pictureBox;
+        private System.Windows.Forms.Label connected_label;
+        private System.ComponentModel.BackgroundWorker tcp_ping;
     }
 }
 

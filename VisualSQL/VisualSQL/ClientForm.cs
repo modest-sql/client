@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
@@ -37,6 +38,14 @@ namespace VisualSQL
             }
             console_log.AppendText("Console log:");
             tcp_listener.RunWorkerAsync();
+            tcp_ping.RunWorkerAsync();
+            connected_pictureBox.BackColor = Color.Green;
+            System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
+            path.AddEllipse(0, 0, connected_pictureBox.Width, connected_pictureBox.Height);
+            connected_pictureBox.Region = new Region(path);
+
+            string metadata = build_server_request(1, " ");
+            send_to_server(metadata);
         }
 
         private bool connection_success()
@@ -48,7 +57,7 @@ namespace VisualSQL
             catch (Exception)
             {
                 return false;
-                throw;
+                //throw;
             }
             return true;
         }
@@ -76,6 +85,20 @@ namespace VisualSQL
             return table;
         }
 
+        private void printTable(string json)
+        {
+            var table = JsonConvert.DeserializeObject<DataTable>(json);
+            table_dataGridView.DataSource = table;
+        }
+
+        private void printMetadata(string json)
+        {
+            DB_Metadata db_meta = new DB_Metadata();
+            db_meta = JsonConvert.DeserializeObject<DB_Metadata>(json);
+            update_new_metadata(db_meta);
+            draw_db_meta();
+        }
+
         private void run_button_Click(object sender, EventArgs e)
         {
             if (sql_text.Text != "")
@@ -87,8 +110,10 @@ namespace VisualSQL
                 console_send(sql_string);
                 if (testing)
                 {
-                    json = @"[{""Name"":""AAA"",""Age"":""22"",""Job"":""PPP""},{""Name"":""BBB"",""Age"":""25"",""Job"":""QQQ""},{""Name"":""CCC"",""Age"":""38"",""Job"":""RRR""}]";
-                    db_data = @"{""DB_Name"": ""Mocca DB"",""Tables"": [{""Table_Name"": ""Employee"", ""ColumnNames"": [""First Name"", ""Second Name"", ""First Last Name"", ""Second Last Name"", ""Age"", ""Married""],""ColumnTypes"": [""char[100]"", ""char[100]"", ""char[100]"", ""char[100]"", ""int"", ""boolean""]},{""Table_Name"": ""Department"", ""ColumnNames"": [""Department Name"", ""Description"", ""Address""],""ColumnTypes"": [""char[100]"", ""char[100]"", ""char[100]""]}]}";
+                    json =
+                        @"[{""Name"":""AAA"",""Age"":""22"",""Job"":""PPP""},{""Name"":""BBB"",""Age"":""25"",""Job"":""QQQ""},{""Name"":""CCC"",""Age"":""38"",""Job"":""RRR""}]";
+                    db_data =
+                        @"{""DB_Name"": ""Mocca DB"",""Tables"": [{""Table_Name"": ""Employee"", ""ColumnNames"": [""First Name"", ""Second Name"", ""First Last Name"", ""Second Last Name"", ""Age"", ""Married""],""ColumnTypes"": [""char[100]"", ""char[100]"", ""char[100]"", ""char[100]"", ""int"", ""boolean""]},{""Table_Name"": ""Department"", ""ColumnNames"": [""Department Name"", ""Description"", ""Address""],""ColumnTypes"": [""char[100]"", ""char[100]"", ""char[100]""]}]}";
                     //sql_text.Text = ipAddress + ":" + portNumber;
                     //console_receive("response from fake server, don't believe what I tell you, but you succeeded!");
                     flashy_testing_console_receive();
@@ -126,7 +151,7 @@ namespace VisualSQL
             var trimmed = str.Trim('\0');
             trimmed = trimmed.Trim('[');
             trimmed = trimmed.Trim(']');
-            var des = JsonConvert.DeserializeObject<server_response>(trimmed);
+            var des = JsonConvert.DeserializeObject<server_error>(trimmed);
             //sql_text.Text = des.Error;
             if (des.Error != "no error")
             {
@@ -207,7 +232,7 @@ namespace VisualSQL
             {
                 if (meta.value_name == parent_database && meta.metadata_type == metadata_type.DB_NAME)
                 {
-                    foreach (var table in ((DataBase)meta).tables)
+                    foreach (var table in ((DataBase) meta).tables)
                     {
                         if (table.value_name == parent_table)
                         {
@@ -217,7 +242,7 @@ namespace VisualSQL
                                 {
                                     column.expanded = !column.expanded;
                                     break;
-                                }    
+                                }
                             }
                         }
                     }
@@ -292,7 +317,7 @@ namespace VisualSQL
                     updated_metadata.Add(meta);
                     if (meta.expanded)
                     {
-                        foreach (var table in ((DataBase)meta).tables)
+                        foreach (var table in ((DataBase) meta).tables)
                         {
                             updated_metadata.Add(table);
                             if (table.expanded)
@@ -306,7 +331,7 @@ namespace VisualSQL
                             }
                         }
                     }
-                }    
+                }
             }
             current_metadata = updated_metadata;
         }
@@ -358,16 +383,36 @@ namespace VisualSQL
 
         private DataBase BuildDatabase(DB_Metadata dbMeta)
         {
-            DataBase db = new DataBase() { metadata_type = metadata_type.DB_NAME, expanded = true, value_name = dbMeta.DB_Name };
+            DataBase db = new DataBase()
+            {
+                metadata_type = metadata_type.DB_NAME,
+                expanded = true,
+                value_name = dbMeta.DB_Name
+            };
 
             foreach (var table in dbMeta.Tables)
             {
-                Table tbl = new Table() { metadata_type = metadata_type.DB_TABLE, value_name = table.Table_Name, expanded = false };
+                Table tbl = new Table()
+                {
+                    metadata_type = metadata_type.DB_TABLE,
+                    value_name = table.Table_Name,
+                    expanded = false
+                };
 
                 for (int i = 0; i < table.ColumnNames.Length; i++)
                 {
-                    Column clm = new Column() {metadata_type = metadata_type.COLUMN_NAME, expanded = false, value_name = table.ColumnNames[i] };
-                    Column_Type clm_type = new Column_Type() {metadata_type = metadata_type.COLUMN_TYPE, expanded = false, value_name = table.ColumnTypes[i] };
+                    Column clm = new Column()
+                    {
+                        metadata_type = metadata_type.COLUMN_NAME,
+                        expanded = false,
+                        value_name = table.ColumnNames[i]
+                    };
+                    Column_Type clm_type = new Column_Type()
+                    {
+                        metadata_type = metadata_type.COLUMN_TYPE,
+                        expanded = false,
+                        value_name = table.ColumnTypes[i]
+                    };
                     clm.column_type = clm_type;
                     tbl.columns.Add(clm);
                 }
@@ -410,10 +455,30 @@ namespace VisualSQL
 
         private void send_sql_text(string sqlString)
         {
-            byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(sqlString);
+            string sendThis = build_server_request(2, sqlString);
+            send_to_server(sendThis);
+        }
+
+        private void send_to_server(string send_this)
+        {
+            byte[] bytesToSend = ASCIIEncoding.ASCII.GetBytes(send_this);
 
             //---send the text---
-            nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+            try
+            {
+                nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+            }
+            catch (Exception)
+            {
+                ConnectedUpdate(false);
+                //throw;
+            }
+        }
+
+        private string build_server_request(int id_type, string data)
+        {
+            string returnString = "{\"Type\":" + id_type + ", \"Data\":\"" + data + "\"}";
+            return returnString;
         }
 
         private void load_button_Click(object sender, EventArgs e)
@@ -447,23 +512,119 @@ namespace VisualSQL
         {
             try
             {
-                ThreadUpdate(read_server_response());
+                server_response sr = JsonConvert.DeserializeObject<server_response>(read_server_response());
+                ConnectedUpdate(true);
+                switch (sr.Type)
+                {
+                    case 0:
+                        //Ping
+                        break;
+                    case 1:
+                        //Metadata
+                        MetadataUpdate(sr.Data);
+                        break;
+                    case 2:
+                        //Tabla
+                        TableUpdate(sr.Data);
+                        break;
+                    case 4:
+                        //Error
+                        ConsoleUpdate(sr.Data);
+                        break;
+                    default:
+                        //Do nothing
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                //MessageBox.Show(e.Message);
+            }
+        }
+
+        void isConnected(bool conn)
+        {
+            if (conn)
+            {
+                connected_pictureBox.BackColor = Color.Green;
+                connected_label.Text = "Connected";
+            }
+            else
+            {
+                connected_pictureBox.BackColor = Color.Red;
+                connected_label.Text = "Disconnected";
+            }
+        }
+
+        delegate void ConsoleUpdateDelegate(string val);
+
+        delegate void TableUpdatedelegate(string val);
+
+        delegate void MetadataUpdatedelegate(string val);
+
+        delegate void ChangeConnectedColor(bool val);
+
+        private void ConnectedUpdate(Boolean updateVal)
+        {
+            if (connected_pictureBox.InvokeRequired)
+                connected_pictureBox.Invoke(new ChangeConnectedColor(ConnectedUpdate), updateVal);
+            else
+                isConnected(updateVal);
+        }
+
+        private void MetadataUpdate(string updateVal)
+        {
+            if (metadata_listBox.InvokeRequired)
+                metadata_listBox.Invoke(new MetadataUpdatedelegate(MetadataUpdate), updateVal);
+            else
+                printMetadata(updateVal);
+        }
+
+        private void TableUpdate(string updateVal)
+        {
+            if (table_dataGridView.InvokeRequired)
+                table_dataGridView.Invoke(new TableUpdatedelegate(TableUpdate), updateVal);
+            else
+                printTable(updateVal);
+        }
+
+        private void ConsoleUpdate(string updateVal)
+        {
+            if (console_log.InvokeRequired)
+                console_log.Invoke(new ConsoleUpdateDelegate(ConsoleUpdate), updateVal);
+            else
+                flashy_console_receive(updateVal);
+
+        }
+
+        private void tcp_ping_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                Thread.Sleep(5000);
+                PingServer();
+                if (connected_pictureBox.BackColor == Color.Red)
+                {
+                    while (!connection_success())
+                    {
+                        
+                    }
+                    ConnectedUpdate(true);
+                }
+            }
+        }
+
+        private void PingServer()
+        {
+            try
+            {
+                string ping = build_server_request(0, " ");
+                send_to_server(ping);
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
-        }
-
-        delegate void ThreadUpdateDelegate(string val);
-
-        private void ThreadUpdate(string updateVal)
-        {
-            if (console_log.InvokeRequired)
-                console_log.Invoke(new ThreadUpdateDelegate(ThreadUpdate), updateVal);
-            else
-                flashy_console_receive(updateVal);
-
         }
     }
 
@@ -516,6 +677,12 @@ namespace VisualSQL
     }
 
     class server_response
+    {
+        public int Type { get; set; }
+        public string Data { get; set; }
+    }
+
+    class server_error
     {
         public string Error { get; set; }
     }
