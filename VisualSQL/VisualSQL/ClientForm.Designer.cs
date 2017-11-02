@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.table_dataGridView = new System.Windows.Forms.DataGridView();
             this.sql_text = new System.Windows.Forms.TextBox();
             this.run_button = new System.Windows.Forms.Button();
@@ -40,6 +41,8 @@
             this.connected_pictureBox = new System.Windows.Forms.PictureBox();
             this.connected_label = new System.Windows.Forms.Label();
             this.tcp_ping = new System.ComponentModel.BackgroundWorker();
+            this.general_tooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.refresh_button = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.table_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.connected_pictureBox)).BeginInit();
             this.SuspendLayout();
@@ -51,6 +54,7 @@
             this.table_dataGridView.Name = "table_dataGridView";
             this.table_dataGridView.Size = new System.Drawing.Size(540, 450);
             this.table_dataGridView.TabIndex = 0;
+            this.general_tooltip.SetToolTip(this.table_dataGridView, "Queried table contents");
             // 
             // sql_text
             // 
@@ -60,6 +64,8 @@
             this.sql_text.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.sql_text.Size = new System.Drawing.Size(540, 159);
             this.sql_text.TabIndex = 1;
+            this.sql_text.Enter += new System.EventHandler(this.sql_text_Enter);
+            this.sql_text.Leave += new System.EventHandler(this.sql_text_Leave);
             // 
             // run_button
             // 
@@ -68,6 +74,7 @@
             this.run_button.Size = new System.Drawing.Size(86, 23);
             this.run_button.TabIndex = 2;
             this.run_button.Text = "Execute Query";
+            this.general_tooltip.SetToolTip(this.run_button, "Execute the current query");
             this.run_button.UseVisualStyleBackColor = true;
             this.run_button.Click += new System.EventHandler(this.run_button_Click);
             // 
@@ -106,6 +113,7 @@
             this.load_button.Size = new System.Drawing.Size(75, 23);
             this.load_button.TabIndex = 6;
             this.load_button.Text = "Load";
+            this.general_tooltip.SetToolTip(this.load_button, "Load a query from a file");
             this.load_button.UseVisualStyleBackColor = true;
             this.load_button.Click += new System.EventHandler(this.load_button_Click);
             // 
@@ -116,6 +124,7 @@
             this.save_button.Size = new System.Drawing.Size(75, 23);
             this.save_button.TabIndex = 7;
             this.save_button.Text = "Save";
+            this.general_tooltip.SetToolTip(this.save_button, "Save the current query into a file");
             this.save_button.UseVisualStyleBackColor = true;
             this.save_button.Click += new System.EventHandler(this.save_button_Click);
             // 
@@ -130,6 +139,7 @@
             this.connected_pictureBox.Size = new System.Drawing.Size(17, 17);
             this.connected_pictureBox.TabIndex = 9;
             this.connected_pictureBox.TabStop = false;
+            this.general_tooltip.SetToolTip(this.connected_pictureBox, "Connection status");
             // 
             // connected_label
             // 
@@ -145,11 +155,23 @@
             // 
             this.tcp_ping.DoWork += new System.ComponentModel.DoWorkEventHandler(this.tcp_ping_DoWork);
             // 
+            // refresh_button
+            // 
+            this.refresh_button.Location = new System.Drawing.Point(108, 24);
+            this.refresh_button.Name = "refresh_button";
+            this.refresh_button.Size = new System.Drawing.Size(28, 23);
+            this.refresh_button.TabIndex = 11;
+            this.refresh_button.Text = "button1";
+            this.general_tooltip.SetToolTip(this.refresh_button, "Refresh database metadata");
+            this.refresh_button.UseVisualStyleBackColor = true;
+            this.refresh_button.Click += new System.EventHandler(this.refresh_button_Click);
+            // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(906, 901);
+            this.Controls.Add(this.refresh_button);
             this.Controls.Add(this.connected_label);
             this.Controls.Add(this.connected_pictureBox);
             this.Controls.Add(this.save_button);
@@ -183,6 +205,8 @@
         private System.Windows.Forms.PictureBox connected_pictureBox;
         private System.Windows.Forms.Label connected_label;
         private System.ComponentModel.BackgroundWorker tcp_ping;
+        private System.Windows.Forms.ToolTip general_tooltip;
+        private System.Windows.Forms.Button refresh_button;
     }
 }
 

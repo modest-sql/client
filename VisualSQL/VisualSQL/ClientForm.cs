@@ -39,12 +39,45 @@ namespace VisualSQL
             console_log.AppendText("Console log:");
             tcp_listener.RunWorkerAsync();
             tcp_ping.RunWorkerAsync();
+            setInitialConnected();
+            setupButtons();
+            setupSqlTextbox();
+            BuildAndSendServerRequest(1, " ");
+        }
+
+        private void setupSqlTextbox()
+        {
+            this.sql_text.ForeColor = Color.Gray;
+            this.sql_text.Text = "Enter query here...";
+        }
+
+        private void setupButtons()
+        {
+            /*load_button.Image = Image.FromFile(GetAssetFilePath("load.png"));
+            load_button.ImageAlign = ContentAlignment.MiddleRight;
+            load_button.TextAlign = ContentAlignment.MiddleLeft;
+            load_button.TextImageRelation = TextImageRelation.ImageBeforeText;*/
+            /*load_button.BackgroundImage = Image.FromFile(GetAssetFilePath("load.png"));
+            load_button.BackgroundImageLayout = ImageLayout.Stretch;
+            load_button.Text = "";*/
+
+            refresh_button.BackgroundImage = Image.FromFile(GetAssetFilePath("refresh.png"));
+            refresh_button.BackgroundImageLayout = ImageLayout.Stretch;
+            refresh_button.Text = "";
+            
+        }
+
+        private void setInitialConnected()
+        {
             connected_pictureBox.BackColor = Color.Green;
             System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
             path.AddEllipse(0, 0, connected_pictureBox.Width, connected_pictureBox.Height);
             connected_pictureBox.Region = new Region(path);
+        }
 
-            string metadata = build_server_request(1, " ");
+        private void BuildAndSendServerRequest(int id_type, string data)
+        {
+            string metadata = build_server_request(id_type, data);
             send_to_server(metadata);
         }
 
@@ -455,8 +488,9 @@ namespace VisualSQL
 
         private void send_sql_text(string sqlString)
         {
-            string sendThis = build_server_request(2, sqlString);
-            send_to_server(sendThis);
+            /*string sendThis = build_server_request(2, sqlString);
+            send_to_server(sendThis);*/
+            BuildAndSendServerRequest(2, sqlString);
         }
 
         private void send_to_server(string send_this)
@@ -641,12 +675,51 @@ namespace VisualSQL
         {
             try
             {
-                string ping = build_server_request(0, " ");
-                send_to_server(ping);
+                /*string ping = build_server_request(0, " ");
+                send_to_server(ping);*/
+                BuildAndSendServerRequest(0, " ");
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
+            }
+        }
+
+        private static string GetAssetFilePath(string fileName)
+        {
+            string solutionPath = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
+            if (solutionPath != null)
+            {
+                DirectoryInfo parentDir = Directory.GetParent(solutionPath);
+                string testFolderPath = Path.Combine(parentDir.FullName, "assets");
+                string filePath = Path.Combine(testFolderPath, fileName);
+                return filePath;
+            }
+            return null;
+        }
+
+        private void refresh_button_Click(object sender, EventArgs e)
+        {
+            BuildAndSendServerRequest(1, " ");
+        }
+
+        private void sql_text_Enter(object sender, EventArgs e)
+        {
+            if (sql_text.Text == "Enter query here...")
+            {
+                sql_text.Clear();
+                sql_text.ForeColor = Color.Black;
+            }
+        }
+
+        private void sql_text_Leave(object sender, EventArgs e)
+        {
+            if (sql_text.Text == "")
+            {
+                sql_text.ForeColor = Color.Gray;
+                sql_text.Text = "Enter query here...";
+                sql_text.Select(sql_text.TextLength, 0);
+
             }
         }
     }
