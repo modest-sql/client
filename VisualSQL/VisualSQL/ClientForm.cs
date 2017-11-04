@@ -18,7 +18,7 @@ namespace VisualSQL
     {
         private string ipAddress;
         private string portNumber;
-        private bool testing = false;
+        private bool testing = true;
         private TcpClient client;
         private NetworkStream nwStream;
         private List<Metadata> current_metadata = new List<Metadata>();
@@ -110,6 +110,8 @@ namespace VisualSQL
             ipAddress = popup.ipAddress;
             portNumber = popup.portNumber;
             popup.Dispose();
+            if (dialogresult == DialogResult.Cancel)
+                Environment.Exit(1);
         }
 
         private DataTable DerializeDataTable(string json)
