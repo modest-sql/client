@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Net.Sockets;
 using System.Windows.Forms;
 
 namespace VisualSQL
@@ -15,9 +17,21 @@ namespace VisualSQL
 
         private void LocalhostClick(object sender, EventArgs e)
         {
-            //ip_textBox.Text = "127.0.0.1";
-            ip_textBox.Text = "10.20.10.105";
+            ip_textBox.Text = GetLocalIPAddress();
             port_textBox.Text = "3333";
+        }
+
+        public static string GetLocalIPAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            return "127.0.0.1";
         }
     }
 }

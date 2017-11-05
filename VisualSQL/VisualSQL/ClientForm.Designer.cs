@@ -134,7 +134,7 @@
             // 
             // connected_pictureBox
             // 
-            this.connected_pictureBox.Location = new System.Drawing.Point(15, 12);
+            this.connected_pictureBox.Location = new System.Drawing.Point(11, 9);
             this.connected_pictureBox.Name = "connected_pictureBox";
             this.connected_pictureBox.Size = new System.Drawing.Size(17, 17);
             this.connected_pictureBox.TabIndex = 9;
@@ -145,7 +145,7 @@
             // 
             this.connected_label.AutoSize = true;
             this.connected_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.connected_label.Location = new System.Drawing.Point(38, 12);
+            this.connected_label.Location = new System.Drawing.Point(34, 9);
             this.connected_label.Name = "connected_label";
             this.connected_label.Size = new System.Drawing.Size(68, 13);
             this.connected_label.TabIndex = 10;

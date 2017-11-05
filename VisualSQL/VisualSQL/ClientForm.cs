@@ -22,6 +22,8 @@ namespace VisualSQL
         private TcpClient client;
         private NetworkStream nwStream;
         private List<Metadata> current_metadata = new List<Metadata>();
+        private Color DefaultColor = Color.Black;
+        private Color WaterMarkColor = Color.Gray;
 
         public ClientForm()
         {
@@ -36,6 +38,7 @@ namespace VisualSQL
                     PopUp_Connection();
                 }
             }
+            setColor(3);
             console_log.AppendText("Console log:");
             tcp_listener.RunWorkerAsync();
             tcp_ping.RunWorkerAsync();
@@ -45,9 +48,95 @@ namespace VisualSQL
             BuildAndSendServerRequest(1, " ");
         }
 
+        private void SetAllButtonColors(string BackGround, string ForeGround)
+        {
+            SetIndividualButtonColor(refresh_button, BackGround, ForeGround);
+            SetIndividualButtonColor(load_button, BackGround, ForeGround);
+            SetIndividualButtonColor(run_button, BackGround, ForeGround);
+            SetIndividualButtonColor(save_button, BackGround, ForeGround);
+        }
+
+        private void SetIndividualButtonColor(Button button, string BackGround, string ForeGround)
+        {
+            button.FlatStyle = FlatStyle.Flat;
+            button.BackColor = ColorTranslator.FromHtml(BackGround);
+            button.FlatAppearance.BorderColor = ColorTranslator.FromHtml(BackGround);
+            button.ForeColor = ColorTranslator.FromHtml(ForeGround);
+        }
+
+        private void StrikingAndSimple()
+        {
+            this.BackColor = ColorTranslator.FromHtml("#0B0C10");
+            console_log.BackColor = ColorTranslator.FromHtml("#1F2833");
+            table_dataGridView.BackgroundColor = ColorTranslator.FromHtml("#1F2833");
+            sql_text.BackColor = ColorTranslator.FromHtml("#1F2833");
+            metadata_listBox.BackColor = ColorTranslator.FromHtml("#1F2833");
+            SetAllButtonColors("#66FCF1", "#0B0C10");
+            SetAllUIElementColors("#C5C6C7");
+            DefaultColor = ColorTranslator.FromHtml("#C5C6C7");
+            WaterMarkColor = ColorTranslator.FromHtml("#45A29E");
+        }
+
+        private void SetAllUIElementColors(string ForeGround)
+        {
+            metadata_label.ForeColor = ColorTranslator.FromHtml(ForeGround);
+            connected_label.ForeColor = ColorTranslator.FromHtml(ForeGround);
+            sql_text.ForeColor = ColorTranslator.FromHtml(ForeGround);
+            metadata_listBox.ForeColor = ColorTranslator.FromHtml(ForeGround);
+            console_log.ForeColor = ColorTranslator.FromHtml(ForeGround);
+            //table_dataGridView.ForeColor = ColorTranslator.FromHtml(ForeGround);
+        }
+
+        private void ContemporaryAndBold()
+        {
+            this.BackColor = ColorTranslator.FromHtml("#1A1A1D");
+            console_log.BackColor = ColorTranslator.FromHtml("#6F2232");
+            table_dataGridView.BackgroundColor = ColorTranslator.FromHtml("#950740");
+            sql_text.BackColor = ColorTranslator.FromHtml("#C3073F");
+            metadata_listBox.BackColor = ColorTranslator.FromHtml("#C3073F");
+            //4E4E50
+        }
+
+        private void MutedAndMinimal()
+        {
+            this.BackColor = ColorTranslator.FromHtml("#D5D5D5");
+            console_log.BackColor = ColorTranslator.FromHtml("#9099A2");
+            table_dataGridView.BackgroundColor = ColorTranslator.FromHtml("#6D7993");
+            sql_text.BackColor = ColorTranslator.FromHtml("#96858F");
+            metadata_listBox.BackColor = ColorTranslator.FromHtml("#96858F");
+        }
+
+        private void DarkWoodland()
+        {
+            this.BackColor = ColorTranslator.FromHtml("#B1A296");
+            console_log.BackColor = ColorTranslator.FromHtml("#54493f");
+            table_dataGridView.BackgroundColor = ColorTranslator.FromHtml("#54493f");
+            sql_text.BackColor = ColorTranslator.FromHtml("#5D5C61");
+            metadata_listBox.BackColor = ColorTranslator.FromHtml("#5D5C61");
+        }
+
+        private void setColor(int colorChoice)
+        {
+            switch (colorChoice)
+            {
+                case 0:
+                    MutedAndMinimal();
+                    break;
+                case 1:
+                    DarkWoodland();
+                    break;
+                case 2:
+                    ContemporaryAndBold();
+                    break;
+                case 3:
+                    StrikingAndSimple();
+                    break;
+            }
+        }
+
         private void setupSqlTextbox()
         {
-            this.sql_text.ForeColor = Color.Gray;
+            this.sql_text.ForeColor = WaterMarkColor;
             this.sql_text.Text = "Enter query here...";
         }
 
@@ -178,7 +267,7 @@ namespace VisualSQL
             console_log.Select(console_log.TextLength, 0);
             console_log.SelectionColor = Color.Blue;
             console_log.AppendText("but you succeeded!");
-            console_log.SelectionColor = Color.Black;
+            console_log.SelectionColor = DefaultColor;
         }
 
         private void flashy_console_receive(string str)
@@ -193,14 +282,14 @@ namespace VisualSQL
                 console_log.Select(console_log.TextLength, 0);
                 console_log.SelectionColor = Color.Red;
                 console_log.AppendText(Environment.NewLine + "received: " + des.Error);
-                console_log.SelectionColor = Color.Black;
+                console_log.SelectionColor = DefaultColor;
             }
             else
             {
                 console_log.Select(console_log.TextLength, 0);
                 console_log.SelectionColor = Color.Blue;
                 console_log.AppendText(Environment.NewLine + "received: success, no error");
-                console_log.SelectionColor = Color.Black;
+                console_log.SelectionColor = DefaultColor;
             }
             console_log.ScrollToCaret();
         }
@@ -214,7 +303,7 @@ namespace VisualSQL
         private void console_send(string str)
         {
             console_log.Select(console_log.TextLength, 0);
-            console_log.SelectionColor = Color.Black;
+            console_log.SelectionColor = DefaultColor;
             console_log.AppendText(Environment.NewLine + "sending: " + str);
             console_log.ScrollToCaret();
         }
@@ -710,7 +799,7 @@ namespace VisualSQL
             if (sql_text.Text == "Enter query here...")
             {
                 sql_text.Clear();
-                sql_text.ForeColor = Color.Black;
+                sql_text.ForeColor = DefaultColor;
             }
         }
 
@@ -718,7 +807,7 @@ namespace VisualSQL
         {
             if (sql_text.Text == "")
             {
-                sql_text.ForeColor = Color.Gray;
+                sql_text.ForeColor = WaterMarkColor;
                 sql_text.Text = "Enter query here...";
                 sql_text.Select(sql_text.TextLength, 0);
 
