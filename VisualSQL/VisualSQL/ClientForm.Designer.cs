@@ -44,6 +44,7 @@
             this.general_tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.refresh_button = new System.Windows.Forms.Button();
             this.theme_comboBox = new System.Windows.Forms.ComboBox();
+            this.theme_label = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.table_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.connected_pictureBox)).BeginInit();
             this.SuspendLayout();
@@ -184,12 +185,22 @@
             this.theme_comboBox.TabIndex = 12;
             this.theme_comboBox.SelectedIndexChanged += new System.EventHandler(this.theme_comboBox_SelectedIndexChanged);
             // 
+            // theme_label
+            // 
+            this.theme_label.AutoSize = true;
+            this.theme_label.Location = new System.Drawing.Point(817, 7);
+            this.theme_label.Name = "theme_label";
+            this.theme_label.Size = new System.Drawing.Size(77, 13);
+            this.theme_label.TabIndex = 13;
+            this.theme_label.Text = "Current Theme";
+            // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(906, 901);
+            this.Controls.Add(this.theme_label);
             this.Controls.Add(this.theme_comboBox);
             this.Controls.Add(this.refresh_button);
             this.Controls.Add(this.connected_label);
@@ -228,6 +239,7 @@
         private System.Windows.Forms.ToolTip general_tooltip;
         private System.Windows.Forms.Button refresh_button;
         private System.Windows.Forms.ComboBox theme_comboBox;
+        private System.Windows.Forms.Label theme_label;
     }
 }
 

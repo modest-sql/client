@@ -39,6 +39,7 @@ namespace VisualSQL
                 }
             }
             setTheme(Theme.DarkWoodland);
+            theme_comboBox.SelectedIndex = 1;
             console_log.AppendText("Console log:");
             tcp_listener.RunWorkerAsync();
             tcp_ping.RunWorkerAsync();
@@ -84,6 +85,7 @@ namespace VisualSQL
             sql_text.ForeColor = ColorTranslator.FromHtml(ForeGround);
             metadata_listBox.ForeColor = ColorTranslator.FromHtml(ForeGround);
             console_log.ForeColor = ColorTranslator.FromHtml(ForeGround);
+            theme_label.ForeColor = ColorTranslator.FromHtml(ForeGround);
         }
 
         private void ContemporaryAndBold()
@@ -135,6 +137,7 @@ namespace VisualSQL
 
             metadata_label.ForeColor = SystemColors.ControlText;
             connected_label.ForeColor = SystemColors.ControlText;
+            theme_label.ForeColor = SystemColors.ControlText;
             sql_text.ForeColor = SystemColors.ControlText;
             metadata_listBox.ForeColor = SystemColors.ControlText;
             console_log.ForeColor = SystemColors.ControlText;
