@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PopupForm));
             this.ip_textBox = new System.Windows.Forms.TextBox();
             this.ip_label = new System.Windows.Forms.Label();
             this.connect_button = new System.Windows.Forms.Button();
@@ -99,6 +100,7 @@
             this.Controls.Add(this.connect_button);
             this.Controls.Add(this.ip_label);
             this.Controls.Add(this.ip_textBox);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "PopupForm";
             this.Text = "PopupForm";
             this.ResumeLayout(false);

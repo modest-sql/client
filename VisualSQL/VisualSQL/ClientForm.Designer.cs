@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClientForm));
             this.table_dataGridView = new System.Windows.Forms.DataGridView();
             this.sql_text = new System.Windows.Forms.TextBox();
             this.run_button = new System.Windows.Forms.Button();
@@ -213,6 +214,7 @@
             this.Controls.Add(this.run_button);
             this.Controls.Add(this.sql_text);
             this.Controls.Add(this.table_dataGridView);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ClientForm";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.table_dataGridView)).EndInit();
