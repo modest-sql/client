@@ -38,7 +38,7 @@ namespace VisualSQL
                     PopUp_Connection();
                 }
             }
-            setColor(3);
+            setTheme(Theme.DarkWoodland);
             console_log.AppendText("Console log:");
             tcp_listener.RunWorkerAsync();
             tcp_ping.RunWorkerAsync();
@@ -84,26 +84,32 @@ namespace VisualSQL
             sql_text.ForeColor = ColorTranslator.FromHtml(ForeGround);
             metadata_listBox.ForeColor = ColorTranslator.FromHtml(ForeGround);
             console_log.ForeColor = ColorTranslator.FromHtml(ForeGround);
-            //table_dataGridView.ForeColor = ColorTranslator.FromHtml(ForeGround);
         }
 
         private void ContemporaryAndBold()
         {
             this.BackColor = ColorTranslator.FromHtml("#1A1A1D");
             console_log.BackColor = ColorTranslator.FromHtml("#6F2232");
-            table_dataGridView.BackgroundColor = ColorTranslator.FromHtml("#950740");
-            sql_text.BackColor = ColorTranslator.FromHtml("#C3073F");
-            metadata_listBox.BackColor = ColorTranslator.FromHtml("#C3073F");
-            //4E4E50
+            table_dataGridView.BackgroundColor = ColorTranslator.FromHtml("#6F2232");
+            sql_text.BackColor = ColorTranslator.FromHtml("#6F2232");
+            metadata_listBox.BackColor = ColorTranslator.FromHtml("#6F2232");
+            SetAllButtonColors("#950740", "#1A1A1D");
+            SetAllUIElementColors("#7c7c82");
+            DefaultColor = ColorTranslator.FromHtml("#7c7c82");
+            WaterMarkColor = ColorTranslator.FromHtml("#6D7993");
         }
 
         private void MutedAndMinimal()
         {
             this.BackColor = ColorTranslator.FromHtml("#D5D5D5");
             console_log.BackColor = ColorTranslator.FromHtml("#9099A2");
-            table_dataGridView.BackgroundColor = ColorTranslator.FromHtml("#6D7993");
-            sql_text.BackColor = ColorTranslator.FromHtml("#96858F");
-            metadata_listBox.BackColor = ColorTranslator.FromHtml("#96858F");
+            table_dataGridView.BackgroundColor = ColorTranslator.FromHtml("#9099A2");
+            sql_text.BackColor = ColorTranslator.FromHtml("#9099A2");
+            metadata_listBox.BackColor = ColorTranslator.FromHtml("#9099A2");
+            SetAllButtonColors("#6D7993", "#000000");
+            SetAllUIElementColors("#544f52");
+            DefaultColor = ColorTranslator.FromHtml("#544f52");
+            WaterMarkColor = ColorTranslator.FromHtml("#6D7993");
         }
 
         private void DarkWoodland()
@@ -113,25 +119,97 @@ namespace VisualSQL
             table_dataGridView.BackgroundColor = ColorTranslator.FromHtml("#54493f");
             sql_text.BackColor = ColorTranslator.FromHtml("#5D5C61");
             metadata_listBox.BackColor = ColorTranslator.FromHtml("#5D5C61");
+
+            refresh_button.ForeColor = SystemColors.ControlText;
+            refresh_button.FlatAppearance.BorderColor = SystemColors.Control;
+            refresh_button.BackColor = SystemColors.Control;
+            load_button.ForeColor = SystemColors.ControlText;
+            load_button.FlatAppearance.BorderColor = SystemColors.Control;
+            load_button.BackColor = SystemColors.Control;
+            save_button.ForeColor = SystemColors.ControlText;
+            save_button.FlatAppearance.BorderColor = SystemColors.Control;
+            save_button.BackColor = SystemColors.Control;
+            run_button.ForeColor = SystemColors.ControlText;
+            run_button.FlatAppearance.BorderColor = SystemColors.Control;
+            run_button.BackColor = SystemColors.Control;
+
+            metadata_label.ForeColor = SystemColors.ControlText;
+            connected_label.ForeColor = SystemColors.ControlText;
+            sql_text.ForeColor = SystemColors.ControlText;
+            metadata_listBox.ForeColor = SystemColors.ControlText;
+            console_log.ForeColor = SystemColors.ControlText;
+            DefaultColor = Color.Black;
+            WaterMarkColor = Color.Gray;
         }
 
-        private void setColor(int colorChoice)
+        private void setTheme(Theme colorChoice)
         {
             switch (colorChoice)
             {
-                case 0:
+                case Theme.MutedAndMinimal:
                     MutedAndMinimal();
                     break;
-                case 1:
+                case Theme.DarkWoodland:
                     DarkWoodland();
                     break;
-                case 2:
+                case Theme.ContemporaryAndBold:
                     ContemporaryAndBold();
                     break;
-                case 3:
+                case Theme.StrikingAndSimple:
                     StrikingAndSimple();
                     break;
+                case Theme.Creative:
+                    Creative();
+                    break;
+                case Theme.Sleek:
+                    Sleek();
+                    break;
             }
+            RewriteWatermark();
+        }
+
+        private void RewriteWatermark()
+        {
+            if (sql_text.Text == "" || sql_text.Text == "Enter query here...")
+            {
+                sql_text.ForeColor = WaterMarkColor;
+                sql_text.Text = "Enter query here...";
+                sql_text.Select(sql_text.TextLength, 0);
+
+            }
+            else
+            {
+                string buffer = sql_text.Text;
+                sql_text.Clear();
+                sql_text.ForeColor = DefaultColor;
+                sql_text.Text = buffer;
+            }
+        }
+
+        private void Sleek()
+        {
+            this.BackColor = ColorTranslator.FromHtml("#2C3531");
+            console_log.BackColor = ColorTranslator.FromHtml("#116466");
+            table_dataGridView.BackgroundColor = ColorTranslator.FromHtml("#116466");
+            sql_text.BackColor = ColorTranslator.FromHtml("#116466");
+            metadata_listBox.BackColor = ColorTranslator.FromHtml("#116466");
+            SetAllButtonColors("#D9B08C", "#2C3531");
+            SetAllUIElementColors("#FFCB9A");
+            DefaultColor = ColorTranslator.FromHtml("#FFCB9A");
+            WaterMarkColor = ColorTranslator.FromHtml("#D1E8E2");
+        }
+
+        private void Creative()
+        {
+            this.BackColor = ColorTranslator.FromHtml("#D79922");
+            console_log.BackColor = ColorTranslator.FromHtml("#EFE2BA");
+            table_dataGridView.BackgroundColor = ColorTranslator.FromHtml("#EFE2BA");
+            sql_text.BackColor = ColorTranslator.FromHtml("#EFE2BA");
+            metadata_listBox.BackColor = ColorTranslator.FromHtml("#EFE2BA");
+            SetAllButtonColors("#F13C20", "#4056A1");
+            SetAllUIElementColors("#F13C20");
+            DefaultColor = ColorTranslator.FromHtml("#F13C20");
+            WaterMarkColor = ColorTranslator.FromHtml("#C5CBE3");
         }
 
         private void setupSqlTextbox()
@@ -813,6 +891,33 @@ namespace VisualSQL
 
             }
         }
+
+        private void theme_comboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int selectedIndex = theme_comboBox.SelectedIndex;
+            switch (selectedIndex)
+            {
+                case 0:
+                    MutedAndMinimal();
+                    break;
+                case 1:
+                    DarkWoodland();
+                    break;
+                case 2:
+                    ContemporaryAndBold();
+                    break;
+                case 3:
+                    StrikingAndSimple();
+                    break;
+                case 4:
+                    Creative();
+                    break;
+                case 5:
+                    Sleek();
+                    break;
+            }
+            RewriteWatermark();
+        }
     }
 
     abstract class Metadata
@@ -848,6 +953,16 @@ namespace VisualSQL
         DB_TABLE,
         COLUMN_NAME,
         COLUMN_TYPE
+    }
+
+    enum Theme
+    {
+        MutedAndMinimal,
+        DarkWoodland,
+        ContemporaryAndBold,
+        StrikingAndSimple,
+        Creative,
+        Sleek
     }
 
     class DB_Metadata

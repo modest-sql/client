@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
@@ -13,6 +14,14 @@ namespace VisualSQL
         {
             InitializeComponent();
             this.MaximizeBox = false;
+            DarkWoodland();
+        }
+
+        private void DarkWoodland()
+        {
+            this.BackColor = ColorTranslator.FromHtml("#B1A296");
+            ip_textBox.BackColor = ColorTranslator.FromHtml("#5D5C61");
+            port_textBox.BackColor = ColorTranslator.FromHtml("#5D5C61");
         }
 
         private void LocalhostClick(object sender, EventArgs e)

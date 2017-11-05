@@ -43,6 +43,7 @@
             this.tcp_ping = new System.ComponentModel.BackgroundWorker();
             this.general_tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.refresh_button = new System.Windows.Forms.Button();
+            this.theme_comboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.table_dataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.connected_pictureBox)).BeginInit();
             this.SuspendLayout();
@@ -166,12 +167,30 @@
             this.refresh_button.UseVisualStyleBackColor = true;
             this.refresh_button.Click += new System.EventHandler(this.refresh_button_Click);
             // 
+            // theme_comboBox
+            // 
+            this.theme_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.theme_comboBox.FormattingEnabled = true;
+            this.theme_comboBox.Items.AddRange(new object[] {
+            "Muted",
+            "Woodland",
+            "Contemporary",
+            "Striking",
+            "Creative",
+            "Sleek"});
+            this.theme_comboBox.Location = new System.Drawing.Point(773, 23);
+            this.theme_comboBox.Name = "theme_comboBox";
+            this.theme_comboBox.Size = new System.Drawing.Size(121, 21);
+            this.theme_comboBox.TabIndex = 12;
+            this.theme_comboBox.SelectedIndexChanged += new System.EventHandler(this.theme_comboBox_SelectedIndexChanged);
+            // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(906, 901);
+            this.Controls.Add(this.theme_comboBox);
             this.Controls.Add(this.refresh_button);
             this.Controls.Add(this.connected_label);
             this.Controls.Add(this.connected_pictureBox);
@@ -208,6 +227,7 @@
         private System.ComponentModel.BackgroundWorker tcp_ping;
         private System.Windows.Forms.ToolTip general_tooltip;
         private System.Windows.Forms.Button refresh_button;
+        private System.Windows.Forms.ComboBox theme_comboBox;
     }
 }
 
