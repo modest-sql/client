@@ -299,9 +299,45 @@ namespace VisualSQL
         private void printMetadata(string json)
         {
             DB_Metadata db_meta = new DB_Metadata();
-            db_meta = JsonConvert.DeserializeObject<DB_Metadata>(json);
+            var trimmed = json;
+            trimmed = trimmed.Trim('[');
+            trimmed = trimmed.Trim(']');
+            //db_meta = JsonConvert.DeserializeObject<DB_Metadata>(json);
+            db_meta = ConvertToOldDB(JsonConvert.DeserializeObject<ResponseDB>(json));
             update_new_metadata(db_meta);
             draw_db_meta();
+        }
+
+        private DB_Metadata ConvertToOldDB(ResponseDB NewDB)
+        {
+            DB_Metadata db_meta = new DB_Metadata();
+            db_meta.DB_Name = NewDB.DB_Name;
+            List<DB_Table> table_list = new List<DB_Table>();
+
+            foreach (var table in NewDB.Tables)
+            {
+                DB_Table old_table = new DB_Table();
+                old_table.Table_Name = table.TableName;
+
+                List<string> columnNames = new List<string>();
+                List<string> columnTypes = new List<string>();
+
+                foreach (var field in table.TableColumns)
+                {
+                    columnNames.Add(field.ColumnName);
+                    if (field.ColumnType == DataType.CHAR)
+                        columnTypes.Add(field.ColumnType.ToString() + "(" + field.ColumnSize + ")");
+                    else
+                        columnTypes.Add(field.ColumnType.ToString());
+                }
+
+                old_table.ColumnNames = columnNames.ToArray();
+                old_table.ColumnTypes = columnTypes.ToArray();
+
+                table_list.Add(old_table);
+            }
+            db_meta.Tables = table_list.ToArray();
+            return db_meta;
         }
 
         private void run_button_Click(object sender, EventArgs e)
@@ -990,5 +1026,33 @@ namespace VisualSQL
     class server_error
     {
         public string Error { get; set; }
+    }
+
+    class ResponseDB
+    {
+        public string DB_Name { get; set; }
+        public ResponseTable[] Tables { get; set; }
+    }
+
+    class ResponseTable
+    {
+        public string TableName { get; set; }
+        public ResponseColumn[] TableColumns { get; set; }
+    }
+
+    class ResponseColumn
+    {
+        public string ColumnName { get; set; }
+        public DataType ColumnType { get; set; }
+        public UInt16 ColumnSize { get; set; }
+    }
+
+    enum DataType
+    {
+        INTEGER,
+	    FLOAT,
+        BOOLEAN,
+	    CHAR,
+        DATETIME
     }
 }
