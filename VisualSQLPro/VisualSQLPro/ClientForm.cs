@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Timers;
 using System.Windows.Forms;
+using ScintillaNET;
 
 namespace VisualSQLPro
 {
@@ -8,12 +9,20 @@ namespace VisualSQLPro
     {
         private readonly System.Timers.Timer _metadataTimer = new System.Timers.Timer();
         private readonly System.Timers.Timer _consoleTimer = new System.Timers.Timer();
+        private readonly Scintilla _myScintilla = new Scintilla();
         public ClientForm()
         {
             InitializeComponent();
             Text = "Modest SQL Client Pro";
             SetUpResizers();
             SetUpTimers();
+            SetUpScintilla();
+        }
+
+        private void SetUpScintilla()
+        {
+            _myScintilla.Dock = DockStyle.Fill;
+            query_tabPage.Controls.Add(_myScintilla);
         }
 
         private void SetUpTimers()

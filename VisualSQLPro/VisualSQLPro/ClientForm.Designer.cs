@@ -36,7 +36,7 @@
             this.console_log = new System.Windows.Forms.RichTextBox();
             this.query_groupBox = new System.Windows.Forms.GroupBox();
             this.queries_tabControl = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.query_tabPage = new System.Windows.Forms.TabPage();
             this.metadata_group.SuspendLayout();
             this.console_groupBox.SuspendLayout();
             this.query_groupBox.SuspendLayout();
@@ -107,7 +107,7 @@
             // 
             // queries_tabControl
             // 
-            this.queries_tabControl.Controls.Add(this.tabPage1);
+            this.queries_tabControl.Controls.Add(this.query_tabPage);
             this.queries_tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.queries_tabControl.Location = new System.Drawing.Point(3, 16);
             this.queries_tabControl.Name = "queries_tabControl";
@@ -115,15 +115,15 @@
             this.queries_tabControl.Size = new System.Drawing.Size(412, 451);
             this.queries_tabControl.TabIndex = 0;
             // 
-            // tabPage1
+            // query_tabPage
             // 
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(404, 425);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Query Text";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.query_tabPage.Location = new System.Drawing.Point(4, 22);
+            this.query_tabPage.Name = "query_tabPage";
+            this.query_tabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.query_tabPage.Size = new System.Drawing.Size(404, 425);
+            this.query_tabPage.TabIndex = 0;
+            this.query_tabPage.Text = "Query Text";
+            this.query_tabPage.UseVisualStyleBackColor = true;
             // 
             // ClientForm
             // 
@@ -153,7 +153,7 @@
         private System.Windows.Forms.RichTextBox console_log;
         private System.Windows.Forms.GroupBox query_groupBox;
         private System.Windows.Forms.TabControl queries_tabControl;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage query_tabPage;
     }
 }
 
