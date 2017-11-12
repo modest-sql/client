@@ -34,8 +34,13 @@
             this.metadata_listBox = new System.Windows.Forms.ListBox();
             this.console_groupBox = new System.Windows.Forms.GroupBox();
             this.console_log = new System.Windows.Forms.RichTextBox();
+            this.query_groupBox = new System.Windows.Forms.GroupBox();
+            this.queries_tabControl = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.metadata_group.SuspendLayout();
             this.console_groupBox.SuspendLayout();
+            this.query_groupBox.SuspendLayout();
+            this.queries_tabControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // metadata_group
@@ -89,11 +94,43 @@
             this.console_log.TabIndex = 2;
             this.console_log.Text = "";
             // 
+            // query_groupBox
+            // 
+            this.query_groupBox.Controls.Add(this.queries_tabControl);
+            this.query_groupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.query_groupBox.Location = new System.Drawing.Point(200, 0);
+            this.query_groupBox.Name = "query_groupBox";
+            this.query_groupBox.Size = new System.Drawing.Size(418, 470);
+            this.query_groupBox.TabIndex = 2;
+            this.query_groupBox.TabStop = false;
+            this.query_groupBox.Text = "Queries";
+            // 
+            // queries_tabControl
+            // 
+            this.queries_tabControl.Controls.Add(this.tabPage1);
+            this.queries_tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.queries_tabControl.Location = new System.Drawing.Point(3, 16);
+            this.queries_tabControl.Name = "queries_tabControl";
+            this.queries_tabControl.SelectedIndex = 0;
+            this.queries_tabControl.Size = new System.Drawing.Size(412, 451);
+            this.queries_tabControl.TabIndex = 0;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(404, 425);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Query Text";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(618, 604);
+            this.Controls.Add(this.query_groupBox);
             this.Controls.Add(this.console_groupBox);
             this.Controls.Add(this.metadata_group);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -101,6 +138,8 @@
             this.Text = "Form1";
             this.metadata_group.ResumeLayout(false);
             this.console_groupBox.ResumeLayout(false);
+            this.query_groupBox.ResumeLayout(false);
+            this.queries_tabControl.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -112,6 +151,9 @@
         private System.Windows.Forms.Button refresh_metadata_button;
         private System.Windows.Forms.GroupBox console_groupBox;
         private System.Windows.Forms.RichTextBox console_log;
+        private System.Windows.Forms.GroupBox query_groupBox;
+        private System.Windows.Forms.TabControl queries_tabControl;
+        private System.Windows.Forms.TabPage tabPage1;
     }
 }
 
