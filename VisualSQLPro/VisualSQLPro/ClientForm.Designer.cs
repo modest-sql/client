@@ -69,6 +69,7 @@
             // 
             this.metadata_listBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metadata_listBox.FormattingEnabled = true;
+            this.metadata_listBox.HorizontalScrollbar = true;
             this.metadata_listBox.Location = new System.Drawing.Point(3, 16);
             this.metadata_listBox.Name = "metadata_listBox";
             this.metadata_listBox.Size = new System.Drawing.Size(194, 585);
@@ -90,6 +91,7 @@
             this.console_log.Dock = System.Windows.Forms.DockStyle.Fill;
             this.console_log.Location = new System.Drawing.Point(3, 16);
             this.console_log.Name = "console_log";
+            this.console_log.ReadOnly = true;
             this.console_log.Size = new System.Drawing.Size(412, 115);
             this.console_log.TabIndex = 2;
             this.console_log.Text = "";
@@ -135,7 +137,7 @@
             this.Controls.Add(this.metadata_group);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ClientForm";
-            this.Text = "Form1";
+            this.Text = "Modest SQL Client Pro";
             this.metadata_group.ResumeLayout(false);
             this.console_groupBox.ResumeLayout(false);
             this.query_groupBox.ResumeLayout(false);
