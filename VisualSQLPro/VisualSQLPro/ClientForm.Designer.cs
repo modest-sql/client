@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClientForm));
             this.metadata_group = new System.Windows.Forms.GroupBox();
             this.refresh_metadata_button = new System.Windows.Forms.Button();
             this.metadata_listBox = new System.Windows.Forms.ListBox();
@@ -95,6 +96,7 @@
             this.ClientSize = new System.Drawing.Size(618, 604);
             this.Controls.Add(this.console_groupBox);
             this.Controls.Add(this.metadata_group);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ClientForm";
             this.Text = "Form1";
             this.metadata_group.ResumeLayout(false);
