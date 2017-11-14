@@ -26,7 +26,7 @@ namespace VisualSQLPro
             SetUpResizers();
             SetUpTimers();
             SetUpScintilla();
-            PopUp_Cycle();
+            //PopUp_Cycle();
         }
 
         private void PopUp_Cycle()
@@ -134,7 +134,7 @@ namespace VisualSQLPro
             if (console_groupBox.InvokeRequired)
                 console_groupBox.Invoke(new UpdateConsolePosition(UpdateConPosition));
             else
-                console_groupBox.Height = Convert.ToInt32(Size.Height - PointToClient(Cursor.Position).Y - 30); // For some reason, resize is always 30 pixels off
+                AdjustConsoleLogPosition();
         }
 
         private void UpdateMetaPosition()
@@ -142,7 +142,29 @@ namespace VisualSQLPro
             if (metadata_group.InvokeRequired)
                 metadata_group.Invoke(new UpdateMetadataPosition(UpdateMetaPosition));
             else
+                AdjustMetadataPosition();
+        }
+
+        private void AdjustMetadataPosition()
+        {
+            if (metadata_group.Width >= (Size.Width * 0.025) && metadata_group.Visible == false)
+                metadata_group.Visible = true;
+            else if (metadata_group.Width < (Size.Width * 0.025) && metadata_group.Visible == true)
+                metadata_group.Visible = false;
+            else
                 metadata_group.Width = Convert.ToInt32(PointToClient(Cursor.Position).X + 2); // For some reason, resize is always 2 pixels off
+
+        }
+
+        private void AdjustConsoleLogPosition()
+        {
+            if (console_groupBox.Height >= (Size.Height * 0.025) && console_groupBox.Visible == false)
+                console_groupBox.Visible = true;
+            else if (console_groupBox.Height < (Size.Height * 0.025) && console_groupBox.Visible == true)
+                console_groupBox.Visible = false;
+            else
+                console_groupBox.Height = Convert.ToInt32(Size.Height - PointToClient(Cursor.Position).Y - 30); // For some reason, resize is always 30 pixels off
+
         }
 
         private void SetUpResizers()
@@ -232,6 +254,20 @@ namespace VisualSQLPro
         {
             string metadata = build_server_request(idType, data);
             send_to_server(metadata);
+        }
+
+        private void metadataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (metadata_group.Visible == false)
+                metadata_group.Width = (int) (Size.Width * 0.20);
+            metadata_group.Visible = !metadata_group.Visible;
+        }
+
+        private void consoleLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (console_groupBox.Visible == false)
+                console_groupBox.Height = (int)(Size.Height * 0.20);
+            console_groupBox.Visible = !console_groupBox.Visible;
         }
     }
     abstract class Metadata

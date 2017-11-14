@@ -37,10 +37,19 @@
             this.query_groupBox = new System.Windows.Forms.GroupBox();
             this.queries_tabControl = new System.Windows.Forms.TabControl();
             this.query_tabPage = new System.Windows.Forms.TabPage();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.metadataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.consoleLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.metadata_group.SuspendLayout();
             this.console_groupBox.SuspendLayout();
             this.query_groupBox.SuspendLayout();
             this.queries_tabControl.SuspendLayout();
+            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // metadata_group
@@ -48,9 +57,9 @@
             this.metadata_group.Controls.Add(this.refresh_metadata_button);
             this.metadata_group.Controls.Add(this.metadata_listBox);
             this.metadata_group.Dock = System.Windows.Forms.DockStyle.Left;
-            this.metadata_group.Location = new System.Drawing.Point(0, 0);
+            this.metadata_group.Location = new System.Drawing.Point(0, 24);
             this.metadata_group.Name = "metadata_group";
-            this.metadata_group.Size = new System.Drawing.Size(200, 604);
+            this.metadata_group.Size = new System.Drawing.Size(200, 580);
             this.metadata_group.TabIndex = 0;
             this.metadata_group.TabStop = false;
             this.metadata_group.Text = "Metadata";
@@ -72,7 +81,7 @@
             this.metadata_listBox.HorizontalScrollbar = true;
             this.metadata_listBox.Location = new System.Drawing.Point(3, 16);
             this.metadata_listBox.Name = "metadata_listBox";
-            this.metadata_listBox.Size = new System.Drawing.Size(194, 585);
+            this.metadata_listBox.Size = new System.Drawing.Size(194, 561);
             this.metadata_listBox.TabIndex = 2;
             // 
             // console_groupBox
@@ -100,9 +109,9 @@
             // 
             this.query_groupBox.Controls.Add(this.queries_tabControl);
             this.query_groupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.query_groupBox.Location = new System.Drawing.Point(200, 0);
+            this.query_groupBox.Location = new System.Drawing.Point(200, 24);
             this.query_groupBox.Name = "query_groupBox";
-            this.query_groupBox.Size = new System.Drawing.Size(418, 470);
+            this.query_groupBox.Size = new System.Drawing.Size(418, 446);
             this.query_groupBox.TabIndex = 2;
             this.query_groupBox.TabStop = false;
             this.query_groupBox.Text = "Queries";
@@ -114,7 +123,7 @@
             this.queries_tabControl.Location = new System.Drawing.Point(3, 16);
             this.queries_tabControl.Name = "queries_tabControl";
             this.queries_tabControl.SelectedIndex = 0;
-            this.queries_tabControl.Size = new System.Drawing.Size(412, 451);
+            this.queries_tabControl.Size = new System.Drawing.Size(412, 427);
             this.queries_tabControl.TabIndex = 0;
             // 
             // query_tabPage
@@ -122,10 +131,71 @@
             this.query_tabPage.Location = new System.Drawing.Point(4, 22);
             this.query_tabPage.Name = "query_tabPage";
             this.query_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.query_tabPage.Size = new System.Drawing.Size(404, 425);
+            this.query_tabPage.Size = new System.Drawing.Size(404, 401);
             this.query_tabPage.TabIndex = 0;
             this.query_tabPage.Text = "Query Text";
             this.query_tabPage.UseVisualStyleBackColor = true;
+            // 
+            // menuStrip
+            // 
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.viewToolStripMenuItem});
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(618, 24);
+            this.menuStrip.TabIndex = 3;
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.saveToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.saveToolStripMenuItem.Text = "Save";
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.metadataToolStripMenuItem,
+            this.consoleLogToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // metadataToolStripMenuItem
+            // 
+            this.metadataToolStripMenuItem.Name = "metadataToolStripMenuItem";
+            this.metadataToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.metadataToolStripMenuItem.Text = "Metadata";
+            this.metadataToolStripMenuItem.Click += new System.EventHandler(this.metadataToolStripMenuItem_Click);
+            // 
+            // consoleLogToolStripMenuItem
+            // 
+            this.consoleLogToolStripMenuItem.Name = "consoleLogToolStripMenuItem";
+            this.consoleLogToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.consoleLogToolStripMenuItem.Text = "Console Log";
+            this.consoleLogToolStripMenuItem.Click += new System.EventHandler(this.consoleLogToolStripMenuItem_Click);
             // 
             // ClientForm
             // 
@@ -135,14 +205,19 @@
             this.Controls.Add(this.query_groupBox);
             this.Controls.Add(this.console_groupBox);
             this.Controls.Add(this.metadata_group);
+            this.Controls.Add(this.menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip;
             this.Name = "ClientForm";
             this.Text = "Modest SQL Client Pro";
             this.metadata_group.ResumeLayout(false);
             this.console_groupBox.ResumeLayout(false);
             this.query_groupBox.ResumeLayout(false);
             this.queries_tabControl.ResumeLayout(false);
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -156,6 +231,14 @@
         private System.Windows.Forms.GroupBox query_groupBox;
         private System.Windows.Forms.TabControl queries_tabControl;
         private System.Windows.Forms.TabPage query_tabPage;
+        private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem metadataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem consoleLogToolStripMenuItem;
     }
 }
 
