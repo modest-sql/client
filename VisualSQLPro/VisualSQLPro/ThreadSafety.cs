@@ -10,6 +10,7 @@ namespace VisualSQLPro
         delegate void ChangeConnectedColor(bool val);
         delegate void MetadataUpdatedelegate(string val);
         delegate void CycleDisconnectedColor();
+        delegate void ConsoleUpdateDelegate(string val);
 
         private void UpdateTaskPosition()
         {
@@ -67,6 +68,14 @@ namespace VisualSQLPro
                 Invoke(new CycleDisconnectedColor(CycleUpdate));
             else
                 disconnected_cycle();
+        }
+
+        private void ConsoleUpdate(string updateVal)
+        {
+            if (console_log.InvokeRequired)
+                console_log.Invoke(new ConsoleUpdateDelegate(ConsoleUpdate), updateVal);
+            else
+                flashy_console_receive(updateVal);
         }
     }
 }

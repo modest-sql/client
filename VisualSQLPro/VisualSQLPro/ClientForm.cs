@@ -44,5 +44,15 @@ namespace VisualSQLPro
             _client.Close();
             base.OnFormClosing(e);
         }
+
+        private void executeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_myScintilla.Text != "")
+            {
+                string sqlString = _myScintilla.Text;
+                console_send(sqlString);
+                send_sql_text(sqlString);
+            }
+        }
     }
 }

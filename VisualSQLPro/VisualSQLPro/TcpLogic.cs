@@ -102,7 +102,7 @@ namespace VisualSQLPro
                         break;
                     case 4:
                         //Error
-                        //ConsoleUpdate(sr.Data);
+                        ConsoleUpdate(sr.Data);
                         break;
                 }
             }

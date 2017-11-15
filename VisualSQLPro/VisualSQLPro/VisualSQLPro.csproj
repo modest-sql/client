@@ -66,6 +66,9 @@
     <Compile Include="ClientForm.Designer.cs">
       <DependentUpon>ClientForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConsoleLogLogic.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MetadataLogic.cs">
       <SubType>Form</SubType>
     </Compile>
