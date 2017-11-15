@@ -45,17 +45,21 @@
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.metadataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consoleLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.task_manager_groupBox = new System.Windows.Forms.GroupBox();
+            this.task_manager_listBox = new System.Windows.Forms.ListBox();
+            this.taskManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.metadata_group.SuspendLayout();
             this.console_groupBox.SuspendLayout();
             this.query_groupBox.SuspendLayout();
             this.queries_tabControl.SuspendLayout();
             this.menuStrip.SuspendLayout();
+            this.task_manager_groupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // metadata_group
             // 
-            this.metadata_group.Controls.Add(this.refresh_metadata_button);
             this.metadata_group.Controls.Add(this.metadata_listBox);
+            this.metadata_group.Controls.Add(this.refresh_metadata_button);
             this.metadata_group.Dock = System.Windows.Forms.DockStyle.Left;
             this.metadata_group.Location = new System.Drawing.Point(0, 24);
             this.metadata_group.Name = "metadata_group";
@@ -79,9 +83,9 @@
             this.metadata_listBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metadata_listBox.FormattingEnabled = true;
             this.metadata_listBox.HorizontalScrollbar = true;
-            this.metadata_listBox.Location = new System.Drawing.Point(3, 16);
+            this.metadata_listBox.Location = new System.Drawing.Point(3, 39);
             this.metadata_listBox.Name = "metadata_listBox";
-            this.metadata_listBox.Size = new System.Drawing.Size(194, 561);
+            this.metadata_listBox.Size = new System.Drawing.Size(194, 538);
             this.metadata_listBox.TabIndex = 2;
             // 
             // console_groupBox
@@ -90,7 +94,7 @@
             this.console_groupBox.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.console_groupBox.Location = new System.Drawing.Point(200, 470);
             this.console_groupBox.Name = "console_groupBox";
-            this.console_groupBox.Size = new System.Drawing.Size(418, 134);
+            this.console_groupBox.Size = new System.Drawing.Size(218, 134);
             this.console_groupBox.TabIndex = 1;
             this.console_groupBox.TabStop = false;
             this.console_groupBox.Text = "Console Log";
@@ -101,7 +105,7 @@
             this.console_log.Location = new System.Drawing.Point(3, 16);
             this.console_log.Name = "console_log";
             this.console_log.ReadOnly = true;
-            this.console_log.Size = new System.Drawing.Size(412, 115);
+            this.console_log.Size = new System.Drawing.Size(212, 115);
             this.console_log.TabIndex = 2;
             this.console_log.Text = "";
             // 
@@ -111,7 +115,7 @@
             this.query_groupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.query_groupBox.Location = new System.Drawing.Point(200, 24);
             this.query_groupBox.Name = "query_groupBox";
-            this.query_groupBox.Size = new System.Drawing.Size(418, 446);
+            this.query_groupBox.Size = new System.Drawing.Size(218, 446);
             this.query_groupBox.TabIndex = 2;
             this.query_groupBox.TabStop = false;
             this.query_groupBox.Text = "Queries";
@@ -123,7 +127,7 @@
             this.queries_tabControl.Location = new System.Drawing.Point(3, 16);
             this.queries_tabControl.Name = "queries_tabControl";
             this.queries_tabControl.SelectedIndex = 0;
-            this.queries_tabControl.Size = new System.Drawing.Size(412, 427);
+            this.queries_tabControl.Size = new System.Drawing.Size(212, 427);
             this.queries_tabControl.TabIndex = 0;
             // 
             // query_tabPage
@@ -131,7 +135,7 @@
             this.query_tabPage.Location = new System.Drawing.Point(4, 22);
             this.query_tabPage.Name = "query_tabPage";
             this.query_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.query_tabPage.Size = new System.Drawing.Size(404, 401);
+            this.query_tabPage.Size = new System.Drawing.Size(204, 401);
             this.query_tabPage.TabIndex = 0;
             this.query_tabPage.Text = "Query Text";
             this.query_tabPage.UseVisualStyleBackColor = true;
@@ -178,7 +182,8 @@
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.metadataToolStripMenuItem,
-            this.consoleLogToolStripMenuItem});
+            this.consoleLogToolStripMenuItem,
+            this.taskManagerToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
@@ -197,6 +202,33 @@
             this.consoleLogToolStripMenuItem.Text = "Console Log";
             this.consoleLogToolStripMenuItem.Click += new System.EventHandler(this.consoleLogToolStripMenuItem_Click);
             // 
+            // task_manager_groupBox
+            // 
+            this.task_manager_groupBox.Controls.Add(this.task_manager_listBox);
+            this.task_manager_groupBox.Dock = System.Windows.Forms.DockStyle.Right;
+            this.task_manager_groupBox.Location = new System.Drawing.Point(418, 24);
+            this.task_manager_groupBox.Name = "task_manager_groupBox";
+            this.task_manager_groupBox.Size = new System.Drawing.Size(200, 580);
+            this.task_manager_groupBox.TabIndex = 4;
+            this.task_manager_groupBox.TabStop = false;
+            this.task_manager_groupBox.Text = "Task Manager";
+            // 
+            // task_manager_listBox
+            // 
+            this.task_manager_listBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.task_manager_listBox.FormattingEnabled = true;
+            this.task_manager_listBox.Location = new System.Drawing.Point(3, 16);
+            this.task_manager_listBox.Name = "task_manager_listBox";
+            this.task_manager_listBox.Size = new System.Drawing.Size(194, 561);
+            this.task_manager_listBox.TabIndex = 0;
+            // 
+            // taskManagerToolStripMenuItem
+            // 
+            this.taskManagerToolStripMenuItem.Name = "taskManagerToolStripMenuItem";
+            this.taskManagerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.taskManagerToolStripMenuItem.Text = "Task Manager";
+            this.taskManagerToolStripMenuItem.Click += new System.EventHandler(this.taskManagerToolStripMenuItem_Click);
+            // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -205,6 +237,7 @@
             this.Controls.Add(this.query_groupBox);
             this.Controls.Add(this.console_groupBox);
             this.Controls.Add(this.metadata_group);
+            this.Controls.Add(this.task_manager_groupBox);
             this.Controls.Add(this.menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
@@ -216,6 +249,7 @@
             this.queries_tabControl.ResumeLayout(false);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
+            this.task_manager_groupBox.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -239,6 +273,9 @@
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem metadataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem consoleLogToolStripMenuItem;
+        private System.Windows.Forms.GroupBox task_manager_groupBox;
+        private System.Windows.Forms.ListBox task_manager_listBox;
+        private System.Windows.Forms.ToolStripMenuItem taskManagerToolStripMenuItem;
     }
 }
 

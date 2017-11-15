@@ -14,6 +14,7 @@ namespace VisualSQLPro
     {
         private readonly System.Timers.Timer _metadataTimer = new System.Timers.Timer();
         private readonly System.Timers.Timer _consoleTimer = new System.Timers.Timer();
+        private readonly System.Timers.Timer _taskManagerTimer = new System.Timers.Timer();
         private readonly Scintilla _myScintilla = new Scintilla();
         private string _ipAddress = "";
         private string _portNumber = "";
@@ -26,6 +27,7 @@ namespace VisualSQLPro
             SetUpResizers();
             SetUpTimers();
             SetUpScintilla();
+            task_manager_groupBox.Visible = false;
             //PopUp_Cycle();
         }
 
@@ -114,6 +116,16 @@ namespace VisualSQLPro
             _consoleTimer.Enabled = false;
             _consoleTimer.Elapsed += ConsoleTimerEvent;
             _consoleTimer.AutoReset = true;
+
+            _taskManagerTimer.Interval = 50;
+            _taskManagerTimer.Enabled = false;
+            _taskManagerTimer.Elapsed += TaskManagerTimerEvent;
+            _taskManagerTimer.AutoReset = true;
+        }
+
+        private void TaskManagerTimerEvent(object sender, ElapsedEventArgs e)
+        {
+            UpdateTaskPosition();
         }
 
         private void ConsoleTimerEvent(object sender, ElapsedEventArgs e)
@@ -128,6 +140,15 @@ namespace VisualSQLPro
 
         delegate void UpdateMetadataPosition();
         delegate void UpdateConsolePosition();
+        delegate void UpdateTaskManagerPosition();
+
+        private void UpdateTaskPosition()
+        {
+            if (task_manager_groupBox.InvokeRequired)
+                task_manager_groupBox.Invoke(new UpdateTaskManagerPosition(UpdateTaskPosition));
+            else
+                AdjustTaskManagerPosition();
+        }
 
         private void UpdateConPosition()
         {
@@ -145,26 +166,34 @@ namespace VisualSQLPro
                 AdjustMetadataPosition();
         }
 
+        private void AdjustTaskManagerPosition()
+        {
+            if (task_manager_groupBox.Width >= (Size.Width * 0.025) && task_manager_groupBox.Visible == false)
+                task_manager_groupBox.Visible = true;
+            else if (task_manager_groupBox.Width < (Size.Width * 0.025) && task_manager_groupBox.Visible)
+                task_manager_groupBox.Visible = false;
+            else
+                task_manager_groupBox.Width = Convert.ToInt32(Size.Width - PointToClient(Cursor.Position).X - 15); // For some reason, resize is always 2 pixels off
+        }
+
         private void AdjustMetadataPosition()
         {
             if (metadata_group.Width >= (Size.Width * 0.025) && metadata_group.Visible == false)
                 metadata_group.Visible = true;
-            else if (metadata_group.Width < (Size.Width * 0.025) && metadata_group.Visible == true)
+            else if (metadata_group.Width < (Size.Width * 0.025) && metadata_group.Visible)
                 metadata_group.Visible = false;
             else
                 metadata_group.Width = Convert.ToInt32(PointToClient(Cursor.Position).X + 2); // For some reason, resize is always 2 pixels off
-
         }
 
         private void AdjustConsoleLogPosition()
         {
             if (console_groupBox.Height >= (Size.Height * 0.025) && console_groupBox.Visible == false)
                 console_groupBox.Visible = true;
-            else if (console_groupBox.Height < (Size.Height * 0.025) && console_groupBox.Visible == true)
+            else if (console_groupBox.Height < (Size.Height * 0.025) && console_groupBox.Visible)
                 console_groupBox.Visible = false;
             else
                 console_groupBox.Height = Convert.ToInt32(Size.Height - PointToClient(Cursor.Position).Y - 30); // For some reason, resize is always 30 pixels off
-
         }
 
         private void SetUpResizers()
@@ -172,11 +201,32 @@ namespace VisualSQLPro
             metadata_group.MouseDown += Metadata_group_MouseDown;
             metadata_group.MouseUp += Metadata_group_MouseUp;
             metadata_group.MouseMove += Metadata_group_MouseMove;
+
             console_groupBox.MouseDown += ConsoleLog_group_MouseDown;
             console_groupBox.MouseUp += ConsoleLog_group_MouseUp;
             console_groupBox.MouseMove += ConsoleLog_group_MouseMove;
+
+            task_manager_groupBox.MouseDown += Task_manager_groupBox_MouseDown;
+            task_manager_groupBox.MouseUp += Task_manager_groupBox_MouseUp;
+            task_manager_groupBox.MouseMove += Task_manager_groupBox_MouseMove;
         }
-        
+
+        private void Task_manager_groupBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            _taskManagerTimer.Enabled = true;
+        }
+
+        private void Task_manager_groupBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            _taskManagerTimer.Enabled = false;
+        }
+
+        private void Task_manager_groupBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (Cursor.Current != Cursors.VSplit)
+                Cursor.Current = Cursors.VSplit;
+        }
+
         private void Metadata_group_MouseDown(object sender, MouseEventArgs e)
         {
             _metadataTimer.Enabled = true;
@@ -205,7 +255,7 @@ namespace VisualSQLPro
 
         private void ConsoleLog_group_MouseMove(object sender, MouseEventArgs e)
         {
-            if (Cursor.Current != Cursors.VSplit)
+            if (Cursor.Current != Cursors.HSplit)
                 Cursor.Current = Cursors.HSplit;
         }
 
@@ -268,6 +318,13 @@ namespace VisualSQLPro
             if (console_groupBox.Visible == false)
                 console_groupBox.Height = (int)(Size.Height * 0.20);
             console_groupBox.Visible = !console_groupBox.Visible;
+        }
+
+        private void taskManagerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (task_manager_groupBox.Visible == false)
+                task_manager_groupBox.Width = (int)(Size.Width * 0.20);
+            task_manager_groupBox.Visible = !task_manager_groupBox.Visible;
         }
     }
     abstract class Metadata
