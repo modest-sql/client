@@ -49,6 +49,7 @@
             this.task_manager_groupBox = new System.Windows.Forms.GroupBox();
             this.task_manager_listBox = new System.Windows.Forms.ListBox();
             this.tcp_listener = new System.ComponentModel.BackgroundWorker();
+            this.tcp_ping = new System.ComponentModel.BackgroundWorker();
             this.metadata_group.SuspendLayout();
             this.console_groupBox.SuspendLayout();
             this.query_groupBox.SuspendLayout();
@@ -235,6 +236,10 @@
             // 
             this.tcp_listener.DoWork += new System.ComponentModel.DoWorkEventHandler(this.tcp_listener_DoWork);
             // 
+            // tcp_ping
+            // 
+            this.tcp_ping.DoWork += new System.ComponentModel.DoWorkEventHandler(this.tcp_ping_DoWork);
+            // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -283,6 +288,7 @@
         private System.Windows.Forms.ListBox task_manager_listBox;
         private System.Windows.Forms.ToolStripMenuItem taskManagerToolStripMenuItem;
         private System.ComponentModel.BackgroundWorker tcp_listener;
+        private System.ComponentModel.BackgroundWorker tcp_ping;
     }
 }
 

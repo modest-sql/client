@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
+using System.Windows.Forms;
 using Newtonsoft.Json;
 
 namespace VisualSQLPro
@@ -56,7 +58,7 @@ namespace VisualSQLPro
             }
             catch (Exception)
             {
-                //ConnectedUpdate(false);
+                ConnectedUpdate(false);
                 //throw;
             }
         }
@@ -124,6 +126,48 @@ namespace VisualSQLPro
             }*/
 
             Text = conn ? @"Modest SQL Client Pro (Connected)" : @"Modest SQL Client Pro (Disconnected)";
+        }
+
+        private void tcp_ping_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                Thread.Sleep(5000);
+                PingServer();
+                if (/*connected_pictureBox.BackColor == Color.Red*/Text == @"Modest SQL Client Pro (Disconnected)")
+                {
+                    while (!connection_success())
+                    {
+                        CycleUpdate();
+                        Thread.Sleep(300);
+                    }
+                    ConnectedUpdate(true);
+                }
+            }
+        }
+
+        private void PingServer()
+        {
+            try
+            {
+                BuildAndSendServerRequest(0, " ");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        private void disconnected_cycle()
+        {
+            /*if (connected_label.Text == "Disconnected, attempting to reconnect")
+                connected_label.Text = "Disconnected, attempting to reconnect.";
+            else if (connected_label.Text == "Disconnected, attempting to reconnect.")
+                connected_label.Text = "Disconnected, attempting to reconnect..";
+            else if (connected_label.Text == "Disconnected, attempting to reconnect..")
+                connected_label.Text = "Disconnected, attempting to reconnect...";
+            else if (connected_label.Text == "Disconnected, attempting to reconnect...")
+                connected_label.Text = "Disconnected, attempting to reconnect";*/
         }
     }
 

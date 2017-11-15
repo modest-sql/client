@@ -9,6 +9,7 @@ namespace VisualSQLPro
         delegate void UpdateTaskManagerPosition();
         delegate void ChangeConnectedColor(bool val);
         delegate void MetadataUpdatedelegate(string val);
+        delegate void CycleDisconnectedColor();
 
         private void UpdateTaskPosition()
         {
@@ -53,6 +54,19 @@ namespace VisualSQLPro
                 metadata_listBox.Invoke(new MetadataUpdatedelegate(MetadataUpdate), updateVal);
             else
                 PrintMetadata(updateVal);
+        }
+
+        private void CycleUpdate()
+        {
+            /*if (connected_label.InvokeRequired)
+                connected_label.Invoke(new CycleDisconnectedColor(CycleUpdate));
+            else
+                disconnected_cycle();*/
+
+            if (InvokeRequired)
+                Invoke(new CycleDisconnectedColor(CycleUpdate));
+            else
+                disconnected_cycle();
         }
     }
 }

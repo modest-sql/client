@@ -14,6 +14,7 @@ namespace VisualSQLPro
             task_manager_groupBox.Visible = false;
             PopUp_Cycle();
             tcp_listener.RunWorkerAsync();
+            tcp_ping.RunWorkerAsync();
             BuildAndSendServerRequest(1, " ");
         }
 
