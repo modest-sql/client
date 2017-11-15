@@ -30,8 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClientForm));
             this.metadata_group = new System.Windows.Forms.GroupBox();
-            this.refresh_metadata_button = new System.Windows.Forms.Button();
             this.metadata_listBox = new System.Windows.Forms.ListBox();
+            this.refresh_metadata_button = new System.Windows.Forms.Button();
             this.console_groupBox = new System.Windows.Forms.GroupBox();
             this.console_log = new System.Windows.Forms.RichTextBox();
             this.query_groupBox = new System.Windows.Forms.GroupBox();
@@ -45,9 +45,10 @@
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.metadataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consoleLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.taskManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.task_manager_groupBox = new System.Windows.Forms.GroupBox();
             this.task_manager_listBox = new System.Windows.Forms.ListBox();
-            this.taskManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tcp_listener = new System.ComponentModel.BackgroundWorker();
             this.metadata_group.SuspendLayout();
             this.console_groupBox.SuspendLayout();
             this.query_groupBox.SuspendLayout();
@@ -68,16 +69,6 @@
             this.metadata_group.TabStop = false;
             this.metadata_group.Text = "Metadata";
             // 
-            // refresh_metadata_button
-            // 
-            this.refresh_metadata_button.Dock = System.Windows.Forms.DockStyle.Top;
-            this.refresh_metadata_button.Location = new System.Drawing.Point(3, 16);
-            this.refresh_metadata_button.Name = "refresh_metadata_button";
-            this.refresh_metadata_button.Size = new System.Drawing.Size(194, 23);
-            this.refresh_metadata_button.TabIndex = 3;
-            this.refresh_metadata_button.Text = "Refresh";
-            this.refresh_metadata_button.UseVisualStyleBackColor = true;
-            // 
             // metadata_listBox
             // 
             this.metadata_listBox.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -87,6 +78,17 @@
             this.metadata_listBox.Name = "metadata_listBox";
             this.metadata_listBox.Size = new System.Drawing.Size(194, 538);
             this.metadata_listBox.TabIndex = 2;
+            this.metadata_listBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.metadata_listBox_MouseDoubleClick);
+            // 
+            // refresh_metadata_button
+            // 
+            this.refresh_metadata_button.Dock = System.Windows.Forms.DockStyle.Top;
+            this.refresh_metadata_button.Location = new System.Drawing.Point(3, 16);
+            this.refresh_metadata_button.Name = "refresh_metadata_button";
+            this.refresh_metadata_button.Size = new System.Drawing.Size(194, 23);
+            this.refresh_metadata_button.TabIndex = 3;
+            this.refresh_metadata_button.Text = "Refresh";
+            this.refresh_metadata_button.UseVisualStyleBackColor = true;
             // 
             // console_groupBox
             // 
@@ -191,16 +193,23 @@
             // metadataToolStripMenuItem
             // 
             this.metadataToolStripMenuItem.Name = "metadataToolStripMenuItem";
-            this.metadataToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.metadataToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.metadataToolStripMenuItem.Text = "Metadata";
             this.metadataToolStripMenuItem.Click += new System.EventHandler(this.metadataToolStripMenuItem_Click);
             // 
             // consoleLogToolStripMenuItem
             // 
             this.consoleLogToolStripMenuItem.Name = "consoleLogToolStripMenuItem";
-            this.consoleLogToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.consoleLogToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.consoleLogToolStripMenuItem.Text = "Console Log";
             this.consoleLogToolStripMenuItem.Click += new System.EventHandler(this.consoleLogToolStripMenuItem_Click);
+            // 
+            // taskManagerToolStripMenuItem
+            // 
+            this.taskManagerToolStripMenuItem.Name = "taskManagerToolStripMenuItem";
+            this.taskManagerToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.taskManagerToolStripMenuItem.Text = "Task Manager";
+            this.taskManagerToolStripMenuItem.Click += new System.EventHandler(this.taskManagerToolStripMenuItem_Click);
             // 
             // task_manager_groupBox
             // 
@@ -222,12 +231,9 @@
             this.task_manager_listBox.Size = new System.Drawing.Size(194, 561);
             this.task_manager_listBox.TabIndex = 0;
             // 
-            // taskManagerToolStripMenuItem
+            // tcp_listener
             // 
-            this.taskManagerToolStripMenuItem.Name = "taskManagerToolStripMenuItem";
-            this.taskManagerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.taskManagerToolStripMenuItem.Text = "Task Manager";
-            this.taskManagerToolStripMenuItem.Click += new System.EventHandler(this.taskManagerToolStripMenuItem_Click);
+            this.tcp_listener.DoWork += new System.ComponentModel.DoWorkEventHandler(this.tcp_listener_DoWork);
             // 
             // ClientForm
             // 
@@ -276,6 +282,7 @@
         private System.Windows.Forms.GroupBox task_manager_groupBox;
         private System.Windows.Forms.ListBox task_manager_listBox;
         private System.Windows.Forms.ToolStripMenuItem taskManagerToolStripMenuItem;
+        private System.ComponentModel.BackgroundWorker tcp_listener;
     }
 }
 

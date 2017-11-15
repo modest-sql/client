@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace VisualSQLPro
 {
@@ -71,5 +72,64 @@ namespace VisualSQLPro
             string metadata = build_server_request(idType, data);
             send_to_server(metadata);
         }
+
+        private void tcp_listener_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            while (true)
+                StartListening();
+        }
+
+        private void StartListening()
+        {
+            try
+            {
+                ServerResponse sr = JsonConvert.DeserializeObject<ServerResponse>(read_server_response());
+                ConnectedUpdate(true);
+                switch (sr.Type)
+                {
+                    case 0:
+                        //Ping
+                        break;
+                    case 1:
+                        //Metadata
+                        MetadataUpdate(sr.Data);
+                        break;
+                    case 2:
+                        //Tabla
+                        //TableUpdate(sr.Data);
+                        break;
+                    case 4:
+                        //Error
+                        //ConsoleUpdate(sr.Data);
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                //MessageBox.Show(e.Message);
+            }
+        }
+
+        void IsConnected(bool conn)
+        {
+            /*if (conn)
+            {
+                connected_pictureBox.BackColor = Color.Green;
+                connected_label.Text = "Connected";
+            }
+            else
+            {
+                connected_pictureBox.BackColor = Color.Red;
+                connected_label.Text = "Disconnected, attempting to reconnect";
+            }*/
+
+            Text = conn ? @"Modest SQL Client Pro (Connected)" : @"Modest SQL Client Pro (Disconnected)";
+        }
+    }
+
+    class ServerResponse
+    {
+        public int Type { get; set; }
+        public string Data { get; set; }
     }
 }

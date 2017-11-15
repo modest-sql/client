@@ -12,7 +12,9 @@ namespace VisualSQLPro
             SetUpTimers();
             SetUpScintilla();
             task_manager_groupBox.Visible = false;
-            //PopUp_Cycle();
+            PopUp_Cycle();
+            tcp_listener.RunWorkerAsync();
+            BuildAndSendServerRequest(1, " ");
         }
 
         private void PopUp_Cycle()
@@ -34,6 +36,12 @@ namespace VisualSQLPro
             popup.Dispose();
             if (dialogresult == DialogResult.Cancel)
                 Environment.Exit(1);
+        }
+        
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            _client.Close();
+            base.OnFormClosing(e);
         }
     }
 }
