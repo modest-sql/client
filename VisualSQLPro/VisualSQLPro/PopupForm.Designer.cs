@@ -1,4 +1,4 @@
-﻿namespace VisualSQL
+﻿namespace VisualSQLPro
 {
     partial class PopupForm
     {
