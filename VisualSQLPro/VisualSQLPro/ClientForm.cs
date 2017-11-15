@@ -7,6 +7,7 @@ using System.Timers;
 using System.Windows.Forms;
 using ScintillaNET;
 using VisualSQL;
+using AutocompleteMenuNS;
 
 namespace VisualSQLPro
 {
@@ -68,6 +69,7 @@ namespace VisualSQLPro
 
         private void SetUpScintilla()
         {
+            //Start style setup//
             _myScintilla.StyleResetDefault();
             _myScintilla.Styles[Style.Default].Font = "Courier New";
             _myScintilla.Styles[Style.Default].Size = 10;
@@ -100,6 +102,21 @@ namespace VisualSQLPro
             _myScintilla.SetKeywords(4, @"all and any between cross exists in inner is join left like not null or outer pivot right some unpivot ( ) * ");
             // User2 = 5
             _myScintilla.SetKeywords(5, @"sys objects sysobjects ");
+
+            //End style setup//
+
+            //Start auto-complete setup//
+
+            var autoCompleteWrapper = new AutocompleteMenu {TargetControlWrapper = new ScintillaWrapper(_myScintilla)};
+            string[] autoCompleteList = {"add", "alter", "create", "drop", "insert", "into", "key", "primary", "select", "table", "unique", "update",
+                                        "where", "between", "inner", "join", "not null", "default", "from"};
+            foreach (var str in autoCompleteList)
+            {
+                autoCompleteWrapper.AddItem(str);
+            }
+            autoCompleteWrapper.AllowsTabKey = true;
+
+            //End auto-complete setup//
 
             _myScintilla.Dock = DockStyle.Fill;
             query_tabPage.Controls.Add(_myScintilla);
