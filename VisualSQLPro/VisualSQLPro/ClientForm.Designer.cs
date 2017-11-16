@@ -36,13 +36,12 @@
             this.console_log = new System.Windows.Forms.RichTextBox();
             this.query_groupBox = new System.Windows.Forms.GroupBox();
             this.queries_tabControl = new System.Windows.Forms.TabControl();
-            this.query_tabPage = new System.Windows.Forms.TabPage();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.executeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.executeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.metadataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consoleLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,7 +53,6 @@
             this.metadata_group.SuspendLayout();
             this.console_groupBox.SuspendLayout();
             this.query_groupBox.SuspendLayout();
-            this.queries_tabControl.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.task_manager_groupBox.SuspendLayout();
             this.SuspendLayout();
@@ -91,6 +89,7 @@
             this.refresh_metadata_button.TabIndex = 3;
             this.refresh_metadata_button.Text = "Refresh";
             this.refresh_metadata_button.UseVisualStyleBackColor = true;
+            this.refresh_metadata_button.Click += new System.EventHandler(this.refresh_metadata_button_Click);
             // 
             // console_groupBox
             // 
@@ -126,23 +125,16 @@
             // 
             // queries_tabControl
             // 
-            this.queries_tabControl.Controls.Add(this.query_tabPage);
             this.queries_tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.queries_tabControl.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.queries_tabControl.Location = new System.Drawing.Point(3, 16);
             this.queries_tabControl.Name = "queries_tabControl";
             this.queries_tabControl.SelectedIndex = 0;
             this.queries_tabControl.Size = new System.Drawing.Size(212, 427);
+            this.queries_tabControl.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
             this.queries_tabControl.TabIndex = 0;
-            // 
-            // query_tabPage
-            // 
-            this.query_tabPage.Location = new System.Drawing.Point(4, 22);
-            this.query_tabPage.Name = "query_tabPage";
-            this.query_tabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.query_tabPage.Size = new System.Drawing.Size(204, 401);
-            this.query_tabPage.TabIndex = 0;
-            this.query_tabPage.Text = "Query Text";
-            this.query_tabPage.UseVisualStyleBackColor = true;
+            this.queries_tabControl.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.queries_tabControl_DrawItem);
+            this.queries_tabControl.MouseClick += new System.Windows.Forms.MouseEventHandler(this.queries_tabControl_MouseClick);
             // 
             // menuStrip
             // 
@@ -165,30 +157,33 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.openToolStripMenuItem.Text = "Open";
-            // 
-            // saveToolStripMenuItem
-            // 
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.saveToolStripMenuItem.Text = "Save";
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            // 
             // executeToolStripMenuItem
             // 
             this.executeToolStripMenuItem.Name = "executeToolStripMenuItem";
             this.executeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.executeToolStripMenuItem.Text = "Execute";
             this.executeToolStripMenuItem.Click += new System.EventHandler(this.executeToolStripMenuItem_Click);
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -266,7 +261,6 @@
             this.metadata_group.ResumeLayout(false);
             this.console_groupBox.ResumeLayout(false);
             this.query_groupBox.ResumeLayout(false);
-            this.queries_tabControl.ResumeLayout(false);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.task_manager_groupBox.ResumeLayout(false);
@@ -284,7 +278,6 @@
         private System.Windows.Forms.RichTextBox console_log;
         private System.Windows.Forms.GroupBox query_groupBox;
         private System.Windows.Forms.TabControl queries_tabControl;
-        private System.Windows.Forms.TabPage query_tabPage;
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;

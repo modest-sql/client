@@ -24,5 +24,20 @@ namespace VisualSQLPro
                 task_manager_groupBox.Width = (int)(Size.Width * 0.20);
             task_manager_groupBox.Visible = !task_manager_groupBox.Visible;
         }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PromptSave();
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PromptLoad();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(1);
+        }
     }
 }

@@ -10,6 +10,10 @@ namespace VisualSQLPro
         private readonly Scintilla _myScintilla = new Scintilla();
         private void SetUpScintilla()
         {
+            string title = "Query Text" + "          ";
+            TabPage myTabPage = new TabPage(title);
+            queries_tabControl.TabPages.Add(myTabPage);
+
             //Start style setup//
             _myScintilla.StyleResetDefault();
             _myScintilla.Styles[Style.Default].Font = "Courier New";
@@ -60,7 +64,7 @@ namespace VisualSQLPro
             //End auto-complete setup//
 
             _myScintilla.Dock = DockStyle.Fill;
-            query_tabPage.Controls.Add(_myScintilla);
+            myTabPage.Controls.Add(_myScintilla);
         }
     }
 }

@@ -2,7 +2,6 @@
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Windows.Forms;
 using Newtonsoft.Json;
 
 namespace VisualSQLPro
@@ -85,6 +84,7 @@ namespace VisualSQLPro
         {
             try
             {
+                //Console.WriteLine(@"Escuchamos wuu");
                 ServerResponse sr = JsonConvert.DeserializeObject<ServerResponse>(read_server_response());
                 ConnectedUpdate(true);
                 switch (sr.Type)
@@ -151,10 +151,11 @@ namespace VisualSQLPro
             try
             {
                 BuildAndSendServerRequest(0, " ");
+                //Console.WriteLine(@"Pingeamos wuu");
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                //MessageBox.Show(e.Message);
             }
         }
 

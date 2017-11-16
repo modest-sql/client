@@ -291,6 +291,11 @@ namespace VisualSQLPro
                 }
             }
         }
+
+        private void refresh_metadata_button_Click(object sender, EventArgs e)
+        {
+            BuildAndSendServerRequest(1, " ");
+        }
     }
     abstract class Metadata
     {
