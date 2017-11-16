@@ -36,6 +36,10 @@
             this.console_log = new System.Windows.Forms.RichTextBox();
             this.query_groupBox = new System.Windows.Forms.GroupBox();
             this.queries_tabControl = new System.Windows.Forms.TabControl();
+            this.query_toolStrip = new System.Windows.Forms.ToolStrip();
+            this.execute_Button = new System.Windows.Forms.ToolStripButton();
+            this.load_Button = new System.Windows.Forms.ToolStripButton();
+            this.save_Button = new System.Windows.Forms.ToolStripButton();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.executeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,6 +57,7 @@
             this.metadata_group.SuspendLayout();
             this.console_groupBox.SuspendLayout();
             this.query_groupBox.SuspendLayout();
+            this.query_toolStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.task_manager_groupBox.SuspendLayout();
             this.SuspendLayout();
@@ -115,6 +120,7 @@
             // query_groupBox
             // 
             this.query_groupBox.Controls.Add(this.queries_tabControl);
+            this.query_groupBox.Controls.Add(this.query_toolStrip);
             this.query_groupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.query_groupBox.Location = new System.Drawing.Point(200, 24);
             this.query_groupBox.Name = "query_groupBox";
@@ -127,14 +133,53 @@
             // 
             this.queries_tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.queries_tabControl.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
-            this.queries_tabControl.Location = new System.Drawing.Point(3, 16);
+            this.queries_tabControl.Location = new System.Drawing.Point(3, 48);
             this.queries_tabControl.Name = "queries_tabControl";
             this.queries_tabControl.SelectedIndex = 0;
-            this.queries_tabControl.Size = new System.Drawing.Size(212, 427);
+            this.queries_tabControl.Size = new System.Drawing.Size(212, 395);
             this.queries_tabControl.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
             this.queries_tabControl.TabIndex = 0;
             this.queries_tabControl.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.queries_tabControl_DrawItem);
             this.queries_tabControl.MouseClick += new System.Windows.Forms.MouseEventHandler(this.queries_tabControl_MouseClick);
+            // 
+            // query_toolStrip
+            // 
+            this.query_toolStrip.ImageScalingSize = new System.Drawing.Size(25, 25);
+            this.query_toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.execute_Button,
+            this.load_Button,
+            this.save_Button});
+            this.query_toolStrip.Location = new System.Drawing.Point(3, 16);
+            this.query_toolStrip.Name = "query_toolStrip";
+            this.query_toolStrip.Size = new System.Drawing.Size(212, 32);
+            this.query_toolStrip.TabIndex = 1;
+            // 
+            // execute_Button
+            // 
+            this.execute_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.execute_Button.Image = global::VisualSQLPro.Properties.Resources.execute;
+            this.execute_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.execute_Button.Name = "execute_Button";
+            this.execute_Button.Size = new System.Drawing.Size(29, 29);
+            this.execute_Button.Click += new System.EventHandler(this.execute_Button_Click);
+            // 
+            // load_Button
+            // 
+            this.load_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.load_Button.Image = global::VisualSQLPro.Properties.Resources.load;
+            this.load_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.load_Button.Name = "load_Button";
+            this.load_Button.Size = new System.Drawing.Size(29, 29);
+            this.load_Button.Click += new System.EventHandler(this.load_Button_Click);
+            // 
+            // save_Button
+            // 
+            this.save_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.save_Button.Image = global::VisualSQLPro.Properties.Resources.save;
+            this.save_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.save_Button.Name = "save_Button";
+            this.save_Button.Size = new System.Drawing.Size(29, 29);
+            this.save_Button.Click += new System.EventHandler(this.save_Button_Click);
             // 
             // menuStrip
             // 
@@ -160,28 +205,28 @@
             // executeToolStripMenuItem
             // 
             this.executeToolStripMenuItem.Name = "executeToolStripMenuItem";
-            this.executeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.executeToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.executeToolStripMenuItem.Text = "Execute";
             this.executeToolStripMenuItem.Click += new System.EventHandler(this.executeToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -261,6 +306,9 @@
             this.metadata_group.ResumeLayout(false);
             this.console_groupBox.ResumeLayout(false);
             this.query_groupBox.ResumeLayout(false);
+            this.query_groupBox.PerformLayout();
+            this.query_toolStrip.ResumeLayout(false);
+            this.query_toolStrip.PerformLayout();
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.task_manager_groupBox.ResumeLayout(false);
@@ -292,6 +340,10 @@
         private System.ComponentModel.BackgroundWorker tcp_listener;
         private System.ComponentModel.BackgroundWorker tcp_ping;
         private System.Windows.Forms.ToolStripMenuItem executeToolStripMenuItem;
+        private System.Windows.Forms.ToolStrip query_toolStrip;
+        private System.Windows.Forms.ToolStripButton execute_Button;
+        private System.Windows.Forms.ToolStripButton load_Button;
+        private System.Windows.Forms.ToolStripButton save_Button;
     }
 }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Windows.Forms;
 
 namespace VisualSQLPro
@@ -46,7 +45,7 @@ namespace VisualSQLPro
             base.OnFormClosing(e);
         }
 
-        private void executeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void execute_sql()
         {
             if (_myScintilla.Text != "")
             {

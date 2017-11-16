@@ -39,5 +39,10 @@ namespace VisualSQLPro
         {
             Environment.Exit(1);
         }
+
+        private void executeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            execute_sql();
+        }
     }
 }
