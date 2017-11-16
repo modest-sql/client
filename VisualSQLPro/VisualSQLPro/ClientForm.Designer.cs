@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClientForm));
             this.metadata_group = new System.Windows.Forms.GroupBox();
             this.metadata_listBox = new System.Windows.Forms.ListBox();
@@ -54,6 +55,7 @@
             this.task_manager_listBox = new System.Windows.Forms.ListBox();
             this.tcp_listener = new System.ComponentModel.BackgroundWorker();
             this.tcp_ping = new System.ComponentModel.BackgroundWorker();
+            this.general_toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.metadata_group.SuspendLayout();
             this.console_groupBox.SuspendLayout();
             this.query_groupBox.SuspendLayout();
@@ -93,6 +95,7 @@
             this.refresh_metadata_button.Size = new System.Drawing.Size(194, 23);
             this.refresh_metadata_button.TabIndex = 3;
             this.refresh_metadata_button.Text = "Refresh";
+            this.general_toolTip.SetToolTip(this.refresh_metadata_button, "Refresh database metadata");
             this.refresh_metadata_button.UseVisualStyleBackColor = true;
             this.refresh_metadata_button.Click += new System.EventHandler(this.refresh_metadata_button_Click);
             // 
@@ -161,6 +164,7 @@
             this.execute_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.execute_Button.Name = "execute_Button";
             this.execute_Button.Size = new System.Drawing.Size(29, 29);
+            this.execute_Button.ToolTipText = "Execute the current query";
             this.execute_Button.Click += new System.EventHandler(this.execute_Button_Click);
             // 
             // load_Button
@@ -170,6 +174,7 @@
             this.load_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.load_Button.Name = "load_Button";
             this.load_Button.Size = new System.Drawing.Size(29, 29);
+            this.load_Button.ToolTipText = "Load a query from a file";
             this.load_Button.Click += new System.EventHandler(this.load_Button_Click);
             // 
             // save_Button
@@ -179,6 +184,7 @@
             this.save_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.save_Button.Name = "save_Button";
             this.save_Button.Size = new System.Drawing.Size(29, 29);
+            this.save_Button.ToolTipText = "Save the current query into a file";
             this.save_Button.Click += new System.EventHandler(this.save_Button_Click);
             // 
             // menuStrip
@@ -344,6 +350,7 @@
         private System.Windows.Forms.ToolStripButton execute_Button;
         private System.Windows.Forms.ToolStripButton load_Button;
         private System.Windows.Forms.ToolStripButton save_Button;
+        private System.Windows.Forms.ToolTip general_toolTip;
     }
 }
 

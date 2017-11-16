@@ -19,7 +19,7 @@ namespace VisualSQLPro
         private void TaskManagerUpdateTimerEvent(object sender, ElapsedEventArgs e)
         {
             if (task_manager_groupBox.Visible)
-                BuildAndSendServerRequest((int) ServerRequests.ShowTransaction,"");
+                BuildAndSendServerRequest((int) ServerRequests.ShowTransaction," ");
         }
         private void UpdateTaskManager(string tasks)
         {
