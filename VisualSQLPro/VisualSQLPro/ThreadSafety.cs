@@ -12,6 +12,7 @@ namespace VisualSQLPro
         delegate void CycleDisconnectedColor();
         delegate void ConsoleUpdateDelegate(string val);
         delegate void TableUpdatedelegate(string val);
+        delegate void TaskManagerUpdatedelegate(string val);
 
         private void UpdateTaskPosition()
         {
@@ -85,6 +86,14 @@ namespace VisualSQLPro
                 queries_tabControl.Invoke(new TableUpdatedelegate(TableUpdate), updateVal);
             else
                 PrintTable(updateVal);
+        }
+
+        private void TaskManagerUpdate(string updateVal)
+        {
+            if (task_manager_listBox.InvokeRequired)
+                task_manager_listBox.Invoke(new TaskManagerUpdatedelegate(TaskManagerUpdate), updateVal);
+            else
+                UpdateTaskManager(updateVal);
         }
     }
 }

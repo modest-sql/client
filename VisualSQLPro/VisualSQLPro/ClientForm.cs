@@ -11,11 +11,13 @@ namespace VisualSQLPro
             SetUpResizers();
             SetUpTimers();
             SetUpScintilla();
-            task_manager_groupBox.Visible = false;
             PopUp_Cycle();
             tcp_listener.RunWorkerAsync();
             tcp_ping.RunWorkerAsync();
-            BuildAndSendServerRequest(1, " ");
+            SetUpTaskManager();
+            BuildAndSendServerRequest((int) ServerRequests.GetMetadata, " ");
+            console_log.AppendText("Welcome!");
+            //UpdateTaskManager("{\r\n\t\"Transactions\": [\r\n\t\t{\r\n\t\t\t\"Transaction_ID\":\"b86ilpuloh16jmkg9vog\",\r\n\t\t\t\"TransactionQueries\":[\"CREATE TABLE TABLA_1.\", \"UNKNOWN QUERY.\"],\r\n\t\t\t\"Transaction_State\":0\r\n\t\t}\r\n\t]\r\n}");
         }
 
         private void PopUp_Cycle()
@@ -41,7 +43,14 @@ namespace VisualSQLPro
         
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            _client.Close();
+            try
+            {
+                _client.Close();
+            }
+            catch (Exception)
+            {
+                //throw;
+            }
             base.OnFormClosing(e);
         }
 
@@ -54,5 +63,17 @@ namespace VisualSQLPro
                 send_sql_text(sqlString);
             }
         }
+    }
+
+    enum ServerRequests
+    {
+        KeepAlive = 200,
+        NewDatabase = 201,
+        LoadDatabase = 202,
+        NewTable = 203,
+        FindTable = 204,
+        GetMetadata = 205,
+        Query = 206,
+        ShowTransaction = 207
     }
 }

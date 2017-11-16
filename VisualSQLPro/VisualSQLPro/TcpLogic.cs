@@ -44,7 +44,7 @@ namespace VisualSQLPro
 
         private void send_sql_text(string sqlString)
         {
-            BuildAndSendServerRequest(2, sqlString);
+            BuildAndSendServerRequest((int) ServerRequests.Query, sqlString);
         }
 
         private void send_to_server(string sendThis)
@@ -104,6 +104,10 @@ namespace VisualSQLPro
                         //Error
                         ConsoleUpdate(sr.Data);
                         break;
+                    case 5:
+                        //Error
+                        TaskManagerUpdate(sr.Data);
+                        break;
                 }
             }
             catch (Exception e)
@@ -150,7 +154,7 @@ namespace VisualSQLPro
         {
             try
             {
-                BuildAndSendServerRequest(0, " ");
+                BuildAndSendServerRequest((int) ServerRequests.KeepAlive, " ");
                 //Console.WriteLine(@"Pingeamos wuu");
             }
             catch (Exception e)
