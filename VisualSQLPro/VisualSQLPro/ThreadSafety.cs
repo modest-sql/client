@@ -11,6 +11,7 @@ namespace VisualSQLPro
         delegate void MetadataUpdatedelegate(string val);
         delegate void CycleDisconnectedColor();
         delegate void ConsoleUpdateDelegate(string val);
+        delegate void TableUpdatedelegate(string val);
 
         private void UpdateTaskPosition()
         {
@@ -76,6 +77,14 @@ namespace VisualSQLPro
                 console_log.Invoke(new ConsoleUpdateDelegate(ConsoleUpdate), updateVal);
             else
                 flashy_console_receive(updateVal);
+        }
+
+        private void TableUpdate(string updateVal)
+        {
+            if (queries_tabControl.InvokeRequired)
+                queries_tabControl.Invoke(new TableUpdatedelegate(TableUpdate), updateVal);
+            else
+                PrintTable(updateVal);
         }
     }
 }

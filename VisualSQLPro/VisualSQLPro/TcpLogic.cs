@@ -98,7 +98,7 @@ namespace VisualSQLPro
                         break;
                     case 2:
                         //Tabla
-                        //TableUpdate(sr.Data);
+                        TableUpdate(sr.Data);
                         break;
                     case 4:
                         //Error

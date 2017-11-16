@@ -92,6 +92,9 @@
     <Compile Include="ScintillaSetUp.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="TabControlLogic.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="TcpLogic.cs">
       <SubType>Form</SubType>
     </Compile>
