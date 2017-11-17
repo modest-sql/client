@@ -89,22 +89,22 @@ namespace VisualSQLPro
                 ConnectedUpdate(true);
                 switch (sr.Type)
                 {
-                    case 0:
+                    case (int) ServerRequests.KeepAlive:
                         //Ping
                         break;
-                    case 1:
+                    case (int)ServerRequests.GetMetadata:
                         //Metadata
                         MetadataUpdate(sr.Data);
                         break;
-                    case 2:
+                    case (int)ServerRequests.Query:
                         //Tabla
                         TableUpdate(sr.Data);
                         break;
-                    case 4:
+                    case (int)ServerRequests.Error:
                         //Error
                         ConsoleUpdate(sr.Data);
                         break;
-                    case 5:
+                    case (int)ServerRequests.ShowTransaction:
                         //Error
                         TaskManagerUpdate(sr.Data);
                         break;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace VisualSQLPro
@@ -56,7 +57,9 @@ namespace VisualSQLPro
 
         private void execute_sql()
         {
-            if (_myScintilla.Text != "")
+            if (_myScintilla.Text == @"Omae wa mou shindeiru")
+                FancyConsolePrint("Nani?!", Color.DarkRed);
+            else if (_myScintilla.Text != "")
             {
                 string sqlString = _myScintilla.Text;
                 console_send(sqlString);
@@ -74,6 +77,7 @@ namespace VisualSQLPro
         FindTable = 204,
         GetMetadata = 205,
         Query = 206,
-        ShowTransaction = 207
+        ShowTransaction = 207,
+        Error = 208
     }
 }

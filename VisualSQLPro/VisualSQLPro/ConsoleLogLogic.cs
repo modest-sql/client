@@ -36,6 +36,14 @@ namespace VisualSQLPro
             console_log.AppendText(Environment.NewLine + "sending: " + str);
             console_log.ScrollToCaret();
         }
+
+        private void FancyConsolePrint(string printThis, Color color)
+        {
+            console_log.Select(console_log.TextLength, 0);
+            console_log.SelectionColor = color;
+            console_log.AppendText(Environment.NewLine + printThis);
+            console_log.SelectionColor = SystemColors.WindowText;
+        }
     }
 
     class ServerError
