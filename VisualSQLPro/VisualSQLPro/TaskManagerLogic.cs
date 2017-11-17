@@ -29,8 +29,21 @@ namespace VisualSQLPro
             foreach (var task in transactions.Transactions)
             {
                 task_manager_listBox.Items.Add("Transaction " + counter);
+                string transactionId;
+                switch (task.Transaction_State)
+                {
+                    case 1:
+                        transactionId = "Executing";
+                        break;
+                    case 2:
+                        transactionId = "Completed";
+                        break;
+                    default:
+                        transactionId = "Queued";
+                        break;
+                }
                 task_manager_listBox.Items.Add("\t" +"Transaction ID: " + task.Transaction_ID);
-                task_manager_listBox.Items.Add("\t" + "Transaction State: " + task.Transaction_State);
+                task_manager_listBox.Items.Add("\t" + "Transaction State: " + transactionId);
                 task_manager_listBox.Items.Add("\t" + "Transaction Queries:");
                 foreach (var query in task.TransactionQueries)
                 {

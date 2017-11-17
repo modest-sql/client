@@ -16,6 +16,7 @@ namespace VisualSQLPro
             tcp_listener.RunWorkerAsync();
             tcp_ping.RunWorkerAsync();
             SetUpTaskManager();
+            BuildAndSendServerRequest((int)ServerRequests.LoadDatabase, "mock.db");
             BuildAndSendServerRequest((int) ServerRequests.GetMetadata, " ");
             console_log.AppendText("Welcome!");
             //UpdateTaskManager("{\r\n\t\"Transactions\": [\r\n\t\t{\r\n\t\t\t\"Transaction_ID\":\"b86ilpuloh16jmkg9vog\",\r\n\t\t\t\"TransactionQueries\":[\"CREATE TABLE TABLA_1.\", \"UNKNOWN QUERY.\"],\r\n\t\t\t\"Transaction_State\":0\r\n\t\t}\r\n\t]\r\n}");
