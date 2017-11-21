@@ -20,7 +20,9 @@ namespace VisualSQLPro
         {
             DbMetadata dbMeta = new DbMetadata { DbName = newDb.DB_Name };
             List<DbTable> tableList = new List<DbTable>();
-
+            dbMeta.Tables = tableList.ToArray();
+            if (newDb.Tables == null)
+                return dbMeta;
             foreach (var table in newDb.Tables)
             {
                 DbTable oldTable = new DbTable { TableName = table.TableName };
@@ -294,6 +296,8 @@ namespace VisualSQLPro
 
         private void refresh_metadata_button_Click(object sender, EventArgs e)
         {
+            metadata_listBox.Items.Clear();
+            BuildAndSendServerRequest((int)ServerRequests.LoadDatabase, "mock.db");
             BuildAndSendServerRequest((int) ServerRequests.GetMetadata, " ");
         }
     }
@@ -368,7 +372,8 @@ namespace VisualSQLPro
         Integer,
         Float,
         Boolean,
+        Datetime,
         Char,
-        Datetime
+        Invalid
     }
 }

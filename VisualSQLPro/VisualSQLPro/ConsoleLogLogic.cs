@@ -43,6 +43,7 @@ namespace VisualSQLPro
             console_log.SelectionColor = color;
             console_log.AppendText(Environment.NewLine + printThis);
             console_log.SelectionColor = SystemColors.WindowText;
+            console_log.ScrollToCaret();
         }
     }
 
