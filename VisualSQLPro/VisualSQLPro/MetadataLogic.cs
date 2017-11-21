@@ -296,8 +296,8 @@ namespace VisualSQLPro
 
         private void refresh_metadata_button_Click(object sender, EventArgs e)
         {
-            metadata_listBox.Items.Clear();
-            BuildAndSendServerRequest((int)ServerRequests.LoadDatabase, "mock.db");
+            //metadata_listBox.Items.Clear();
+            //BuildAndSendServerRequest((int)ServerRequests.LoadDatabase, "mock.db");
             BuildAndSendServerRequest((int) ServerRequests.GetMetadata, " ");
         }
     }

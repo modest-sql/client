@@ -68,17 +68,4 @@ namespace VisualSQLPro
             }
         }
     }
-
-    enum ServerRequests
-    {
-        KeepAlive = 200,
-        NewDatabase = 201,
-        LoadDatabase = 202,
-        NewTable = 203,
-        FindTable = 204,
-        GetMetadata = 205,
-        Query = 206,
-        ShowTransaction = 207,
-        Error = 208
-    }
 }
