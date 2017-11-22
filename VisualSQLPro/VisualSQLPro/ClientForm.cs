@@ -14,11 +14,13 @@ namespace VisualSQLPro
             SetUpScintilla();
             PopUp_Cycle();
             tcp_listener.RunWorkerAsync();
-            tcp_ping.RunWorkerAsync();
+            //tcp_ping.RunWorkerAsync();
             SetUpTaskManager();
-            BuildAndSendServerRequest((int)ServerRequests.LoadDatabase, "mock.db");
-            BuildAndSendServerRequest((int) ServerRequests.GetMetadata, " ");
+            BuildAndSendServerRequest((int)ServerRequests.LoadDatabase, "Mocca.db");
+            //BuildAndSendServerRequest((int)ServerRequests.NewDatabase, "Mocca.db");
+            //BuildAndSendServerRequest((int) ServerRequests.GetMetadata, " ");
             console_log.AppendText("Welcome!");
+            SetUpThemes();
             //UpdateTaskManager("{\r\n\t\"Transactions\": [\r\n\t\t{\r\n\t\t\t\"Transaction_ID\":\"b86ilpuloh16jmkg9vog\",\r\n\t\t\t\"TransactionQueries\":[\"CREATE TABLE TABLA_1.\", \"UNKNOWN QUERY.\"],\r\n\t\t\t\"Transaction_State\":0\r\n\t\t}\r\n\t]\r\n}");
         }
 
@@ -67,18 +69,5 @@ namespace VisualSQLPro
                 send_sql_text(sqlString);
             }
         }
-    }
-
-    enum ServerRequests
-    {
-        KeepAlive = 200,
-        NewDatabase = 201,
-        LoadDatabase = 202,
-        NewTable = 203,
-        FindTable = 204,
-        GetMetadata = 205,
-        Query = 206,
-        ShowTransaction = 207,
-        Error = 208
     }
 }

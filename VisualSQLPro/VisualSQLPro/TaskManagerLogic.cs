@@ -23,9 +23,12 @@ namespace VisualSQLPro
         }
         private void UpdateTaskManager(string tasks)
         {
+            task_manager_listBox.Items.Clear();
             var transactions = JsonConvert.DeserializeObject<TransactionTable>(tasks);
 
             int counter = 1;
+            if (transactions == null)
+                return;
             foreach (var task in transactions.Transactions)
             {
                 task_manager_listBox.Items.Add("Transaction " + counter);

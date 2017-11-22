@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -12,6 +13,7 @@ namespace VisualSQLPro
         private string _portNumber = "";
         private TcpClient _client;
         private NetworkStream _nwStream;
+        private int _chunkSize = 256;
 
         private bool connection_success()
         {
@@ -44,7 +46,10 @@ namespace VisualSQLPro
 
         private void send_sql_text(string sqlString)
         {
-            BuildAndSendServerRequest((int) ServerRequests.Query, sqlString);
+            var trimmed = sqlString.Trim('\n');
+            trimmed = trimmed.Trim('\r');
+            trimmed = trimmed.Replace("\r\n", string.Empty);
+            BuildAndSendServerRequest((int) ServerRequests.Query, trimmed);
         }
 
         private void send_to_server(string sendThis)
@@ -70,8 +75,9 @@ namespace VisualSQLPro
 
         private void BuildAndSendServerRequest(int idType, string data)
         {
-            string metadata = build_server_request(idType, data);
-            send_to_server(metadata);
+            string dataToSend = build_server_request(idType, data);
+            //send_to_server(dataToSend);
+            send_to_server_new(dataToSend);
         }
 
         private void tcp_listener_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -85,7 +91,8 @@ namespace VisualSQLPro
             try
             {
                 //Console.WriteLine(@"Escuchamos wuu");
-                ServerResponse sr = JsonConvert.DeserializeObject<ServerResponse>(read_server_response());
+                //ServerResponse sr = JsonConvert.DeserializeObject<ServerResponse>(read_server_response());
+                ServerResponse sr = JsonConvert.DeserializeObject<ServerResponse>(read_server_response_new());
                 ConnectedUpdate(true);
                 switch (sr.Type)
                 {
@@ -102,11 +109,15 @@ namespace VisualSQLPro
                         break;
                     case (int)ServerRequests.Error:
                         //Error
-                        ConsoleUpdate(sr.Data);
+                        ConsoleUpdate(sr.Data, ServerRequests.Error);
                         break;
                     case (int)ServerRequests.ShowTransaction:
                         //Error
                         TaskManagerUpdate(sr.Data);
+                        break;
+                    case (int)ServerRequests.Notification:
+                        //Notification
+                        ConsoleUpdate(sr.Data, ServerRequests.Notification);
                         break;
                 }
             }
@@ -174,11 +185,125 @@ namespace VisualSQLPro
             else if (connected_label.Text == "Disconnected, attempting to reconnect...")
                 connected_label.Text = "Disconnected, attempting to reconnect";*/
         }
+
+        private void send_to_server_new(string sendThis)
+        {
+            byte[] bytesToSend = Encoding.ASCII.GetBytes(sendThis);
+
+            byte[] sendLength = BitConverter.GetBytes((uint)bytesToSend.Length);
+            Array.Reverse(sendLength);
+            byte[] reversedLength = sendLength;
+
+            try
+            {
+                Console.WriteLine(@"Prefix to send: " + bytesToSend.Length);
+                _nwStream.Write(reversedLength, 0, reversedLength.Length);
+
+                byte[][] chunks = SplitIntoChunks(bytesToSend, _chunkSize);
+                int counter = 0;
+                foreach (var chunk in chunks)
+                {
+                    Console.WriteLine(@"Current index counter: " + counter);
+                    _nwStream.Write(chunk, 0, chunk.Length);
+                    counter++;
+                }
+            }
+            catch (Exception)
+            {
+                ConnectedUpdate(false);
+                //throw;
+            }
+        }
+
+        private byte[][] SplitIntoChunks(byte[] bytesToSend, int chunkSize)
+        {
+            List<byte[]> returnChunks = new List<byte[]>();
+            int bytesLength = bytesToSend.Length;
+            int i = 0;
+            while (bytesLength >= chunkSize)
+            {
+                byte[] currentChunk = new byte[chunkSize];
+                Array.Copy(bytesToSend, (i * chunkSize), currentChunk, 0, chunkSize);
+                returnChunks.Add(currentChunk);
+
+                i++;
+                bytesLength -= chunkSize;
+            }
+            if (bytesLength > 0)
+            {
+                byte[] currentChunk = new byte[bytesLength];
+                Array.Copy(bytesToSend, (i * chunkSize), currentChunk, 0, bytesLength);
+                returnChunks.Add(currentChunk);
+            }
+
+            return returnChunks.ToArray();
+        }
+
+        private string read_server_response_new()
+        {
+            byte[] bytesToReadLength = new byte[4];
+            _nwStream.Read(bytesToReadLength, 0, 4);
+            Array.Reverse(bytesToReadLength);
+            byte[] reversedLength = bytesToReadLength;
+            int readLength = BitConverter.ToInt32(reversedLength, 0);
+
+            Console.WriteLine(@"Read length: " + readLength);
+
+            byte[] completeMessage = new byte[readLength];
+
+            int chunkAmount;
+            if (readLength % _chunkSize == 0)
+                chunkAmount = readLength / _chunkSize;
+            else
+                chunkAmount = readLength / _chunkSize + 1;
+            int counter = 0;
+            for (int i = 0; i < (chunkAmount - 1); i++)
+            {
+                byte[] chunkToRead = new byte[_chunkSize];
+                _nwStream.Read(chunkToRead, 0, _chunkSize);
+                Array.Copy(chunkToRead, 0, completeMessage, (i * _chunkSize), _chunkSize);
+                Console.WriteLine(@"Current index i: " + i + @", current chunk bytes read: " + Encoding.UTF8.GetString(chunkToRead));
+                counter++;
+            }
+            byte[] lastChunk = new byte[GetLastChunkSize(readLength, _chunkSize)];
+            _nwStream.Read(lastChunk, 0, GetLastChunkSize(readLength, _chunkSize));
+            Array.Copy(lastChunk, 0, completeMessage, ((chunkAmount - 1) * _chunkSize), GetLastChunkSize(readLength, _chunkSize));
+            Console.WriteLine(@"Current index i: " + counter + @", current chunk bytes read: " + Encoding.UTF8.GetString(lastChunk) + @", last chunk size: " + GetLastChunkSize(readLength, _chunkSize));
+
+            //trim here maybe
+            Array.Resize(ref completeMessage, readLength);
+
+            string result = Encoding.UTF8.GetString(completeMessage);
+            Console.WriteLine(result);
+            return result;
+        }
+
+        private int GetLastChunkSize(int totalLength, int chunkSize)
+        {
+            int returnValue = totalLength;
+            while (returnValue > chunkSize)
+                returnValue -= chunkSize;
+            return returnValue;
+        }
     }
 
     class ServerResponse
     {
         public int Type { get; set; }
         public string Data { get; set; }
+    }
+
+    enum ServerRequests
+    {
+        KeepAlive = 200,
+        NewDatabase = 201,
+        LoadDatabase = 202,
+        NewTable = 203,
+        FindTable = 204,
+        GetMetadata = 205,
+        Query = 206,
+        ShowTransaction = 207,
+        Error = 208,
+        Notification = 209
     }
 }
