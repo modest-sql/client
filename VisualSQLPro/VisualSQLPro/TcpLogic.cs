@@ -304,6 +304,7 @@ namespace VisualSQLPro
         Query = 206,
         ShowTransaction = 207,
         Error = 208,
-        Notification = 209
+        Notification = 209,
+        SessionExited = 210
     }
 }

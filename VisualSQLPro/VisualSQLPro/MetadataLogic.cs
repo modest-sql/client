@@ -11,8 +11,13 @@ namespace VisualSQLPro
 
         private void PrintMetadata(string json)
         {
-            var dbMeta = ConvertToOldDB(JsonConvert.DeserializeObject<ResponseDb>(json));
-            update_new_metadata(dbMeta);
+            _currentMetadata.Clear();
+            var metadataArray = JsonConvert.DeserializeObject<ResponseMetadataArray>(json);
+            foreach (var db in metadataArray.Databases)
+            {
+                var dbMeta = ConvertToOldDB(db);
+                update_new_metadata(dbMeta);
+            }
             draw_db_meta();
         }
 
@@ -51,7 +56,6 @@ namespace VisualSQLPro
         private void update_new_metadata(DbMetadata dbMeta)
         {
             check_column_type_integrity(dbMeta);
-            _currentMetadata.Clear();
             DataBase db = BuildDatabase(dbMeta);
             fill_new_meta_list(db);
         }
@@ -180,6 +184,20 @@ namespace VisualSQLPro
                 switch (_currentMetadata[index].MetadataType)
                 {
                     case MetadataType.DbName:
+                        BuildAndSendServerRequest((int)ServerRequests.LoadDatabase, _currentMetadata[index].ValueName);
+                        break;
+                }
+            }
+        }
+
+        private void metadata_listBox_MouseClick(object sender, MouseEventArgs e)
+        {
+            int index = metadata_listBox.IndexFromPoint(e.Location);
+            if (index != ListBox.NoMatches)
+            {
+                switch (_currentMetadata[index].MetadataType)
+                {
+                    case MetadataType.DbName:
                         switch_database(_currentMetadata[index].ValueName);
                         break;
                     case MetadataType.DbTable:
@@ -296,8 +314,6 @@ namespace VisualSQLPro
 
         private void refresh_metadata_button_Click(object sender, EventArgs e)
         {
-            //metadata_listBox.Items.Clear();
-            //BuildAndSendServerRequest((int)ServerRequests.LoadDatabase, "mock.db");
             BuildAndSendServerRequest((int) ServerRequests.GetMetadata, " ");
         }
     }
@@ -346,6 +362,11 @@ namespace VisualSQLPro
         public string TableName { get; set; }
         public string[] ColumnNames { get; set; }
         public string[] ColumnTypes { get; set; }
+    }
+
+    class ResponseMetadataArray
+    {
+        public ResponseDb[] Databases { get; set; }
     }
 
     class ResponseDb

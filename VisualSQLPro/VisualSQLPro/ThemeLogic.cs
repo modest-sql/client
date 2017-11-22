@@ -63,7 +63,7 @@ namespace VisualSQLPro
                 control.ForeColor = theme.DefaultColor;
             }
             if (control.GetType() == typeof(ListBox) || control.GetType() == typeof(ListView) || control.GetType() == typeof(RichTextBox)
-                || control.GetType() == typeof(TextBox) || control.GetType() == typeof(Scintilla))
+                || control.GetType() == typeof(TextBox))
             {
                 control.BackColor = theme.DataPresentersBackColor;
                 control.ForeColor = theme.DefaultColor;
@@ -83,6 +83,11 @@ namespace VisualSQLPro
                 {
                     ApplyControlTheme(tab, theme);
                 }
+            }
+            if (control.GetType() == typeof(Scintilla))
+            {
+                ((Scintilla)control).Styles[Style.Default].BackColor = theme.DataPresentersBackColor;
+                SetUpScintillaStyle(((Scintilla)control));
             }
         }
     }

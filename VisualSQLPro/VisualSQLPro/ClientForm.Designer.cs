@@ -86,6 +86,7 @@
             this.metadata_listBox.Name = "metadata_listBox";
             this.metadata_listBox.Size = new System.Drawing.Size(194, 538);
             this.metadata_listBox.TabIndex = 2;
+            this.metadata_listBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.metadata_listBox_MouseClick);
             this.metadata_listBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.metadata_listBox_MouseDoubleClick);
             // 
             // refresh_metadata_button
@@ -251,21 +252,21 @@
             // metadataToolStripMenuItem
             // 
             this.metadataToolStripMenuItem.Name = "metadataToolStripMenuItem";
-            this.metadataToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.metadataToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.metadataToolStripMenuItem.Text = "Metadata";
             this.metadataToolStripMenuItem.Click += new System.EventHandler(this.metadataToolStripMenuItem_Click);
             // 
             // consoleLogToolStripMenuItem
             // 
             this.consoleLogToolStripMenuItem.Name = "consoleLogToolStripMenuItem";
-            this.consoleLogToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.consoleLogToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.consoleLogToolStripMenuItem.Text = "Console Log";
             this.consoleLogToolStripMenuItem.Click += new System.EventHandler(this.consoleLogToolStripMenuItem_Click);
             // 
             // taskManagerToolStripMenuItem
             // 
             this.taskManagerToolStripMenuItem.Name = "taskManagerToolStripMenuItem";
-            this.taskManagerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.taskManagerToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.taskManagerToolStripMenuItem.Text = "Task Manager";
             this.taskManagerToolStripMenuItem.Click += new System.EventHandler(this.taskManagerToolStripMenuItem_Click);
             // 
