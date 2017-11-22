@@ -10,7 +10,7 @@ namespace VisualSQLPro
         delegate void ChangeConnectedColor(bool val);
         delegate void MetadataUpdatedelegate(string val);
         delegate void CycleDisconnectedColor();
-        delegate void ConsoleUpdateDelegate(string val);
+        delegate void ConsoleUpdateDelegate(string val, ServerRequests request);
         delegate void TableUpdatedelegate(string val);
         delegate void TaskManagerUpdatedelegate(string val);
 
@@ -72,12 +72,12 @@ namespace VisualSQLPro
                 disconnected_cycle();
         }
 
-        private void ConsoleUpdate(string updateVal)
+        private void ConsoleUpdate(string updateVal, ServerRequests request)
         {
             if (console_log.InvokeRequired)
-                console_log.Invoke(new ConsoleUpdateDelegate(ConsoleUpdate), updateVal);
+                console_log.Invoke(new ConsoleUpdateDelegate(ConsoleUpdate), updateVal, request);
             else
-                flashy_console_receive(updateVal);
+                flashy_console_receive(updateVal, request);
         }
 
         private void TableUpdate(string updateVal)

@@ -46,7 +46,10 @@ namespace VisualSQLPro
 
         private void send_sql_text(string sqlString)
         {
-            BuildAndSendServerRequest((int) ServerRequests.Query, sqlString);
+            var trimmed = sqlString.Trim('\n');
+            trimmed = trimmed.Trim('\r');
+            trimmed = trimmed.Replace("\r\n", string.Empty);
+            BuildAndSendServerRequest((int) ServerRequests.Query, trimmed);
         }
 
         private void send_to_server(string sendThis)
@@ -106,11 +109,15 @@ namespace VisualSQLPro
                         break;
                     case (int)ServerRequests.Error:
                         //Error
-                        ConsoleUpdate(sr.Data);
+                        ConsoleUpdate(sr.Data, ServerRequests.Error);
                         break;
                     case (int)ServerRequests.ShowTransaction:
                         //Error
                         TaskManagerUpdate(sr.Data);
+                        break;
+                    case (int)ServerRequests.Notification:
+                        //Notification
+                        ConsoleUpdate(sr.Data, ServerRequests.Notification);
                         break;
                 }
             }
@@ -189,12 +196,16 @@ namespace VisualSQLPro
 
             try
             {
+                Console.WriteLine(@"Prefix to send: " + bytesToSend.Length);
                 _nwStream.Write(reversedLength, 0, reversedLength.Length);
 
                 byte[][] chunks = SplitIntoChunks(bytesToSend, _chunkSize);
+                int counter = 0;
                 foreach (var chunk in chunks)
                 {
+                    Console.WriteLine(@"Current index counter: " + counter);
                     _nwStream.Write(chunk, 0, chunk.Length);
+                    counter++;
                 }
             }
             catch (Exception)
@@ -236,6 +247,8 @@ namespace VisualSQLPro
             byte[] reversedLength = bytesToReadLength;
             int readLength = BitConverter.ToInt32(reversedLength, 0);
 
+            Console.WriteLine(@"Read length: " + readLength);
+
             byte[] completeMessage = new byte[readLength];
 
             int chunkAmount;
@@ -243,20 +256,34 @@ namespace VisualSQLPro
                 chunkAmount = readLength / _chunkSize;
             else
                 chunkAmount = readLength / _chunkSize + 1;
-
-            for (int i = 0; i < chunkAmount; i++)
+            int counter = 0;
+            for (int i = 0; i < (chunkAmount - 1); i++)
             {
                 byte[] chunkToRead = new byte[_chunkSize];
                 _nwStream.Read(chunkToRead, 0, _chunkSize);
                 Array.Copy(chunkToRead, 0, completeMessage, (i * _chunkSize), _chunkSize);
+                Console.WriteLine(@"Current index i: " + i + @", current chunk bytes read: " + Encoding.UTF8.GetString(chunkToRead));
+                counter++;
             }
+            byte[] lastChunk = new byte[GetLastChunkSize(readLength, _chunkSize)];
+            _nwStream.Read(lastChunk, 0, GetLastChunkSize(readLength, _chunkSize));
+            Array.Copy(lastChunk, 0, completeMessage, ((chunkAmount - 1) * _chunkSize), GetLastChunkSize(readLength, _chunkSize));
+            Console.WriteLine(@"Current index i: " + counter + @", current chunk bytes read: " + Encoding.UTF8.GetString(lastChunk) + @", last chunk size: " + GetLastChunkSize(readLength, _chunkSize));
 
             //trim here maybe
-            //Array.Resize(ref completeMessage, readLength);
+            Array.Resize(ref completeMessage, readLength);
 
             string result = Encoding.UTF8.GetString(completeMessage);
             Console.WriteLine(result);
             return result;
+        }
+
+        private int GetLastChunkSize(int totalLength, int chunkSize)
+        {
+            int returnValue = totalLength;
+            while (returnValue > chunkSize)
+                returnValue -= chunkSize;
+            return returnValue;
         }
     }
 
@@ -276,6 +303,7 @@ namespace VisualSQLPro
         GetMetadata = 205,
         Query = 206,
         ShowTransaction = 207,
-        Error = 208
+        Error = 208,
+        Notification = 209
     }
 }

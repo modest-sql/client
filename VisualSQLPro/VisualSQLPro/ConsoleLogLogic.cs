@@ -6,24 +6,24 @@ namespace VisualSQLPro
 {
     public partial class ClientForm
     {
-        private void flashy_console_receive(string str)
+        private void flashy_console_receive(string str, ServerRequests request)
         {
-            var trimmed = str.Trim('\0');
+            /*var trimmed = str.Trim('\0');
             trimmed = trimmed.Trim('[');
             trimmed = trimmed.Trim(']');
-            var des = JsonConvert.DeserializeObject<ServerError>(trimmed);
-            if (des.Error != "no error")
+            var des = JsonConvert.DeserializeObject<ServerError>(trimmed);*/
+            if (request == ServerRequests.Error)
             {
                 console_log.Select(console_log.TextLength, 0);
                 console_log.SelectionColor = Color.Red;
-                console_log.AppendText(Environment.NewLine + "received: " + des.Error);
+                console_log.AppendText(Environment.NewLine + "received: " + str);
                 console_log.SelectionColor = SystemColors.WindowText;
             }
             else
             {
                 console_log.Select(console_log.TextLength, 0);
                 console_log.SelectionColor = Color.Blue;
-                console_log.AppendText(Environment.NewLine + "received: success, no error");
+                console_log.AppendText(Environment.NewLine + "received: " + str);
                 console_log.SelectionColor = SystemColors.WindowText;
             }
             console_log.ScrollToCaret();

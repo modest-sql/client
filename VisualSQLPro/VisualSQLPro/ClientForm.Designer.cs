@@ -51,6 +51,7 @@
             this.metadataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consoleLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.taskManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.themesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.task_manager_groupBox = new System.Windows.Forms.GroupBox();
             this.task_manager_listBox = new System.Windows.Forms.ListBox();
             this.tcp_listener = new System.ComponentModel.BackgroundWorker();
@@ -191,7 +192,8 @@
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.viewToolStripMenuItem});
+            this.viewToolStripMenuItem,
+            this.themesToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(618, 24);
@@ -249,23 +251,30 @@
             // metadataToolStripMenuItem
             // 
             this.metadataToolStripMenuItem.Name = "metadataToolStripMenuItem";
-            this.metadataToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.metadataToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.metadataToolStripMenuItem.Text = "Metadata";
             this.metadataToolStripMenuItem.Click += new System.EventHandler(this.metadataToolStripMenuItem_Click);
             // 
             // consoleLogToolStripMenuItem
             // 
             this.consoleLogToolStripMenuItem.Name = "consoleLogToolStripMenuItem";
-            this.consoleLogToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.consoleLogToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.consoleLogToolStripMenuItem.Text = "Console Log";
             this.consoleLogToolStripMenuItem.Click += new System.EventHandler(this.consoleLogToolStripMenuItem_Click);
             // 
             // taskManagerToolStripMenuItem
             // 
             this.taskManagerToolStripMenuItem.Name = "taskManagerToolStripMenuItem";
-            this.taskManagerToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.taskManagerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.taskManagerToolStripMenuItem.Text = "Task Manager";
             this.taskManagerToolStripMenuItem.Click += new System.EventHandler(this.taskManagerToolStripMenuItem_Click);
+            // 
+            // themesToolStripMenuItem
+            // 
+            this.themesToolStripMenuItem.Name = "themesToolStripMenuItem";
+            this.themesToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.themesToolStripMenuItem.Text = "Themes";
+            this.themesToolStripMenuItem.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.themesToolStripMenuItem_DropDownItemClicked);
             // 
             // task_manager_groupBox
             // 
@@ -351,6 +360,7 @@
         private System.Windows.Forms.ToolStripButton load_Button;
         private System.Windows.Forms.ToolStripButton save_Button;
         private System.Windows.Forms.ToolTip general_toolTip;
+        private System.Windows.Forms.ToolStripMenuItem themesToolStripMenuItem;
     }
 }
 
