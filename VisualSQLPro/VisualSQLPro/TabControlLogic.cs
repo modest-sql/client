@@ -1,5 +1,7 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 
@@ -20,9 +22,27 @@ namespace VisualSQLPro
                 DataSource = table,
                 Dock = DockStyle.Fill
             };
+            InsertNulls(dataGrid);
             myTabPage.Controls.Add(dataGrid);
 
             queries_tabControl.SelectedTab = myTabPage;
+        }
+
+        private void InsertNulls(DataGridView dataGrid)
+        {
+            foreach (DataGridViewRow dr in dataGrid.Rows)
+            {
+                if (!dr.IsNewRow)
+                {
+                    for (int c = 0; c <= dr.Cells.Count - 1; c++)
+                    {
+                        if (dr.Cells[c].Value == DBNull.Value)
+                        {
+                            dr.Cells[c].Value = "null";
+                        }
+                    }
+                }
+            }
         }
 
         private void queries_tabControl_DrawItem(object sender, DrawItemEventArgs e)

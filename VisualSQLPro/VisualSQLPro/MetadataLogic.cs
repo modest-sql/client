@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Timers;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using Timer = System.Timers.Timer;
 
 namespace VisualSQLPro
 {
     public partial class ClientForm
     {
         private List<Metadata> _currentMetadata = new List<Metadata>();
+        private readonly Timer _metadataListboxTimer = new Timer();
+        private bool _firstClick;
+        private bool _secondClick;
 
         private void SetUpMetadata()
         {
@@ -20,6 +25,46 @@ namespace VisualSQLPro
 
             metadata_listBox.Scrollable = true;
             metadata_listBox.View = View.Details;
+            
+            metadata_listBox.MouseUp += metadata_listBox_MouseUp;
+
+            _metadataListboxTimer.Interval = 200;
+            _metadataListboxTimer.Enabled = false;
+            _metadataListboxTimer.Elapsed += MetadataListboxTimerEvent;
+            _metadataListboxTimer.AutoReset = true;
+        }
+
+        private void MetadataListboxTimerEvent(object sender, ElapsedEventArgs e)
+        {
+            UpdateMetadataClickManager();
+        }
+
+        private void MetadataClickLogic()
+        {
+            if (_firstClick && _secondClick)
+            {
+                MetadataDoubleClick();
+            }
+            else if (_firstClick)
+            {
+                MetadataSingleClick();
+            }
+            _firstClick = false;
+            _secondClick = false;
+            _metadataListboxTimer.Enabled = false;
+        }
+
+        private void metadata_listBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (_firstClick == false)
+            {
+                _firstClick = true;
+                _metadataListboxTimer.Enabled = true;
+            }
+            else
+            {
+                _secondClick = true;
+            }
         }
 
         private void PrintMetadata(string json)
@@ -201,7 +246,7 @@ namespace VisualSQLPro
             _currentMetadata = updatedMetadata;
         }
 
-        private void metadata_listBox_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void MetadataDoubleClick()
         {
             int index = metadata_listBox.FocusedItem.Index;
             if (index != ListBox.NoMatches)
@@ -211,12 +256,13 @@ namespace VisualSQLPro
                     case MetadataType.DbName:
                         BuildAndSendServerRequest((int)ServerRequests.LoadDatabase, _currentMetadata[index].ValueName);
                         _activeDb = _currentMetadata[index].ValueName;
+                        draw_db_meta();
                         break;
                 }
             }
         }
 
-        private void metadata_listBox_MouseClick(object sender, MouseEventArgs e)
+        private void MetadataSingleClick()
         {
             int index = metadata_listBox.FocusedItem.Index;
             if (index != ListBox.NoMatches)

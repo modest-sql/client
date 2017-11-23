@@ -22,6 +22,7 @@ namespace VisualSQLPro
             BuildAndSendServerRequest((int) ServerRequests.GetMetadata, " ");
             console_log.AppendText("Welcome!");
             SetUpThemes();
+            PrintTable("[{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":null},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":null},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"}]");
         }
 
         private void PopUp_Cycle()

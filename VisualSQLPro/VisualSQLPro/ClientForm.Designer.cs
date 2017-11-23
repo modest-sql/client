@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClientForm));
             this.metadata_group = new System.Windows.Forms.GroupBox();
+            this.metadata_listBox = new System.Windows.Forms.ListView();
             this.refresh_metadata_button = new System.Windows.Forms.Button();
             this.console_groupBox = new System.Windows.Forms.GroupBox();
             this.console_log = new System.Windows.Forms.RichTextBox();
@@ -57,7 +58,6 @@
             this.tcp_listener = new System.ComponentModel.BackgroundWorker();
             this.tcp_ping = new System.ComponentModel.BackgroundWorker();
             this.general_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.metadata_listBox = new System.Windows.Forms.ListView();
             this.metadata_group.SuspendLayout();
             this.console_groupBox.SuspendLayout();
             this.query_groupBox.SuspendLayout();
@@ -77,6 +77,15 @@
             this.metadata_group.TabIndex = 0;
             this.metadata_group.TabStop = false;
             this.metadata_group.Text = "Metadata";
+            // 
+            // metadata_listBox
+            // 
+            this.metadata_listBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.metadata_listBox.Location = new System.Drawing.Point(3, 39);
+            this.metadata_listBox.Name = "metadata_listBox";
+            this.metadata_listBox.Size = new System.Drawing.Size(194, 538);
+            this.metadata_listBox.TabIndex = 4;
+            this.metadata_listBox.UseCompatibleStateImageBehavior = false;
             // 
             // refresh_metadata_button
             // 
@@ -301,17 +310,6 @@
             // tcp_ping
             // 
             this.tcp_ping.DoWork += new System.ComponentModel.DoWorkEventHandler(this.tcp_ping_DoWork);
-            // 
-            // metadata_listBox
-            // 
-            this.metadata_listBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.metadata_listBox.Location = new System.Drawing.Point(3, 39);
-            this.metadata_listBox.Name = "metadata_listBox";
-            this.metadata_listBox.Size = new System.Drawing.Size(194, 538);
-            this.metadata_listBox.TabIndex = 4;
-            this.metadata_listBox.UseCompatibleStateImageBehavior = false;
-            this.metadata_listBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.metadata_listBox_MouseClick);
-            this.metadata_listBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.metadata_listBox_MouseDoubleClick);
             // 
             // ClientForm
             // 
