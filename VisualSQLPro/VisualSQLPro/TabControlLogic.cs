@@ -22,26 +22,18 @@ namespace VisualSQLPro
                 DataSource = table,
                 Dock = DockStyle.Fill
             };
-            InsertNulls(dataGrid);
+            dataGrid.CellFormatting += dataGrid_CellFormatting;
             myTabPage.Controls.Add(dataGrid);
 
             queries_tabControl.SelectedTab = myTabPage;
         }
 
-        private void InsertNulls(DataGridView dataGrid)
+        private void dataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            foreach (DataGridViewRow dr in dataGrid.Rows)
+            if (e.Value is DBNull)
             {
-                if (!dr.IsNewRow)
-                {
-                    for (int c = 0; c <= dr.Cells.Count - 1; c++)
-                    {
-                        if (dr.Cells[c].Value == DBNull.Value)
-                        {
-                            dr.Cells[c].Value = "null";
-                        }
-                    }
-                }
+                e.Value = "NULL";
+                e.CellStyle.Font = new Font(((DataGridView)sender).DefaultCellStyle.Font, FontStyle.Italic);
             }
         }
 
