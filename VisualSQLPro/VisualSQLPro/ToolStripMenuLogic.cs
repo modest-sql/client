@@ -44,5 +44,10 @@ namespace VisualSQLPro
         {
             execute_sql();
         }
+
+        private void createDBToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CreateDb();
+        }
     }
 }

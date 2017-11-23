@@ -13,7 +13,7 @@ namespace VisualSQLPro
         public PopupForm()
         {
             InitializeComponent();
-            this.MaximizeBox = false;
+            MaximizeBox = false;
         }
 
         private void LocalhostClick(object sender, EventArgs e)

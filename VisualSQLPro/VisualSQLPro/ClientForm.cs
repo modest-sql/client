@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace VisualSQLPro
@@ -14,14 +15,11 @@ namespace VisualSQLPro
             SetUpScintilla();
             PopUp_Cycle();
             tcp_listener.RunWorkerAsync();
-            //tcp_ping.RunWorkerAsync();
+            tcp_ping.RunWorkerAsync();
             SetUpTaskManager();
-            //BuildAndSendServerRequest((int)ServerRequests.LoadDatabase, "Mocca.db");
-            //BuildAndSendServerRequest((int)ServerRequests.NewDatabase, "Mocca.db");
             BuildAndSendServerRequest((int) ServerRequests.GetMetadata, " ");
             console_log.AppendText("Welcome!");
             SetUpThemes();
-            //UpdateTaskManager("{\r\n\t\"Transactions\": [\r\n\t\t{\r\n\t\t\t\"Transaction_ID\":\"b86ilpuloh16jmkg9vog\",\r\n\t\t\t\"TransactionQueries\":[\"CREATE TABLE TABLA_1.\", \"UNKNOWN QUERY.\"],\r\n\t\t\t\"Transaction_State\":0\r\n\t\t}\r\n\t]\r\n}");
         }
 
         private void PopUp_Cycle()
@@ -68,6 +66,24 @@ namespace VisualSQLPro
                 console_send(sqlString);
                 send_sql_text(sqlString);
             }
+        }
+
+        private void CreateDb()
+        {
+            GeneralDataInputPopup popup = new GeneralDataInputPopup { StartPosition = FormStartPosition.CenterParent };
+            popup.Text = @"Input DB Name";
+            popup.ChangeLabelText("Input new database name:");
+            DialogResult dialogresult = popup.ShowDialog();
+            string data = popup.Data;
+            popup.Dispose();
+            if (dialogresult == DialogResult.OK && data != "")
+            {
+                if (Path.GetExtension(data) != ".db")
+                    data += ".db";
+                BuildAndSendServerRequest((int)ServerRequests.NewDatabase, data);
+            }
+            else if (dialogresult == DialogResult.OK && data == "")
+                MessageBox.Show(@"Database name can't be empty.");
         }
     }
 }
