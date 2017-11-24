@@ -7,19 +7,22 @@ namespace VisualSQLPro
 {
     public partial class ClientForm : Form
     {
+        private string _activeDb = "";
         public ClientForm()
         {
             InitializeComponent();
             SetUpResizers();
             SetUpTimers();
             SetUpScintilla();
+            SetUpMetadata();
             PopUp_Cycle();
             tcp_listener.RunWorkerAsync();
-            tcp_ping.RunWorkerAsync();
+            //tcp_ping.RunWorkerAsync();
             SetUpTaskManager();
             BuildAndSendServerRequest((int) ServerRequests.GetMetadata, " ");
             console_log.AppendText("Welcome!");
             SetUpThemes();
+            PrintTable("[{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":null},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":null},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"}]");
         }
 
         private void PopUp_Cycle()
@@ -81,6 +84,7 @@ namespace VisualSQLPro
                 if (Path.GetExtension(data) != ".db")
                     data += ".db";
                 BuildAndSendServerRequest((int)ServerRequests.NewDatabase, data);
+                _activeDb = data;
             }
             else if (dialogresult == DialogResult.OK && data == "")
                 MessageBox.Show(@"Database name can't be empty.");

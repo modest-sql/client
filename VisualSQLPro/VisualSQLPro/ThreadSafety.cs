@@ -13,6 +13,15 @@ namespace VisualSQLPro
         delegate void ConsoleUpdateDelegate(string val, ServerRequests request);
         delegate void TableUpdatedelegate(string val);
         delegate void TaskManagerUpdatedelegate(string val);
+        delegate void MetadataClickDelegate();
+
+        private void UpdateMetadataClickManager()
+        {
+            if (metadata_listBox.InvokeRequired)
+                metadata_listBox.Invoke(new MetadataClickDelegate(UpdateMetadataClickManager));
+            else
+                MetadataClickLogic();
+        }
 
         private void UpdateTaskPosition()
         {

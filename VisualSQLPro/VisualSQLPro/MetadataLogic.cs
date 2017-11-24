@@ -1,13 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Timers;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using Timer = System.Timers.Timer;
 
 namespace VisualSQLPro
 {
     public partial class ClientForm
     {
         private List<Metadata> _currentMetadata = new List<Metadata>();
+        private readonly Timer _metadataListboxTimer = new Timer();
+        private bool _firstClick;
+        private bool _secondClick;
+
+        private void SetUpMetadata()
+        {
+            ColumnHeader header = new ColumnHeader();
+            header.Text = "";
+            header.Name = "col1";
+            metadata_listBox.Columns.Add(header);
+            metadata_listBox.HeaderStyle = ColumnHeaderStyle.None;
+
+            metadata_listBox.Scrollable = true;
+            metadata_listBox.View = View.Details;
+            
+            metadata_listBox.MouseUp += metadata_listBox_MouseUp;
+
+            _metadataListboxTimer.Interval = 200;
+            _metadataListboxTimer.Enabled = false;
+            _metadataListboxTimer.Elapsed += MetadataListboxTimerEvent;
+            _metadataListboxTimer.AutoReset = true;
+        }
+
+        private void MetadataListboxTimerEvent(object sender, ElapsedEventArgs e)
+        {
+            UpdateMetadataClickManager();
+        }
+
+        private void MetadataClickLogic()
+        {
+            if (_firstClick && _secondClick)
+            {
+                MetadataDoubleClick();
+            }
+            else if (_firstClick)
+            {
+                MetadataSingleClick();
+            }
+            _firstClick = false;
+            _secondClick = false;
+            _metadataListboxTimer.Enabled = false;
+        }
+
+        private void metadata_listBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (_firstClick == false)
+            {
+                _firstClick = true;
+                _metadataListboxTimer.Enabled = true;
+            }
+            else
+            {
+                _secondClick = true;
+            }
+        }
 
         private void PrintMetadata(string json)
         {
@@ -74,16 +132,28 @@ namespace VisualSQLPro
                             metadata_listBox.Items.Add(meta.ValueName);
                             break;
                         case MetadataType.DbTable:
-                            metadata_listBox.Items.Add("\t" + meta.ValueName);
+                            metadata_listBox.Items.Add(Spaces(5) +  meta.ValueName);
                             break;
                         case MetadataType.ColumnName:
-                            metadata_listBox.Items.Add("\t\t" + meta.ValueName);
+                            metadata_listBox.Items.Add(Spaces(10) +  meta.ValueName);
                             break;
                         case MetadataType.ColumnType:
-                            metadata_listBox.Items.Add("\t\t\t" + meta.ValueName);
+                            metadata_listBox.Items.Add(Spaces(15) + meta.ValueName);
                             break;
                     }
                 }
+            }
+            DrawActiveDb();
+            metadata_listBox.Columns[0].Width = -1;
+        }
+
+        private void DrawActiveDb()
+        {
+            int itemCount = metadata_listBox.Items.Count;
+            for (int i = 0; i < itemCount; i++)
+            {
+                if (metadata_listBox.Items[i].Text == _activeDb && _currentMetadata[i].MetadataType == MetadataType.DbName)
+                    metadata_listBox.Items[i].Font = new Font(metadata_listBox.Items[i].Font.FontFamily, metadata_listBox.Items[i].Font.Size, metadata_listBox.Items[i].Font.Style | FontStyle.Bold);
             }
         }
 
@@ -176,23 +246,25 @@ namespace VisualSQLPro
             _currentMetadata = updatedMetadata;
         }
 
-        private void metadata_listBox_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void MetadataDoubleClick()
         {
-            int index = metadata_listBox.IndexFromPoint(e.Location);
+            int index = metadata_listBox.FocusedItem.Index;
             if (index != ListBox.NoMatches)
             {
                 switch (_currentMetadata[index].MetadataType)
                 {
                     case MetadataType.DbName:
                         BuildAndSendServerRequest((int)ServerRequests.LoadDatabase, _currentMetadata[index].ValueName);
+                        _activeDb = _currentMetadata[index].ValueName;
+                        draw_db_meta();
                         break;
                 }
             }
         }
 
-        private void metadata_listBox_MouseClick(object sender, MouseEventArgs e)
+        private void MetadataSingleClick()
         {
-            int index = metadata_listBox.IndexFromPoint(e.Location);
+            int index = metadata_listBox.FocusedItem.Index;
             if (index != ListBox.NoMatches)
             {
                 switch (_currentMetadata[index].MetadataType)
@@ -315,6 +387,16 @@ namespace VisualSQLPro
         private void refresh_metadata_button_Click(object sender, EventArgs e)
         {
             BuildAndSendServerRequest((int) ServerRequests.GetMetadata, " ");
+        }
+
+        private string Spaces(int quantity)
+        {
+            string returnSpaces = "";
+            for (int i = 0; i < quantity; i++)
+            {
+                returnSpaces += " ";
+            }
+            return returnSpaces;
         }
     }
     abstract class Metadata

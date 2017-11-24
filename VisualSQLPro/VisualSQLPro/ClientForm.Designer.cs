@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ClientForm));
             this.metadata_group = new System.Windows.Forms.GroupBox();
-            this.metadata_listBox = new System.Windows.Forms.ListBox();
+            this.metadata_listBox = new System.Windows.Forms.ListView();
             this.refresh_metadata_button = new System.Windows.Forms.Button();
             this.console_groupBox = new System.Windows.Forms.GroupBox();
             this.console_log = new System.Windows.Forms.RichTextBox();
@@ -43,6 +43,7 @@
             this.save_Button = new System.Windows.Forms.ToolStripButton();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createDBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.executeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,7 +58,6 @@
             this.tcp_listener = new System.ComponentModel.BackgroundWorker();
             this.tcp_ping = new System.ComponentModel.BackgroundWorker();
             this.general_toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.createDBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.metadata_group.SuspendLayout();
             this.console_groupBox.SuspendLayout();
             this.query_groupBox.SuspendLayout();
@@ -81,14 +81,11 @@
             // metadata_listBox
             // 
             this.metadata_listBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.metadata_listBox.FormattingEnabled = true;
-            this.metadata_listBox.HorizontalScrollbar = true;
             this.metadata_listBox.Location = new System.Drawing.Point(3, 39);
             this.metadata_listBox.Name = "metadata_listBox";
             this.metadata_listBox.Size = new System.Drawing.Size(194, 538);
-            this.metadata_listBox.TabIndex = 2;
-            this.metadata_listBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.metadata_listBox_MouseClick);
-            this.metadata_listBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.metadata_listBox_MouseDoubleClick);
+            this.metadata_listBox.TabIndex = 4;
+            this.metadata_listBox.UseCompatibleStateImageBehavior = false;
             // 
             // refresh_metadata_button
             // 
@@ -213,31 +210,38 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // createDBToolStripMenuItem
+            // 
+            this.createDBToolStripMenuItem.Name = "createDBToolStripMenuItem";
+            this.createDBToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.createDBToolStripMenuItem.Text = "Create DB";
+            this.createDBToolStripMenuItem.Click += new System.EventHandler(this.createDBToolStripMenuItem_Click);
+            // 
             // executeToolStripMenuItem
             // 
             this.executeToolStripMenuItem.Name = "executeToolStripMenuItem";
-            this.executeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.executeToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.executeToolStripMenuItem.Text = "Execute";
             this.executeToolStripMenuItem.Click += new System.EventHandler(this.executeToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -307,13 +311,6 @@
             // 
             this.tcp_ping.DoWork += new System.ComponentModel.DoWorkEventHandler(this.tcp_ping_DoWork);
             // 
-            // createDBToolStripMenuItem
-            // 
-            this.createDBToolStripMenuItem.Name = "createDBToolStripMenuItem";
-            this.createDBToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.createDBToolStripMenuItem.Text = "Create DB";
-            this.createDBToolStripMenuItem.Click += new System.EventHandler(this.createDBToolStripMenuItem_Click);
-            // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -345,7 +342,6 @@
         #endregion
 
         private System.Windows.Forms.GroupBox metadata_group;
-        private System.Windows.Forms.ListBox metadata_listBox;
         private System.Windows.Forms.Button refresh_metadata_button;
         private System.Windows.Forms.GroupBox console_groupBox;
         private System.Windows.Forms.RichTextBox console_log;
@@ -372,6 +368,7 @@
         private System.Windows.Forms.ToolTip general_toolTip;
         private System.Windows.Forms.ToolStripMenuItem themesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createDBToolStripMenuItem;
+        private System.Windows.Forms.ListView metadata_listBox;
     }
 }
 

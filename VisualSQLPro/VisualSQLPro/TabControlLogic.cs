@@ -1,5 +1,7 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 
@@ -20,9 +22,19 @@ namespace VisualSQLPro
                 DataSource = table,
                 Dock = DockStyle.Fill
             };
+            dataGrid.CellFormatting += dataGrid_CellFormatting;
             myTabPage.Controls.Add(dataGrid);
 
             queries_tabControl.SelectedTab = myTabPage;
+        }
+
+        private void dataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.Value is DBNull)
+            {
+                e.Value = "NULL";
+                e.CellStyle.Font = new Font(((DataGridView)sender).DefaultCellStyle.Font, FontStyle.Italic);
+            }
         }
 
         private void queries_tabControl_DrawItem(object sender, DrawItemEventArgs e)
