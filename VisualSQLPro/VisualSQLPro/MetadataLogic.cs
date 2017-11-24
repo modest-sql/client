@@ -32,6 +32,16 @@ namespace VisualSQLPro
             _metadataListboxTimer.Enabled = false;
             _metadataListboxTimer.Elapsed += MetadataListboxTimerEvent;
             _metadataListboxTimer.AutoReset = true;
+
+            ImageList imageListSmall = new ImageList();
+            imageListSmall.Images.Add(Bitmap.FromFile(GetAssetFilePath("db2_icon.bmp")));
+            imageListSmall.Images.Add(Bitmap.FromFile(GetAssetFilePath("table_icon.bmp")));
+            imageListSmall.Images.Add(Bitmap.FromFile(GetAssetFilePath("column_icon.bmp")));
+            imageListSmall.Images.Add(Bitmap.FromFile(GetAssetFilePath("orange_key_icon.bmp")));
+            //imageListSmall.ImageSize = new Size(24, 24);
+
+            metadata_listBox.View = View.SmallIcon;
+            metadata_listBox.SmallImageList = imageListSmall;
         }
 
         private void MetadataListboxTimerEvent(object sender, ElapsedEventArgs e)
@@ -122,6 +132,7 @@ namespace VisualSQLPro
         {
             metadata_listBox.Items.Clear();
             update_current_meta();
+            int counter = 0;
             if (_currentMetadata.Count != 0)
             {
                 foreach (var meta in _currentMetadata)
@@ -130,21 +141,26 @@ namespace VisualSQLPro
                     {
                         case MetadataType.DbName:
                             metadata_listBox.Items.Add(meta.ValueName);
+                            metadata_listBox.Items[counter].ImageIndex = 0;
                             break;
                         case MetadataType.DbTable:
                             metadata_listBox.Items.Add(Spaces(5) +  meta.ValueName);
+                            metadata_listBox.Items[counter].ImageIndex = 1;
                             break;
                         case MetadataType.ColumnName:
                             metadata_listBox.Items.Add(Spaces(10) +  meta.ValueName);
+                            metadata_listBox.Items[counter].ImageIndex = 2;
                             break;
                         case MetadataType.ColumnType:
                             metadata_listBox.Items.Add(Spaces(15) + meta.ValueName);
                             break;
                     }
+                    counter++;
                 }
             }
             DrawActiveDb();
             metadata_listBox.Columns[0].Width = -1;
+            //metadata_listBox.Items[0].ImageIndex = 0;
         }
 
         private void DrawActiveDb()

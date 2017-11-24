@@ -22,7 +22,7 @@ namespace VisualSQLPro
             BuildAndSendServerRequest((int) ServerRequests.GetMetadata, " ");
             console_log.AppendText("Welcome!");
             SetUpThemes();
-            PrintTable("[{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":null},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":null},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"}]");
+            //PrintTable("[{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":null},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":null},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"}]");
         }
 
         private void PopUp_Cycle()
@@ -88,6 +88,19 @@ namespace VisualSQLPro
             }
             else if (dialogresult == DialogResult.OK && data == "")
                 MessageBox.Show(@"Database name can't be empty.");
+        }
+
+        private string GetAssetFilePath(string fileName)
+        {
+            string solutionPath = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
+            if (solutionPath != null)
+            {
+                DirectoryInfo parentDir = Directory.GetParent(solutionPath);
+                string testFolderPath = Path.Combine(parentDir.FullName, "assets");
+                string filePath = Path.Combine(testFolderPath, fileName);
+                return filePath;
+            }
+            return null;
         }
     }
 }
