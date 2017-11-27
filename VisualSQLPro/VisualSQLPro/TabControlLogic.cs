@@ -23,6 +23,7 @@ namespace VisualSQLPro
                 Dock = DockStyle.Fill
             };
             dataGrid.CellFormatting += dataGrid_CellFormatting;
+            dataGrid.ReadOnly = true;
             myTabPage.Controls.Add(dataGrid);
 
             queries_tabControl.SelectedTab = myTabPage;
@@ -30,7 +31,7 @@ namespace VisualSQLPro
 
         private void dataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (e.Value is DBNull)
+            if (e.Value is DBNull && e.DesiredType != typeof(bool))
             {
                 e.Value = "NULL";
                 e.CellStyle.Font = new Font(((DataGridView)sender).DefaultCellStyle.Font, FontStyle.Italic);

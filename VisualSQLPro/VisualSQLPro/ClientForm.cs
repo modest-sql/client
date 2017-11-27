@@ -15,14 +15,14 @@ namespace VisualSQLPro
             SetUpTimers();
             SetUpScintilla();
             SetUpMetadata();
-            PopUp_Cycle();
-            tcp_listener.RunWorkerAsync();
+            //PopUp_Cycle();
+            //tcp_listener.RunWorkerAsync();
             //tcp_ping.RunWorkerAsync();
-            SetUpTaskManager();
-            BuildAndSendServerRequest((int) ServerRequests.GetMetadata, " ");
+            //SetUpTaskManager();
+            //BuildAndSendServerRequest((int) ServerRequests.GetMetadata, " ");
             console_log.AppendText("Welcome!");
             SetUpThemes();
-            //PrintTable("[{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":null},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":null},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"},{\"ID_EMPLOYEE\":\"hello\"}]");
+            PrintTable("[\r\n    {\"Name\":\"AAA\",\"Age\":\"22\",\"Married\":true},\r\n    {\"Name\":\"BBB\",\"Age\":\"25\",\"Married\":false},\r\n    {\"Name\":\"CCC\",\"Age\":\"38\",\"Married\":null}\r\n]");
         }
 
         private void PopUp_Cycle()
