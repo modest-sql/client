@@ -14,6 +14,7 @@ namespace VisualSQLPro
         private TcpClient _client;
         private NetworkStream _nwStream;
         private int _chunkSize = 256;
+        private bool _lockedTcpConnection;
 
         private bool connection_success()
         {
@@ -23,9 +24,11 @@ namespace VisualSQLPro
             }
             catch (Exception)
             {
+                _lockedTcpConnection = true;
                 return false;
                 //throw;
             }
+            _lockedTcpConnection = false;
             return true;
         }
 
@@ -188,6 +191,11 @@ namespace VisualSQLPro
 
         private void send_to_server_new(string sendThis)
         {
+            while (_lockedTcpConnection)
+            {
+                //Lock until tcp connection can be used
+            }
+            _lockedTcpConnection = true;
             byte[] bytesToSend = Encoding.ASCII.GetBytes(sendThis);
 
             byte[] sendLength = BitConverter.GetBytes((uint)bytesToSend.Length);
@@ -213,6 +221,7 @@ namespace VisualSQLPro
                 ConnectedUpdate(false);
                 //throw;
             }
+            _lockedTcpConnection = false;
         }
 
         private byte[][] SplitIntoChunks(byte[] bytesToSend, int chunkSize)
