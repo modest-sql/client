@@ -25,7 +25,7 @@ namespace VisualSQLPro
 
             metadata_listBox.Scrollable = true;
             metadata_listBox.View = View.Details;
-            
+
             metadata_listBox.MouseUp += metadata_listBox_MouseUp;
 
             _metadataListboxTimer.Interval = 200;
@@ -91,14 +91,14 @@ namespace VisualSQLPro
 
         private DbMetadata ConvertToOldDB(ResponseDb newDb)
         {
-            DbMetadata dbMeta = new DbMetadata { DbName = newDb.DB_Name };
+            DbMetadata dbMeta = new DbMetadata {DbName = newDb.DB_Name};
             List<DbTable> tableList = new List<DbTable>();
             dbMeta.Tables = tableList.ToArray();
             if (newDb.Tables == null)
                 return dbMeta;
             foreach (var table in newDb.Tables)
             {
-                DbTable oldTable = new DbTable { TableName = table.TableName };
+                DbTable oldTable = new DbTable {TableName = table.TableName};
 
                 List<string> columnNames = new List<string>();
                 List<string> columnTypes = new List<string>();
@@ -144,11 +144,11 @@ namespace VisualSQLPro
                             metadata_listBox.Items[counter].ImageIndex = 0;
                             break;
                         case MetadataType.DbTable:
-                            metadata_listBox.Items.Add(Spaces(5) +  meta.ValueName);
+                            metadata_listBox.Items.Add(Spaces(5) + meta.ValueName);
                             metadata_listBox.Items[counter].ImageIndex = 1;
                             break;
                         case MetadataType.ColumnName:
-                            metadata_listBox.Items.Add(Spaces(10) +  meta.ValueName);
+                            metadata_listBox.Items.Add(Spaces(10) + meta.ValueName);
                             metadata_listBox.Items[counter].ImageIndex = 2;
                             break;
                         case MetadataType.ColumnType:
@@ -168,8 +168,10 @@ namespace VisualSQLPro
             int itemCount = metadata_listBox.Items.Count;
             for (int i = 0; i < itemCount; i++)
             {
-                if (metadata_listBox.Items[i].Text == _activeDb && _currentMetadata[i].MetadataType == MetadataType.DbName)
-                    metadata_listBox.Items[i].Font = new Font(metadata_listBox.Items[i].Font.FontFamily, metadata_listBox.Items[i].Font.Size, metadata_listBox.Items[i].Font.Style | FontStyle.Bold);
+                if (metadata_listBox.Items[i].Text == _activeDb &&
+                    _currentMetadata[i].MetadataType == MetadataType.DbName)
+                    metadata_listBox.Items[i].Font = new Font(metadata_listBox.Items[i].Font.FontFamily,
+                        metadata_listBox.Items[i].Font.Size, metadata_listBox.Items[i].Font.Style | FontStyle.Bold);
             }
         }
 
@@ -243,7 +245,7 @@ namespace VisualSQLPro
                     updatedMetadata.Add(meta);
                     if (meta.Expanded)
                     {
-                        foreach (var table in ((DataBase)meta).Tables)
+                        foreach (var table in ((DataBase) meta).Tables)
                         {
                             updatedMetadata.Add(table);
                             if (table.Expanded)
@@ -264,13 +266,22 @@ namespace VisualSQLPro
 
         private void MetadataDoubleClick()
         {
-            int index = metadata_listBox.FocusedItem.Index;
-            if (index != ListBox.NoMatches)
+            int index;
+            try
+            {
+                index = metadata_listBox.FocusedItem.Index;
+            }
+            catch (Exception)
+            {
+                index = -2;
+            }
+
+            if (index != ListBox.NoMatches && index != -2)
             {
                 switch (_currentMetadata[index].MetadataType)
                 {
                     case MetadataType.DbName:
-                        BuildAndSendServerRequest((int)ServerRequests.LoadDatabase, _currentMetadata[index].ValueName);
+                        BuildAndSendServerRequest((int) ServerRequests.LoadDatabase, _currentMetadata[index].ValueName);
                         _activeDb = _currentMetadata[index].ValueName;
                         draw_db_meta();
                         break;
@@ -280,8 +291,17 @@ namespace VisualSQLPro
 
         private void MetadataSingleClick()
         {
-            int index = metadata_listBox.FocusedItem.Index;
-            if (index != ListBox.NoMatches)
+            int index;
+            try
+            {
+                index = metadata_listBox.FocusedItem.Index;
+            }
+            catch (Exception)
+            {
+                index = -2;
+            }
+            
+            if (index != ListBox.NoMatches && index != -2)
             {
                 switch (_currentMetadata[index].MetadataType)
                 {
