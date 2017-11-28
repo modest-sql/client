@@ -23,10 +23,27 @@ namespace VisualSQLPro
                 Dock = DockStyle.Fill
             };
             dataGrid.CellFormatting += dataGrid_CellFormatting;
+            dataGrid.DataBindingComplete += dataGrid_DataBindingComplete;
+            dataGrid.AllowUserToAddRows = false;
             dataGrid.ReadOnly = true;
+            dataGrid.EnableHeadersVisualStyles = false;
+            FillRecordNo(dataGrid);
             myTabPage.Controls.Add(dataGrid);
 
             queries_tabControl.SelectedTab = myTabPage;
+        }
+
+        private void dataGrid_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            FillRecordNo(((DataGridView) sender));
+        }
+
+        private void FillRecordNo(DataGridView dataGrid)
+        {
+            for (int i = 0; i < dataGrid.Rows.Count; i++)
+            {
+                dataGrid.Rows[i].HeaderCell.Value = (i + 1).ToString();
+            }
         }
 
         private void dataGrid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)

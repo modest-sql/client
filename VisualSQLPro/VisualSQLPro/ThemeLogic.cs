@@ -89,6 +89,19 @@ namespace VisualSQLPro
                 ((Scintilla)control).Styles[Style.Default].BackColor = theme.DataPresentersBackColor;
                 SetUpScintillaStyle(((Scintilla)control));
             }
+            if (control.GetType() == typeof(DataGridView))
+            {
+                ((DataGridView) control).ColumnHeadersDefaultCellStyle.BackColor = theme.ButtonsBackGroundColor;
+                ((DataGridView) control).ColumnHeadersDefaultCellStyle.ForeColor = theme.DefaultColor;
+                ((DataGridView) control).RowHeadersDefaultCellStyle.BackColor = theme.ButtonsBackGroundColor;
+                ((DataGridView)control).RowHeadersDefaultCellStyle.ForeColor = theme.DefaultColor;
+                foreach (DataGridViewRow row in ((DataGridView)control).Rows)
+                {
+                    row.DefaultCellStyle.BackColor = theme.DataPresentersBackColor;
+                }
+                ((DataGridView)control).GridColor = theme.DefaultColor;
+                control.ForeColor = theme.DefaultColor;
+            }
         }
     }
 
