@@ -8,6 +8,7 @@ namespace VisualSQLPro
     public partial class ClientForm : Form
     {
         private string _activeDb = "";
+        private Theme _activeTheme = new Theme("Default");
         public ClientForm()
         {
             InitializeComponent();
@@ -15,13 +16,14 @@ namespace VisualSQLPro
             SetUpTimers();
             SetUpScintilla();
             SetUpMetadata();
+            SetUpThemes();
             PopUp_Cycle();
             tcp_listener.RunWorkerAsync();
             //tcp_ping.RunWorkerAsync();
             SetUpTaskManager();
             BuildAndSendServerRequest((int) ServerRequests.GetMetadata, " ");
+            ApplyWholeTheme(_activeTheme);
             console_log.AppendText("Welcome!");
-            SetUpThemes();
             //PrintTable("[\r\n    {\"Name\":\"AAA\",\"Age\":\"22\",\"Married\":true},\r\n    {\"Name\":\"BBB\",\"Age\":\"25\",\"Married\":false},\r\n    {\"Name\":\"CCC\",\"Age\":\"38\",\"Married\":null}]");
         }
 
