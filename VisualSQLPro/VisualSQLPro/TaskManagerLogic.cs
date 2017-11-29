@@ -11,16 +11,17 @@ namespace VisualSQLPro
         private void SetUpTaskManager()
         {
             task_manager_groupBox.Visible = false;
-            _taskManagerUpdateTimer.Interval = 2000;
+            _taskManagerUpdateTimer.Interval = 1500;
             _taskManagerUpdateTimer.Elapsed += TaskManagerUpdateTimerEvent;
             _taskManagerUpdateTimer.Enabled = true;
-            _taskManagerUpdateTimer.AutoReset = true;
+            _taskManagerUpdateTimer.AutoReset = false;
         }
 
         private void TaskManagerUpdateTimerEvent(object sender, ElapsedEventArgs e)
         {
-            if (task_manager_groupBox.Visible && _lockedTcpConnection == false)
+            if (task_manager_groupBox.Visible)
                 BuildAndSendServerRequest((int) ServerRequests.ShowTransaction," ");
+            _taskManagerUpdateTimer.Start();
         }
         private void UpdateTaskManager(string tasks)
         {
