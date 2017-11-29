@@ -19,7 +19,7 @@ namespace VisualSQLPro
             SetUpThemes();
             PopUp_Cycle();
             tcp_listener.RunWorkerAsync();
-            //tcp_ping.RunWorkerAsync();
+            tcp_ping.RunWorkerAsync();
             SetUpTaskManager();
             BuildAndSendServerRequest((int) ServerRequests.GetMetadata, " ");
             ApplyWholeTheme(_activeTheme);
@@ -52,6 +52,10 @@ namespace VisualSQLPro
         {
             try
             {
+                while (_lockedTcpConnection)
+                {
+                    //Lock until tcp connection can be used
+                }
                 _client.Close();
             }
             catch (Exception)

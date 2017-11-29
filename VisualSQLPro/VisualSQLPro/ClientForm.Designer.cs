@@ -298,6 +298,7 @@
             // 
             this.task_manager_listBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.task_manager_listBox.FormattingEnabled = true;
+            this.task_manager_listBox.HorizontalScrollbar = true;
             this.task_manager_listBox.Location = new System.Drawing.Point(3, 16);
             this.task_manager_listBox.Name = "task_manager_listBox";
             this.task_manager_listBox.Size = new System.Drawing.Size(194, 561);

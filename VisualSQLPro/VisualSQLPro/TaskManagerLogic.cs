@@ -6,11 +6,12 @@ namespace VisualSQLPro
     public partial class ClientForm
     {
         private readonly Timer _taskManagerUpdateTimer = new Timer();
+        private string _currentTaskManagerText = "";
 
         private void SetUpTaskManager()
         {
             task_manager_groupBox.Visible = false;
-            _taskManagerUpdateTimer.Interval = 1000;
+            _taskManagerUpdateTimer.Interval = 2000;
             _taskManagerUpdateTimer.Elapsed += TaskManagerUpdateTimerEvent;
             _taskManagerUpdateTimer.Enabled = true;
             _taskManagerUpdateTimer.AutoReset = true;
@@ -18,11 +19,14 @@ namespace VisualSQLPro
 
         private void TaskManagerUpdateTimerEvent(object sender, ElapsedEventArgs e)
         {
-            if (task_manager_groupBox.Visible)
+            if (task_manager_groupBox.Visible && _lockedTcpConnection == false)
                 BuildAndSendServerRequest((int) ServerRequests.ShowTransaction," ");
         }
         private void UpdateTaskManager(string tasks)
         {
+            if (_currentTaskManagerText == tasks)
+                return;
+            _currentTaskManagerText = tasks;
             task_manager_listBox.Items.Clear();
             var transactions = JsonConvert.DeserializeObject<TransactionTable>(tasks);
 

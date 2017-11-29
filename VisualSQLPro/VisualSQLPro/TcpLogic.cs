@@ -38,36 +38,12 @@ namespace VisualSQLPro
             _nwStream = _client.GetStream();
         }
 
-        private string read_server_response()
-        {
-            byte[] bytesToRead = new byte[_client.ReceiveBufferSize];
-            _nwStream.Read(bytesToRead, 0, _client.ReceiveBufferSize);
-
-            string result = Encoding.UTF8.GetString(bytesToRead);
-            return result;
-        }
-
         private void send_sql_text(string sqlString)
         {
             var trimmed = sqlString.Trim('\n');
             trimmed = trimmed.Trim('\r');
             trimmed = trimmed.Replace("\r\n", string.Empty);
             BuildAndSendServerRequest((int) ServerRequests.Query, trimmed);
-        }
-
-        private void send_to_server(string sendThis)
-        {
-            byte[] bytesToSend = Encoding.ASCII.GetBytes(sendThis);
-
-            try
-            {
-                _nwStream.Write(bytesToSend, 0, bytesToSend.Length);
-            }
-            catch (Exception)
-            {
-                ConnectedUpdate(false);
-                //throw;
-            }
         }
 
         private string build_server_request(int idType, string data)
@@ -150,7 +126,7 @@ namespace VisualSQLPro
         {
             while (true)
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(3000);
                 PingServer();
                 if (/*connected_pictureBox.BackColor == Color.Red*/Text == @"Modest SQL Client Pro (Disconnected)")
                 {
