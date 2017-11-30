@@ -290,6 +290,7 @@ namespace VisualSQLPro
         ShowTransaction = 207,
         Error = 208,
         Notification = 209,
-        SessionExited = 210
+        SessionExited = 210,
+        DropDb = 211
     }
 }

@@ -25,9 +25,7 @@ namespace VisualSQLPro
 
             metadata_listBox.Scrollable = true;
             metadata_listBox.View = View.Details;
-
-            metadata_listBox.MouseUp += metadata_listBox_MouseUp;
-
+            
             _metadataListboxTimer.Interval = 200;
             _metadataListboxTimer.Enabled = false;
             _metadataListboxTimer.Elapsed += MetadataListboxTimerEvent;
@@ -62,19 +60,6 @@ namespace VisualSQLPro
             _firstClick = false;
             _secondClick = false;
             _metadataListboxTimer.Enabled = false;
-        }
-
-        private void metadata_listBox_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (_firstClick == false)
-            {
-                _firstClick = true;
-                _metadataListboxTimer.Enabled = true;
-            }
-            else
-            {
-                _secondClick = true;
-            }
         }
 
         private void PrintMetadata(string json)
@@ -266,15 +251,7 @@ namespace VisualSQLPro
 
         private void MetadataDoubleClick()
         {
-            int index;
-            try
-            {
-                index = metadata_listBox.FocusedItem.Index;
-            }
-            catch (Exception)
-            {
-                index = -2;
-            }
+            int index = GetMetadataIndexSafely();
 
             if (index != ListBox.NoMatches && index != -2)
             {
@@ -291,16 +268,8 @@ namespace VisualSQLPro
 
         private void MetadataSingleClick()
         {
-            int index;
-            try
-            {
-                index = metadata_listBox.FocusedItem.Index;
-            }
-            catch (Exception)
-            {
-                index = -2;
-            }
-            
+            int index = GetMetadataIndexSafely();
+
             if (index != ListBox.NoMatches && index != -2)
             {
                 switch (_currentMetadata[index].MetadataType)
@@ -317,6 +286,112 @@ namespace VisualSQLPro
                 }
             }
             draw_db_meta();
+        }
+
+        private void metadata_listBox_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (_firstClick)
+            {
+                _secondClick = true;
+            }
+        }
+
+        private void metadata_listBox_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (_firstClick == false && e.Button == MouseButtons.Left)
+            {
+                _firstClick = true;
+                _metadataListboxTimer.Enabled = true;
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                int index = GetMetadataIndexSafely();
+
+                if (index != ListBox.NoMatches && index != -2)
+                {
+                    switch (_currentMetadata[index].MetadataType)
+                    {
+                        case MetadataType.DbName:
+                            metadata_database_contextMenuStrip.Show(Cursor.Position);
+                            break;
+                        case MetadataType.DbTable:
+                            metadata_table_contextMenuStrip.Show(Cursor.Position);
+                            break;
+                        case MetadataType.ColumnName:
+                            //Todo context menu for columns
+                            break;
+                    }
+                }
+            }
+        }
+
+        private void setDBToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            int index = GetMetadataIndexSafely();
+
+            if (index != ListBox.NoMatches && index != -2)
+            {
+                BuildAndSendServerRequest((int)ServerRequests.LoadDatabase, _currentMetadata[index].ValueName);
+                _activeDb = _currentMetadata[index].ValueName;
+                draw_db_meta();
+            } 
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int index = GetMetadataIndexSafely();
+
+            if (index != ListBox.NoMatches && index != -2)
+            {
+                BuildAndSendServerRequest((int)ServerRequests.DropDb, _currentMetadata[index].ValueName);
+                if (_activeDb == _currentMetadata[index].ValueName)
+                {
+                    _activeDb = "";
+                }
+                BuildAndSendServerRequest((int)ServerRequests.GetMetadata, " ");
+            }
+        }
+
+        private void viewToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            int index = GetMetadataIndexSafely();
+            
+            if (index != ListBox.NoMatches && index != -2)
+            {
+                string parentDatabase = "";
+                int counter = index;
+                while (counter >= 0)
+                {
+                    if (_currentMetadata[counter].MetadataType == MetadataType.DbName)
+                    {
+                        parentDatabase = _currentMetadata[counter].ValueName;
+                        break;
+                    }
+                    counter--;
+                }
+                
+                BuildAndSendServerRequest((int)ServerRequests.LoadDatabase, parentDatabase);
+                send_sql_text("select * from " + _currentMetadata[index].ValueName);
+                if (_activeDb != "")
+                    BuildAndSendServerRequest((int) ServerRequests.LoadDatabase, _activeDb);
+                else
+                    _activeDb = parentDatabase;
+                draw_db_meta();
+            }
+        }
+
+        private int GetMetadataIndexSafely()
+        {
+            int index;
+            try
+            {
+                index = metadata_listBox.FocusedItem.Index;
+            }
+            catch (Exception)
+            {
+                index = -2;
+            }
+            return index;
         }
 
         private void switch_database(string dbName)

@@ -1,4 +1,6 @@
-﻿namespace VisualSQLPro
+﻿using System;
+
+namespace VisualSQLPro
 {
     partial class ClientForm
     {
@@ -17,7 +19,14 @@
             {
                 components.Dispose();
             }
-            base.Dispose(disposing);
+            try
+            {
+                base.Dispose(disposing);
+            }
+            catch (Exception)
+            {
+                //throw;
+            }
         }
 
         #region Windows Form Designer generated code
@@ -58,12 +67,19 @@
             this.tcp_listener = new System.ComponentModel.BackgroundWorker();
             this.tcp_ping = new System.ComponentModel.BackgroundWorker();
             this.general_toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.metadata_database_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.setDBToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.metadata_table_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.viewToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.metadata_group.SuspendLayout();
             this.console_groupBox.SuspendLayout();
             this.query_groupBox.SuspendLayout();
             this.query_toolStrip.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.task_manager_groupBox.SuspendLayout();
+            this.metadata_database_contextMenuStrip.SuspendLayout();
+            this.metadata_table_contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // metadata_group
@@ -86,6 +102,8 @@
             this.metadata_listBox.Size = new System.Drawing.Size(194, 538);
             this.metadata_listBox.TabIndex = 4;
             this.metadata_listBox.UseCompatibleStateImageBehavior = false;
+            this.metadata_listBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.metadata_listBox_MouseClick);
+            this.metadata_listBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.metadata_listBox_MouseDoubleClick);
             // 
             // refresh_metadata_button
             // 
@@ -312,6 +330,42 @@
             // 
             this.tcp_ping.DoWork += new System.ComponentModel.DoWorkEventHandler(this.tcp_ping_DoWork);
             // 
+            // metadata_database_contextMenuStrip
+            // 
+            this.metadata_database_contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.setDBToolStripMenuItem1,
+            this.deleteToolStripMenuItem});
+            this.metadata_database_contextMenuStrip.Name = "metadata_contextMenuStrip";
+            this.metadata_database_contextMenuStrip.Size = new System.Drawing.Size(164, 48);
+            // 
+            // setDBToolStripMenuItem1
+            // 
+            this.setDBToolStripMenuItem1.Name = "setDBToolStripMenuItem1";
+            this.setDBToolStripMenuItem1.Size = new System.Drawing.Size(163, 22);
+            this.setDBToolStripMenuItem1.Text = "Set as current DB";
+            this.setDBToolStripMenuItem1.Click += new System.EventHandler(this.setDBToolStripMenuItem1_Click);
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.deleteToolStripMenuItem.Text = "Drop DB";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            // 
+            // metadata_table_contextMenuStrip
+            // 
+            this.metadata_table_contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.viewToolStripMenuItem2});
+            this.metadata_table_contextMenuStrip.Name = "metadata_table_contextMenuStrip";
+            this.metadata_table_contextMenuStrip.Size = new System.Drawing.Size(155, 48);
+            // 
+            // viewToolStripMenuItem2
+            // 
+            this.viewToolStripMenuItem2.Name = "viewToolStripMenuItem2";
+            this.viewToolStripMenuItem2.Size = new System.Drawing.Size(154, 22);
+            this.viewToolStripMenuItem2.Text = "View table data";
+            this.viewToolStripMenuItem2.Click += new System.EventHandler(this.viewToolStripMenuItem2_Click);
+            // 
             // ClientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -335,6 +389,8 @@
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.task_manager_groupBox.ResumeLayout(false);
+            this.metadata_database_contextMenuStrip.ResumeLayout(false);
+            this.metadata_table_contextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -370,6 +426,11 @@
         private System.Windows.Forms.ToolStripMenuItem themesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createDBToolStripMenuItem;
         private System.Windows.Forms.ListView metadata_listBox;
+        private System.Windows.Forms.ContextMenuStrip metadata_database_contextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem setDBToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip metadata_table_contextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem2;
     }
 }
 
