@@ -12,26 +12,120 @@ namespace VisualSQLPro
         private void SetUpThemes()
         {
             _themeList.Add(_activeTheme);
-            Theme theme1 = new Theme("Dark")
+            _themeList.Add(new Theme("Oblivion")
             {
                 GeneralFormColor = ColorTranslator.FromHtml("#1E1E1E"),
                 DataPresentersBackColor = ColorTranslator.FromHtml("#1E1E1E"),
-                ButtonsBackGroundColor = ColorTranslator.FromHtml("#616161"),
-                DefaultTextColor = ColorTranslator.FromHtml("#E2E2E2"),
+                ButtonsBackGroundColor = ColorTranslator.FromHtml("#2A2A2A"),
+                DefaultTextColor = ColorTranslator.FromHtml("#D8D8D8"),
+                FailColor = ColorTranslator.FromHtml("#D25252"),
+                SuccessColor = ColorTranslator.FromHtml("#79ABFF"),
+                WatermarkColor = ColorTranslator.FromHtml("#D9E577"),
+                CommentColor = ColorTranslator.FromHtml("#D9E577"),
+                NumberColor = ColorTranslator.FromHtml("#7FB347"),
+                Keyword1Color = ColorTranslator.FromHtml("#C7DD0C"),
+                Keyword2Color = ColorTranslator.FromHtml("#FFC600"),
+                Keyword3Color = ColorTranslator.FromHtml("#79ABFF"),
+                Keyword4Color = ColorTranslator.FromHtml("#D197D9"),
+                StringAndCharColor = ColorTranslator.FromHtml("#D25252"),
+                OperatorColor = ColorTranslator.FromHtml("#D8D8D8")
+            });
+
+            _themeList.Add(new Theme("Sublime 2")
+            {
+                GeneralFormColor = ColorTranslator.FromHtml("#272822"),
+                DataPresentersBackColor = ColorTranslator.FromHtml("#272822"),
+                ButtonsBackGroundColor = ColorTranslator.FromHtml("#404040"),
+                DefaultTextColor = ColorTranslator.FromHtml("#CFBFAD"),
+                FailColor = ColorTranslator.FromHtml("#FF0000"),
+                SuccessColor = ColorTranslator.FromHtml("#52E3F6"),
+                WatermarkColor = ColorTranslator.FromHtml("#D8D8D8"),
+                CommentColor = ColorTranslator.FromHtml("#FFFFFF"),
+                NumberColor = ColorTranslator.FromHtml("#C48CFF"),
+                Keyword1Color = ColorTranslator.FromHtml("#52E3F6"),
+                Keyword2Color = ColorTranslator.FromHtml("#A7EC21"),
+                Keyword3Color = ColorTranslator.FromHtml("#FF007F"),
+                Keyword4Color = ColorTranslator.FromHtml("#CC9900"),
+                StringAndCharColor = ColorTranslator.FromHtml("#FF0000"),
+                OperatorColor = ColorTranslator.FromHtml("#CFBFAD")
+            });
+
+            _themeList.Add(new Theme("Zenburn")
+            {
+                GeneralFormColor = ColorTranslator.FromHtml("#404040"),
+                DataPresentersBackColor = ColorTranslator.FromHtml("#404040"),
+                ButtonsBackGroundColor = ColorTranslator.FromHtml("#404040"),
+                DefaultTextColor = ColorTranslator.FromHtml("#F6F3E8"),
                 FailColor = ColorTranslator.FromHtml("#CC9393"),
-                SuccessColor = ColorTranslator.FromHtml("#8DCBE2"),
-                WatermarkColor = ColorTranslator.FromHtml("#9393CC"),
-                CommentColor = ColorTranslator.FromHtml("#73879B"),
-                NumberColor = ColorTranslator.FromHtml("#EAB882"),
-                Keyword1Color = ColorTranslator.FromHtml("#8DCBE2"),
-                Keyword2Color = ColorTranslator.FromHtml("#A893CC"),
-                Keyword3Color = ColorTranslator.FromHtml("#BCADAD"),
-                Keyword4Color = ColorTranslator.FromHtml("#93A2CC"),
+                SuccessColor = ColorTranslator.FromHtml("#53DCCD"),
+                WatermarkColor = ColorTranslator.FromHtml("#BCADAD"),
+                CommentColor = ColorTranslator.FromHtml("#7F9F7F"),
+                NumberColor = ColorTranslator.FromHtml("#8ACCCF"),
+                Keyword1Color = ColorTranslator.FromHtml("#CAE682"),
+                Keyword2Color = ColorTranslator.FromHtml("#DFBE95"),
+                Keyword3Color = ColorTranslator.FromHtml("#93A2CC"),
+                Keyword4Color = ColorTranslator.FromHtml("#B3B5AF"),
                 StringAndCharColor = ColorTranslator.FromHtml("#CC9393"),
-                OperatorColor = ColorTranslator.FromHtml("#E2E2E2")
-            };
-            _themeList.Add(theme1);
-            
+                OperatorColor = ColorTranslator.FromHtml("#F6F3E8")
+            });
+
+            _themeList.Add(new Theme("Roboticket")
+            {
+                GeneralFormColor = ColorTranslator.FromHtml("#F5F5F5"),
+                DataPresentersBackColor = ColorTranslator.FromHtml("#F5F5F5"),
+                ButtonsBackGroundColor = ColorTranslator.FromHtml("#F5F5F5"),
+                DefaultTextColor = ColorTranslator.FromHtml("#585858"),
+                FailColor = ColorTranslator.FromHtml("#AB2525"),
+                SuccessColor = ColorTranslator.FromHtml("#295F94"),
+                WatermarkColor = ColorTranslator.FromHtml("#FFDF99"),
+                CommentColor = ColorTranslator.FromHtml("#AD95AF"),
+                NumberColor = ColorTranslator.FromHtml("#AF0F91"),
+                Keyword1Color = ColorTranslator.FromHtml("#2C577C"),
+                Keyword2Color = ColorTranslator.FromHtml("#55aa55"),
+                Keyword3Color = ColorTranslator.FromHtml("#AD95AF"),
+                Keyword4Color = ColorTranslator.FromHtml("#CC9393"),
+                StringAndCharColor = ColorTranslator.FromHtml("#317ECC"),
+                OperatorColor = ColorTranslator.FromHtml("#585858")
+            });
+
+            _themeList.Add(new Theme("Solarized Light")
+            {
+                GeneralFormColor = ColorTranslator.FromHtml("#FDF6E3"),
+                DataPresentersBackColor = ColorTranslator.FromHtml("#FDF6E3"),
+                ButtonsBackGroundColor = ColorTranslator.FromHtml("#ECE7D5"),
+                DefaultTextColor = ColorTranslator.FromHtml("#657A81"),
+                FailColor = ColorTranslator.FromHtml("#D30102"),
+                SuccessColor = ColorTranslator.FromHtml("#2AA198"),
+                WatermarkColor = ColorTranslator.FromHtml("#93A1A1"),
+                CommentColor = ColorTranslator.FromHtml("#586E75"),
+                NumberColor = ColorTranslator.FromHtml("#2AA198"),
+                Keyword1Color = ColorTranslator.FromHtml("#B58900"),
+                Keyword2Color = ColorTranslator.FromHtml("#00FF00"),
+                Keyword3Color = ColorTranslator.FromHtml("#D33682"),
+                Keyword4Color = ColorTranslator.FromHtml("#BCADAD"),
+                StringAndCharColor = ColorTranslator.FromHtml("#D30102"),
+                OperatorColor = ColorTranslator.FromHtml("#657A81")
+            });
+
+            _themeList.Add(new Theme("Retta")
+            {
+                GeneralFormColor = ColorTranslator.FromHtml("#000000"),
+                DataPresentersBackColor = ColorTranslator.FromHtml("#000000"),
+                ButtonsBackGroundColor = ColorTranslator.FromHtml("#2A2A2A"),
+                DefaultTextColor = ColorTranslator.FromHtml("#F8E1AA"),
+                FailColor = ColorTranslator.FromHtml("#DE6546"),
+                SuccessColor = ColorTranslator.FromHtml("#A4B0C0"),
+                WatermarkColor = ColorTranslator.FromHtml("#D6C248"),
+                CommentColor = ColorTranslator.FromHtml("#83786E"),
+                NumberColor = ColorTranslator.FromHtml("#D6C248"),
+                Keyword1Color = ColorTranslator.FromHtml("#C97138"),
+                Keyword2Color = ColorTranslator.FromHtml("#FFFF00"),
+                Keyword3Color = ColorTranslator.FromHtml("#E79E3C"),
+                Keyword4Color = ColorTranslator.FromHtml("#DE6546"),
+                StringAndCharColor = ColorTranslator.FromHtml("#E79E3C"),
+                OperatorColor = ColorTranslator.FromHtml("#F8E1AA")
+            });
+
             foreach (var theme in _themeList)
             {
                 ToolStripMenuItem newTheme = new ToolStripMenuItem() {Name = theme.ThemeName, Text = theme.ThemeName};

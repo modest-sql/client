@@ -126,7 +126,7 @@ namespace VisualSQLPro
         {
             while (true)
             {
-                Thread.Sleep(3000);
+                Thread.Sleep(2000);
                 PingServer();
                 if (/*connected_pictureBox.BackColor == Color.Red*/Text == @"Modest SQL Client Pro (Disconnected)")
                 {
