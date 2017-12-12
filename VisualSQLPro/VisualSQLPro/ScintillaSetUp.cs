@@ -35,6 +35,8 @@ namespace VisualSQLPro
             {
                 ((Scintilla)sender).SelectAll();
                 ((Scintilla)sender).Clear();
+                ((Scintilla)sender).SetSelectionBackColor(true, _activeTheme.WatermarkColor);
+                ((Scintilla)sender).SetSelectionForeColor(true, _activeTheme.DefaultTextColor);
             }
         }
 
@@ -105,6 +107,11 @@ namespace VisualSQLPro
                 myScintilla.SelectAll();
                 myScintilla.SetSelectionBackColor(true, _activeTheme.DataPresentersBackColor);
                 myScintilla.SetSelectionForeColor(true, _activeTheme.WatermarkColor);
+            }
+            else
+            {
+                myScintilla.SetSelectionBackColor(true, _activeTheme.WatermarkColor);
+                myScintilla.SetSelectionForeColor(true, _activeTheme.DefaultTextColor);
             }
         }
     }
