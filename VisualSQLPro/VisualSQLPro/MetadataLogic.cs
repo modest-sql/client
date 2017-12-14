@@ -70,10 +70,102 @@ namespace VisualSQLPro
             var metadataArray = JsonConvert.DeserializeObject<ResponseMetadataArray>(json);
             foreach (var db in metadataArray.Databases)
             {
-                var dbMeta = ConvertToOldDB(db);
-                update_new_metadata(dbMeta);
+                /*var dbMeta = ConvertToOldDB(db);
+                update_new_metadata(dbMeta);*/
+                new_update_metadata(db);
             }
             draw_db_meta();
+        }
+
+        private void new_update_metadata(ResponseDb db)
+        {
+            DataBase newDb = NewBuildDatabase(db);
+            fill_new_meta_list(newDb);
+        }
+
+        private DataBase NewBuildDatabase(ResponseDb dbMeta)
+        {
+            DataBase db = new DataBase()
+            {
+                MetadataType = MetadataType.DbName,
+                Expanded = true,
+                ValueName = dbMeta.DB_Name
+            };
+
+            foreach (var table in dbMeta.Tables)
+            {
+                Table tbl = new Table()
+                {
+                    MetadataType = MetadataType.DbTable,
+                    ValueName = table.TableName,
+                    Expanded = false
+                };
+
+                foreach (var column in table.TableColumns)
+                {
+                    Column clm = new Column()
+                    {
+                        MetadataType = MetadataType.ColumnName,
+                        Expanded = false,
+                        ValueName = column.ColumnName
+                    };
+
+                    ColumnProperty clmType = new ColumnProperty()
+                    {
+                        MetadataType = MetadataType.ColumnProperty,
+                        Expanded = false
+                    };
+                    if (column.ColumnType == DataType.Char)
+                        clmType.ValueName = column.ColumnType + "(" + column.ColumnSize + ")";
+                    else
+                        clmType.ValueName = column.ColumnType.ToString();
+                    clm.Properties.Add(clmType);
+
+                    ColumnProperty clmNull = new ColumnProperty()
+                    {
+                        MetadataType = MetadataType.ColumnProperty,
+                        Expanded = false,
+                        ValueName = column.NotNull ? "Nullable" : "Not nullable"
+                    };
+                    clm.Properties.Add(clmNull);
+
+                    ColumnProperty clmAutoIncrement = new ColumnProperty()
+                    {
+                        MetadataType = MetadataType.ColumnProperty,
+                        Expanded = false,
+                        ValueName = column.Autoincrement ? "Autoincrements" : "Does not autoincrement"
+                    };
+                    clm.Properties.Add(clmAutoIncrement);
+
+                    ColumnProperty clmPrimaryKey = new ColumnProperty()
+                    {
+                        MetadataType = MetadataType.ColumnProperty,
+                        Expanded = false,
+                        ValueName = column.PrimaryKey ? "Primary key" : "Not primary key"
+                    };
+                    clm.Properties.Add(clmPrimaryKey);
+
+                    ColumnProperty clmForeignKey = new ColumnProperty()
+                    {
+                        MetadataType = MetadataType.ColumnProperty,
+                        Expanded = false,
+                        ValueName = column.ForeignKey ? "Foreign key" : "Not foreign key"
+                    };
+                    clm.Properties.Add(clmForeignKey);
+
+                    ColumnProperty clmDefaultValue = new ColumnProperty()
+                    {
+                        MetadataType = MetadataType.ColumnProperty,
+                        Expanded = false,
+                        ValueName = column.DefaultValue ? "Has default value" : "No default value"
+                    };
+                    clm.Properties.Add(clmDefaultValue);
+
+                    tbl.Columns.Add(clm);
+                }
+                db.Tables.Add(tbl);
+            }
+            return db;
         }
 
         private DbMetadata ConvertToOldDB(ResponseDb newDb)
@@ -138,7 +230,7 @@ namespace VisualSQLPro
                             metadata_listBox.Items.Add(Spaces(10) + meta.ValueName);
                             metadata_listBox.Items[counter].ImageIndex = 2;
                             break;
-                        case MetadataType.ColumnType:
+                        case MetadataType.ColumnProperty:
                             metadata_listBox.Items.Add(Spaces(15) + meta.ValueName);
                             break;
                     }
@@ -197,13 +289,13 @@ namespace VisualSQLPro
                         Expanded = false,
                         ValueName = table.ColumnNames[i]
                     };
-                    ColumnType clmType = new ColumnType()
+                    ColumnProperty clmProperty = new ColumnProperty()
                     {
-                        MetadataType = MetadataType.ColumnType,
+                        MetadataType = MetadataType.ColumnProperty,
                         Expanded = false,
                         ValueName = table.ColumnTypes[i]
                     };
-                    clm.ColumnType = clmType;
+                    clm.Properties[1] = clmProperty;
                     tbl.Columns.Add(clm);
                 }
                 db.Tables.Add(tbl);
@@ -241,7 +333,12 @@ namespace VisualSQLPro
                                 {
                                     updatedMetadata.Add(column);
                                     if (column.Expanded)
-                                        updatedMetadata.Add(column.ColumnType);
+                                    {
+                                        foreach (var property in column.Properties)
+                                        {
+                                            updatedMetadata.Add(property);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -409,7 +506,10 @@ namespace VisualSQLPro
                         foreach (var column in table.Columns)
                         {
                             column.Expanded = false;
-                            column.ColumnType.Expanded = false;
+                            foreach (var property in column.Properties)
+                            {
+                                property.Expanded = false;
+                            }
                         }
                     }
                     break;
@@ -442,7 +542,10 @@ namespace VisualSQLPro
                             foreach (var column in table.Columns)
                             {
                                 column.Expanded = false;
-                                column.ColumnType.Expanded = false;
+                                foreach (var property in column.Properties)
+                                {
+                                    property.Expanded = false;
+                                }
                             }
                         }
                     }
@@ -531,10 +634,17 @@ namespace VisualSQLPro
 
     class Column : Metadata
     {
-        public ColumnType ColumnType;
+        public List<ColumnProperty> Properties = new List<ColumnProperty>();
+        /*public ColumnProperty ColumnType;
+        public ColumnProperty ColumnSize;
+        public ColumnProperty NotNull;
+        public ColumnProperty Autoincrement;
+        public ColumnProperty PrimaryKey;
+        public ColumnProperty ForeignKey;
+        public ColumnProperty DefaultValue;*/
     }
 
-    class ColumnType : Metadata
+    class ColumnProperty : Metadata
     {
 
     }
@@ -543,7 +653,7 @@ namespace VisualSQLPro
         DbName,
         DbTable,
         ColumnName,
-        ColumnType
+        ColumnProperty
     }
 
     class DbMetadata
@@ -557,6 +667,11 @@ namespace VisualSQLPro
         public string TableName { get; set; }
         public string[] ColumnNames { get; set; }
         public string[] ColumnTypes { get; set; }
+    }
+
+    class DbColumn
+    {
+        
     }
 
     class ResponseMetadataArray
@@ -581,6 +696,11 @@ namespace VisualSQLPro
         public string ColumnName { get; set; }
         public DataType ColumnType { get; set; }
         public UInt16 ColumnSize { get; set; }
+        public bool NotNull { get; set; }
+        public bool Autoincrement { get; set; }
+        public bool PrimaryKey { get; set; }
+        public bool ForeignKey { get; set; }
+        public bool DefaultValue { get; set; }
     }
 
     enum DataType
