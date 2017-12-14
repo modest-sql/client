@@ -180,14 +180,14 @@ namespace VisualSQLPro
 
             try
             {
-                Console.WriteLine(@"Prefix to send: " + bytesToSend.Length);
+                //Console.WriteLine(@"Prefix to send: " + bytesToSend.Length);
                 _nwStream.Write(reversedLength, 0, reversedLength.Length);
 
                 byte[][] chunks = SplitIntoChunks(bytesToSend, _chunkSize);
                 int counter = 0;
                 foreach (var chunk in chunks)
                 {
-                    Console.WriteLine(@"Current index counter: " + counter);
+                    //Console.WriteLine(@"Current index counter: " + counter);
                     _nwStream.Write(chunk, 0, chunk.Length);
                     counter++;
                 }
@@ -232,7 +232,7 @@ namespace VisualSQLPro
             byte[] reversedLength = bytesToReadLength;
             int readLength = BitConverter.ToInt32(reversedLength, 0);
 
-            Console.WriteLine(@"Read length: " + readLength);
+            //Console.WriteLine(@"Read length: " + readLength);
 
             byte[] completeMessage = new byte[readLength];
 
@@ -247,19 +247,19 @@ namespace VisualSQLPro
                 byte[] chunkToRead = new byte[_chunkSize];
                 _nwStream.Read(chunkToRead, 0, _chunkSize);
                 Array.Copy(chunkToRead, 0, completeMessage, (i * _chunkSize), _chunkSize);
-                Console.WriteLine(@"Current index i: " + i + @", current chunk bytes read: " + Encoding.UTF8.GetString(chunkToRead));
+                //Console.WriteLine(@"Current index i: " + i + @", current chunk bytes read: " + Encoding.UTF8.GetString(chunkToRead));
                 counter++;
             }
             byte[] lastChunk = new byte[GetLastChunkSize(readLength, _chunkSize)];
             _nwStream.Read(lastChunk, 0, GetLastChunkSize(readLength, _chunkSize));
             Array.Copy(lastChunk, 0, completeMessage, ((chunkAmount - 1) * _chunkSize), GetLastChunkSize(readLength, _chunkSize));
-            Console.WriteLine(@"Current index i: " + counter + @", current chunk bytes read: " + Encoding.UTF8.GetString(lastChunk) + @", last chunk size: " + GetLastChunkSize(readLength, _chunkSize));
+            //Console.WriteLine(@"Current index i: " + counter + @", current chunk bytes read: " + Encoding.UTF8.GetString(lastChunk) + @", last chunk size: " + GetLastChunkSize(readLength, _chunkSize));
 
             //trim here maybe
             Array.Resize(ref completeMessage, readLength);
 
             string result = Encoding.UTF8.GetString(completeMessage);
-            Console.WriteLine(result);
+            //Console.WriteLine(result);
             return result;
         }
 

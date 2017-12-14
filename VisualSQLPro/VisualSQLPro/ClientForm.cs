@@ -13,10 +13,10 @@ namespace VisualSQLPro
         public ClientForm()
         {
             InitializeComponent();
+            SetUpMouseHooks();
             SetUpResizers();
             SetUpTimers();
             SetUpSqlTextBox();
-            //SetUpScintilla();
             SetUpMetadata();
             SetUpThemes();
             PopUp_Cycle();
@@ -96,19 +96,6 @@ namespace VisualSQLPro
             }
             else if (dialogresult == DialogResult.OK && data == "")
                 MessageBox.Show(@"Database name can't be empty.");
-        }
-
-        private string GetAssetFilePath(string fileName)
-        {
-            string solutionPath = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
-            if (solutionPath != null)
-            {
-                DirectoryInfo parentDir = Directory.GetParent(solutionPath);
-                string testFolderPath = Path.Combine(parentDir.FullName, "assets");
-                string filePath = Path.Combine(testFolderPath, fileName);
-                return filePath;
-            }
-            return null;
         }
     }
 }
