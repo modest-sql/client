@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Threading;
@@ -36,6 +37,7 @@ namespace VisualSQLPro
         private void dataGrid_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             FillRecordNo(((DataGridView) sender));
+            ChangeBooleanCheckBoxes((DataGridView)sender);
         }
 
         private void FillRecordNo(DataGridView dataGrid)
@@ -52,6 +54,30 @@ namespace VisualSQLPro
             {
                 e.Value = "NULL";
                 e.CellStyle.Font = new Font(((DataGridView)sender).DefaultCellStyle.Font, FontStyle.Italic);
+            }
+        }
+
+        private void ChangeBooleanCheckBoxes(DataGridView dataGrid)
+        {
+            int cont = 0;
+            List<int> boolIndeces = new List<int>();
+            foreach (DataGridViewColumn column in dataGrid.Columns)
+            {
+                if (column.ValueType == typeof(bool))
+                    boolIndeces.Add(cont);
+                cont++;
+            }
+
+            foreach (var index in boolIndeces)
+            {
+                DataGridViewColumn column = dataGrid.Columns[index];
+                var stringColumn = new DataGridViewTextBoxColumn
+                {
+                    Name = column.Name,
+                    DataPropertyName = column.DataPropertyName
+                };
+                dataGrid.Columns.RemoveAt(index);
+                dataGrid.Columns.Insert(index, stringColumn);
             }
         }
 
