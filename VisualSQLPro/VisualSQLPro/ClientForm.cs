@@ -24,7 +24,7 @@ namespace VisualSQLPro
             BuildAndSendServerRequest((int) ServerRequests.GetMetadata, " ");
             ApplyWholeTheme(_activeTheme);
             console_log.AppendText("Welcome!");
-            PrintTable("[\r\n    {\"Name\":\"AAA\",\"Age\":\"22\",\"Married\":true},\r\n    {\"Name\":\"BBB\",\"Age\":\"25\",\"Married\":false},\r\n    {\"Name\":\"CCC\",\"Age\":\"38\",\"Married\":null}]");
+            //PrintTable("[\r\n    {\"Name\":\"AAA\",\"Age\":\"22\",\"Married\":true},\r\n    {\"Name\":\"BBB\",\"Age\":\"25\",\"Married\":false},\r\n    {\"Name\":\"CCC\",\"Age\":\"38\",\"Married\":null}]");
         }
 
         private void PopUp_Cycle()
