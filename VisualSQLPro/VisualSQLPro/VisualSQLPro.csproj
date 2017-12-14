@@ -85,6 +85,9 @@
     <Compile Include="MetadataLogic.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MouseHooks.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="PopupForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,6 +163,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\orange_key_icon.bmp" />
+    <None Include="Resources\table_icon.bmp" />
+    <None Include="Resources\db2_icon.bmp" />
+    <None Include="Resources\column_icon.bmp" />
     <Content Include="icon.ico" />
     <None Include="Resources\execute.png" />
     <None Include="Resources\save.png" />

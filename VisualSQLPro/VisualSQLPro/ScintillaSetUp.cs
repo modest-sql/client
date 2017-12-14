@@ -8,19 +8,25 @@ namespace VisualSQLPro
 {
     public partial class ClientForm
     {
-        private readonly Scintilla _myScintilla = new Scintilla();
-        private void SetUpScintilla()
+        private void SetUpSqlTextBox()
         {
             string title = "Query Text" + "          ";
             TabPage myTabPage = new TabPage(title);
             queries_tabControl.TabPages.Add(myTabPage);
 
-            SetUpScintillaStyle(_myScintilla);
-            SetupScintillaAutoComplete(_myScintilla);
-            SetUpScintillaEvents(_myScintilla);
+            if (OperatingSystem.IsWindows())
+                SetUpScintilla();
 
-            _myScintilla.Dock = DockStyle.Fill;
-            myTabPage.Controls.Add(_myScintilla);
+            _sqlTextControl.Dock = DockStyle.Fill;
+            myTabPage.Controls.Add(_sqlTextControl);
+        }
+        private void SetUpScintilla()
+        {
+            _sqlTextControl = new Scintilla();
+
+            SetUpScintillaStyle((Scintilla) _sqlTextControl);
+            SetupScintillaAutoComplete((Scintilla) _sqlTextControl);
+            SetUpScintillaEvents((Scintilla) _sqlTextControl);
         }
 
         private void SetUpScintillaEvents(Scintilla myScintilla)
