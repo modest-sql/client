@@ -9,12 +9,14 @@ namespace VisualSQLPro
     {
         private string _activeDb = "";
         private Theme _activeTheme = new Theme("Default");
+        private Control _sqlTextControl = new RichTextBox();
         public ClientForm()
         {
             InitializeComponent();
             SetUpResizers();
             SetUpTimers();
-            SetUpScintilla();
+            SetUpSqlTextBox();
+            //SetUpScintilla();
             SetUpMetadata();
             SetUpThemes();
             PopUp_Cycle();
@@ -67,11 +69,11 @@ namespace VisualSQLPro
 
         private void execute_sql()
         {
-            if (_myScintilla.Text == @"Omae wa mou shindeiru")
+            if (_sqlTextControl.Text == @"Omae wa mou shindeiru")
                 FancyConsolePrint("Nani?!", Color.DarkRed);
-            else if (_myScintilla.Text != "")
+            else if (_sqlTextControl.Text != "")
             {
-                string sqlString = _myScintilla.Text;
+                string sqlString = _sqlTextControl.Text;
                 console_send(sqlString);
                 send_sql_text(sqlString);
             }

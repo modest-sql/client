@@ -12,8 +12,8 @@ namespace VisualSQLPro
             saveFileDialog.DefaultExt = "sql";
             saveFileDialog.Filter = @"SQL file (*.sql)|*.sql|Text file (*.txt)|*.txt";
             DialogResult result = saveFileDialog.ShowDialog();
-            if (saveFileDialog.FileName != "" && result == DialogResult.OK && _myScintilla.Text != "")
-                File.WriteAllText(saveFileDialog.FileName, _myScintilla.Text);
+            if (saveFileDialog.FileName != "" && result == DialogResult.OK && _sqlTextControl.Text != "")
+                File.WriteAllText(saveFileDialog.FileName, _sqlTextControl.Text);
         }
 
         private void PromptLoad()
@@ -23,7 +23,7 @@ namespace VisualSQLPro
             loadFileDialog.Filter = @"SQL files (*.sql)|*.sql|Text files (*.txt)|*.txt";
             DialogResult result = loadFileDialog.ShowDialog();
             if (loadFileDialog.FileName != "" && result == DialogResult.OK)
-                _myScintilla.Text = File.ReadAllText(loadFileDialog.FileName);
+                _sqlTextControl.Text = File.ReadAllText(loadFileDialog.FileName);
         }
     }
 }

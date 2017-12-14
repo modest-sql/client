@@ -47,9 +47,6 @@ namespace VisualSQLPro
             this.query_groupBox = new System.Windows.Forms.GroupBox();
             this.queries_tabControl = new System.Windows.Forms.TabControl();
             this.query_toolStrip = new System.Windows.Forms.ToolStrip();
-            this.execute_Button = new System.Windows.Forms.ToolStripButton();
-            this.load_Button = new System.Windows.Forms.ToolStripButton();
-            this.save_Button = new System.Windows.Forms.ToolStripButton();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createDBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,6 +69,9 @@ namespace VisualSQLPro
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.metadata_table_contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.viewToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.execute_Button = new System.Windows.Forms.ToolStripButton();
+            this.load_Button = new System.Windows.Forms.ToolStripButton();
+            this.save_Button = new System.Windows.Forms.ToolStripButton();
             this.metadata_group.SuspendLayout();
             this.console_groupBox.SuspendLayout();
             this.query_groupBox.SuspendLayout();
@@ -174,36 +174,6 @@ namespace VisualSQLPro
             this.query_toolStrip.Name = "query_toolStrip";
             this.query_toolStrip.Size = new System.Drawing.Size(212, 32);
             this.query_toolStrip.TabIndex = 1;
-            // 
-            // execute_Button
-            // 
-            this.execute_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.execute_Button.Image = global::VisualSQLPro.Properties.Resources.execute;
-            this.execute_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.execute_Button.Name = "execute_Button";
-            this.execute_Button.Size = new System.Drawing.Size(29, 29);
-            this.execute_Button.ToolTipText = "Execute the current query";
-            this.execute_Button.Click += new System.EventHandler(this.execute_Button_Click);
-            // 
-            // load_Button
-            // 
-            this.load_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.load_Button.Image = global::VisualSQLPro.Properties.Resources.load;
-            this.load_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.load_Button.Name = "load_Button";
-            this.load_Button.Size = new System.Drawing.Size(29, 29);
-            this.load_Button.ToolTipText = "Load a query from a file";
-            this.load_Button.Click += new System.EventHandler(this.load_Button_Click);
-            // 
-            // save_Button
-            // 
-            this.save_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.save_Button.Image = global::VisualSQLPro.Properties.Resources.save;
-            this.save_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.save_Button.Name = "save_Button";
-            this.save_Button.Size = new System.Drawing.Size(29, 29);
-            this.save_Button.ToolTipText = "Save the current query into a file";
-            this.save_Button.Click += new System.EventHandler(this.save_Button_Click);
             // 
             // menuStrip
             // 
@@ -357,7 +327,7 @@ namespace VisualSQLPro
             this.metadata_table_contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.viewToolStripMenuItem2});
             this.metadata_table_contextMenuStrip.Name = "metadata_table_contextMenuStrip";
-            this.metadata_table_contextMenuStrip.Size = new System.Drawing.Size(155, 48);
+            this.metadata_table_contextMenuStrip.Size = new System.Drawing.Size(155, 26);
             // 
             // viewToolStripMenuItem2
             // 
@@ -365,6 +335,36 @@ namespace VisualSQLPro
             this.viewToolStripMenuItem2.Size = new System.Drawing.Size(154, 22);
             this.viewToolStripMenuItem2.Text = "View table data";
             this.viewToolStripMenuItem2.Click += new System.EventHandler(this.viewToolStripMenuItem2_Click);
+            // 
+            // execute_Button
+            // 
+            this.execute_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.execute_Button.Image = global::VisualSQLPro.Properties.Resources.execute;
+            this.execute_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.execute_Button.Name = "execute_Button";
+            this.execute_Button.Size = new System.Drawing.Size(29, 29);
+            this.execute_Button.ToolTipText = "Execute the current query";
+            this.execute_Button.Click += new System.EventHandler(this.execute_Button_Click);
+            // 
+            // load_Button
+            // 
+            this.load_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.load_Button.Image = global::VisualSQLPro.Properties.Resources.load;
+            this.load_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.load_Button.Name = "load_Button";
+            this.load_Button.Size = new System.Drawing.Size(29, 29);
+            this.load_Button.ToolTipText = "Load a query from a file";
+            this.load_Button.Click += new System.EventHandler(this.load_Button_Click);
+            // 
+            // save_Button
+            // 
+            this.save_Button.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.save_Button.Image = global::VisualSQLPro.Properties.Resources.save;
+            this.save_Button.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.save_Button.Name = "save_Button";
+            this.save_Button.Size = new System.Drawing.Size(29, 29);
+            this.save_Button.ToolTipText = "Save the current query into a file";
+            this.save_Button.Click += new System.EventHandler(this.save_Button_Click);
             // 
             // ClientForm
             // 

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Reflection;
 using System.Timers;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using VisualSQLPro.Properties;
 using Timer = System.Timers.Timer;
 
 namespace VisualSQLPro
@@ -32,10 +34,10 @@ namespace VisualSQLPro
             _metadataListboxTimer.AutoReset = true;
 
             ImageList imageListSmall = new ImageList();
-            imageListSmall.Images.Add(Bitmap.FromFile(GetAssetFilePath("db2_icon.bmp")));
-            imageListSmall.Images.Add(Bitmap.FromFile(GetAssetFilePath("table_icon.bmp")));
-            imageListSmall.Images.Add(Bitmap.FromFile(GetAssetFilePath("column_icon.bmp")));
-            imageListSmall.Images.Add(Bitmap.FromFile(GetAssetFilePath("orange_key_icon.bmp")));
+            imageListSmall.Images.Add(new Bitmap(Resources.db2_icon));
+            imageListSmall.Images.Add(new Bitmap(Resources.table_icon));
+            imageListSmall.Images.Add(new Bitmap(Resources.column_icon));
+            imageListSmall.Images.Add(new Bitmap(Resources.orange_key_icon));
             //imageListSmall.ImageSize = new Size(24, 24);
 
             metadata_listBox.View = View.SmallIcon;
