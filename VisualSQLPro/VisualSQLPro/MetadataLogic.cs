@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Reflection;
 using System.Timers;
 using System.Windows.Forms;
 using Newtonsoft.Json;
@@ -92,6 +91,9 @@ namespace VisualSQLPro
                 ValueName = dbMeta.DB_Name
             };
 
+            if (dbMeta.Tables == null)
+                return db;
+
             foreach (var table in dbMeta.Tables)
             {
                 Table tbl = new Table()
@@ -121,92 +123,62 @@ namespace VisualSQLPro
                         clmType.ValueName = column.ColumnType.ToString();
                     clm.Properties.Add(clmType);
 
-                    ColumnProperty clmNull = new ColumnProperty()
+                    if (column.PrimaryKey)
                     {
-                        MetadataType = MetadataType.ColumnProperty,
-                        Expanded = false,
-                        ValueName = column.NotNull ? "Nullable" : "Not nullable"
-                    };
-                    clm.Properties.Add(clmNull);
-
-                    ColumnProperty clmAutoIncrement = new ColumnProperty()
+                        ColumnProperty clmPrimaryKey = new ColumnProperty()
+                        {
+                            MetadataType = MetadataType.ColumnProperty,
+                            Expanded = false,
+                            ValueName = "Primary key"
+                        };
+                        clm.Properties.Add(clmPrimaryKey);
+                    }
+                    if (column.ForeignKey)
                     {
-                        MetadataType = MetadataType.ColumnProperty,
-                        Expanded = false,
-                        ValueName = column.Autoincrement ? "Autoincrements" : "Does not autoincrement"
-                    };
-                    clm.Properties.Add(clmAutoIncrement);
-
-                    ColumnProperty clmPrimaryKey = new ColumnProperty()
+                        ColumnProperty clmForeignKey = new ColumnProperty()
+                        {
+                            MetadataType = MetadataType.ColumnProperty,
+                            Expanded = false,
+                            ValueName = "Foreign key"
+                        };
+                        clm.Properties.Add(clmForeignKey);
+                    }
+                    if (column.NotNull)
                     {
-                        MetadataType = MetadataType.ColumnProperty,
-                        Expanded = false,
-                        ValueName = column.PrimaryKey ? "Primary key" : "Not primary key"
-                    };
-                    clm.Properties.Add(clmPrimaryKey);
-
-                    ColumnProperty clmForeignKey = new ColumnProperty()
+                        ColumnProperty clmNull = new ColumnProperty()
+                        {
+                            MetadataType = MetadataType.ColumnProperty,
+                            Expanded = false,
+                            ValueName = "Not nullable"
+                        };
+                        clm.Properties.Add(clmNull);
+                    }
+                    if (column.Autoincrement)
                     {
-                        MetadataType = MetadataType.ColumnProperty,
-                        Expanded = false,
-                        ValueName = column.ForeignKey ? "Foreign key" : "Not foreign key"
-                    };
-                    clm.Properties.Add(clmForeignKey);
-
-                    ColumnProperty clmDefaultValue = new ColumnProperty()
+                        ColumnProperty clmAutoIncrement = new ColumnProperty()
+                        {
+                            MetadataType = MetadataType.ColumnProperty,
+                            Expanded = false,
+                            ValueName = "Autoincrements"
+                        };
+                        clm.Properties.Add(clmAutoIncrement);
+                    }
+                    if (column.DefaultValue)
                     {
-                        MetadataType = MetadataType.ColumnProperty,
-                        Expanded = false,
-                        ValueName = column.DefaultValue ? "Has default value" : "No default value"
-                    };
-                    clm.Properties.Add(clmDefaultValue);
-
+                        ColumnProperty clmDefaultValue = new ColumnProperty()
+                        {
+                            MetadataType = MetadataType.ColumnProperty,
+                            Expanded = false,
+                            ValueName ="Has default value"
+                        };
+                        clm.Properties.Add(clmDefaultValue);
+                    }
                     tbl.Columns.Add(clm);
                 }
                 db.Tables.Add(tbl);
             }
             return db;
         }
-
-        private DbMetadata ConvertToOldDB(ResponseDb newDb)
-        {
-            DbMetadata dbMeta = new DbMetadata {DbName = newDb.DB_Name};
-            List<DbTable> tableList = new List<DbTable>();
-            dbMeta.Tables = tableList.ToArray();
-            if (newDb.Tables == null)
-                return dbMeta;
-            foreach (var table in newDb.Tables)
-            {
-                DbTable oldTable = new DbTable {TableName = table.TableName};
-
-                List<string> columnNames = new List<string>();
-                List<string> columnTypes = new List<string>();
-
-                foreach (var field in table.TableColumns)
-                {
-                    columnNames.Add(field.ColumnName);
-                    if (field.ColumnType == DataType.Char)
-                        columnTypes.Add(field.ColumnType.ToString() + "(" + field.ColumnSize + ")");
-                    else
-                        columnTypes.Add(field.ColumnType.ToString());
-                }
-
-                oldTable.ColumnNames = columnNames.ToArray();
-                oldTable.ColumnTypes = columnTypes.ToArray();
-
-                tableList.Add(oldTable);
-            }
-            dbMeta.Tables = tableList.ToArray();
-            return dbMeta;
-        }
-
-        private void update_new_metadata(DbMetadata dbMeta)
-        {
-            check_column_type_integrity(dbMeta);
-            DataBase db = BuildDatabase(dbMeta);
-            fill_new_meta_list(db);
-        }
-
         private void draw_db_meta()
         {
             metadata_listBox.Items.Clear();
@@ -252,55 +224,6 @@ namespace VisualSQLPro
                     metadata_listBox.Items[i].Font = new Font(metadata_listBox.Items[i].Font.FontFamily,
                         metadata_listBox.Items[i].Font.Size, metadata_listBox.Items[i].Font.Style | FontStyle.Bold);
             }
-        }
-
-        private void check_column_type_integrity(DbMetadata dbMeta)
-        {
-            foreach (var table in dbMeta.Tables)
-            {
-                if (table.ColumnNames.Length != table.ColumnTypes.Length)
-                    throw new Exception("Hey! Column count and type count don't match in table " + table.TableName);
-            }
-        }
-
-        private DataBase BuildDatabase(DbMetadata dbMeta)
-        {
-            DataBase db = new DataBase()
-            {
-                MetadataType = MetadataType.DbName,
-                Expanded = true,
-                ValueName = dbMeta.DbName
-            };
-
-            foreach (var table in dbMeta.Tables)
-            {
-                Table tbl = new Table()
-                {
-                    MetadataType = MetadataType.DbTable,
-                    ValueName = table.TableName,
-                    Expanded = false
-                };
-
-                for (int i = 0; i < table.ColumnNames.Length; i++)
-                {
-                    Column clm = new Column()
-                    {
-                        MetadataType = MetadataType.ColumnName,
-                        Expanded = false,
-                        ValueName = table.ColumnNames[i]
-                    };
-                    ColumnProperty clmProperty = new ColumnProperty()
-                    {
-                        MetadataType = MetadataType.ColumnProperty,
-                        Expanded = false,
-                        ValueName = table.ColumnTypes[i]
-                    };
-                    clm.Properties[1] = clmProperty;
-                    tbl.Columns.Add(clm);
-                }
-                db.Tables.Add(tbl);
-            }
-            return db;
         }
 
         private void fill_new_meta_list(DataBase db)
@@ -654,24 +577,6 @@ namespace VisualSQLPro
         DbTable,
         ColumnName,
         ColumnProperty
-    }
-
-    class DbMetadata
-    {
-        public string DbName { get; set; }
-        public DbTable[] Tables { get; set; }
-    }
-
-    class DbTable
-    {
-        public string TableName { get; set; }
-        public string[] ColumnNames { get; set; }
-        public string[] ColumnTypes { get; set; }
-    }
-
-    class DbColumn
-    {
-        
     }
 
     class ResponseMetadataArray
