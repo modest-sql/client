@@ -90,20 +90,23 @@ namespace VisualSQLPro
 
         private void queries_tabControl_MouseClick(object sender, MouseEventArgs e)
         {
-            //Looping through the controls.
-            for (int i = 0; i < queries_tabControl.TabPages.Count; i++)
+            if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Middle)
             {
-                Rectangle r = queries_tabControl.GetTabRect(i);
-                //Getting the position of the "x" mark.
-                Rectangle closeButton = new Rectangle(r.Right - 15, r.Top + 4, 9, 7);
-                if (closeButton.Contains(e.Location))
+                for (int i = 0; i < queries_tabControl.TabPages.Count; i++)
                 {
-                    if (i == 0)
-                        MessageBox.Show(@"Can't close this tab.");
-                    else
+                    Rectangle r = queries_tabControl.GetTabRect(i);
+                    Rectangle checkedRectangle = new Rectangle(r.Right - 15, r.Top + 4, 9, 7);
+                    if (e.Button == MouseButtons.Middle)
+                        checkedRectangle = r;
+                    if (checkedRectangle.Contains(e.Location))
                     {
-                        queries_tabControl.TabPages.RemoveAt(i);
-                        break;
+                        if (i == 0)
+                            MessageBox.Show(@"Can't close this tab.");
+                        else
+                        {
+                            queries_tabControl.TabPages.RemoveAt(i);
+                            break;
+                        }
                     }
                 }
             }
