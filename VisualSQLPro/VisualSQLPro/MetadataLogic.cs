@@ -282,8 +282,7 @@ namespace VisualSQLPro
                 switch (_currentMetadata[index].MetadataType)
                 {
                     case MetadataType.DbName:
-                        BuildAndSendServerRequest((int) ServerRequests.LoadDatabase, _currentMetadata[index].ValueName);
-                        _activeDb = _currentMetadata[index].ValueName;
+                        SetActiveDb(_currentMetadata[index].ValueName);
                         draw_db_meta();
                         break;
                 }
@@ -349,14 +348,19 @@ namespace VisualSQLPro
             }
         }
 
+        private void SetActiveDb(string newActiveDb)
+        {
+            BuildAndSendServerRequest((int)ServerRequests.LoadDatabase, newActiveDb);
+            _activeDb = newActiveDb;
+        }
+
         private void setDBToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             int index = GetMetadataIndexSafely();
 
             if (index != ListBox.NoMatches && index != -2)
             {
-                BuildAndSendServerRequest((int)ServerRequests.LoadDatabase, _currentMetadata[index].ValueName);
-                _activeDb = _currentMetadata[index].ValueName;
+                SetActiveDb(_currentMetadata[index].ValueName);
                 draw_db_meta();
             } 
         }
@@ -393,14 +397,23 @@ namespace VisualSQLPro
                     }
                     counter--;
                 }
-                
-                BuildAndSendServerRequest((int)ServerRequests.LoadDatabase, parentDatabase);
-                send_sql_text("select * from " + _currentMetadata[index].ValueName);
-                if (_activeDb != "")
-                    BuildAndSendServerRequest((int) ServerRequests.LoadDatabase, _activeDb);
+
+                string loadtable = "select * from " + _currentMetadata[index].ValueName;
+
+                if (_activeDb == parentDatabase)
+                    send_sql_text(loadtable);
                 else
-                    _activeDb = parentDatabase;
-                draw_db_meta();
+                {
+                    BuildAndSendServerRequest((int)ServerRequests.LoadDatabase, parentDatabase);
+                    send_sql_text(loadtable);
+                    if (_activeDb != "")
+                        BuildAndSendServerRequest((int) ServerRequests.LoadDatabase, _activeDb);
+                    else
+                    {
+                        _activeDb = parentDatabase;
+                        draw_db_meta();
+                    }
+                }
             }
         }
 

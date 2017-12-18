@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace VisualSQLPro
 {
@@ -42,9 +40,11 @@ namespace VisualSQLPro
 
         private void send_sql_text(string sqlString)
         {
-            var trimmed = sqlString.Trim('\n');
+            /*var trimmed = sqlString.Trim('\n');
             trimmed = trimmed.Trim('\r');
-            trimmed = trimmed.Replace("\r\n", string.Empty);
+            trimmed = trimmed.Replace("\r\n", string.Empty);*/
+            var trimmed = sqlString.Replace("\n", "\\n");
+            trimmed = trimmed.Replace("\r", "\\r");
             BuildAndSendServerRequest((int) ServerRequests.Query, trimmed);
         }
 
@@ -252,7 +252,7 @@ namespace VisualSQLPro
                 Array.Copy(chunkToRead, 0, completeMessage, (i * _chunkSize), _chunkSize);
                 //Console.WriteLine(@"Current index i: " + i + @", current chunk bytes read: " + Encoding.UTF8.GetString(chunkToRead));
                 counter++;
-                Thread.Sleep(1);
+                Thread.Sleep(5);
             }
             byte[] lastChunk = new byte[GetLastChunkSize(readLength, _chunkSize)];
             _nwStream.Read(lastChunk, 0, GetLastChunkSize(readLength, _chunkSize));
