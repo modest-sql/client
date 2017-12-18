@@ -67,6 +67,8 @@ namespace VisualSQLPro
         {
             _currentMetadata.Clear();
             var metadataArray = JsonConvert.DeserializeObject<ResponseMetadataArray>(json);
+            if (metadataArray?.Databases == null)
+                return;
             foreach (var db in metadataArray.Databases)
             {
                 /*var dbMeta = ConvertToOldDB(db);
