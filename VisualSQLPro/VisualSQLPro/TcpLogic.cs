@@ -138,6 +138,8 @@ namespace VisualSQLPro
                         CycleUpdate();
                         Thread.Sleep(300);
                     }
+                    if (_activeDb != "")
+                        SetActiveDb(_activeDb);
                     ConnectedUpdate(true);
                 }
             }
