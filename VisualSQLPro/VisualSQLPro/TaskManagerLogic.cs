@@ -52,6 +52,7 @@ namespace VisualSQLPro
                 }
                 task_manager_listBox.Items.Add("\t" +"Transaction ID: " + task.Transaction_ID);
                 task_manager_listBox.Items.Add("\t" + "Transaction State: " + transactionId);
+                task_manager_listBox.Items.Add("\t" + "Current transaction: " + task.Current_Command);
                 task_manager_listBox.Items.Add("\t" + "Transaction Queries:");
                 foreach (var query in task.TransactionQueries)
                 {
@@ -72,5 +73,6 @@ namespace VisualSQLPro
         public string Transaction_ID { get; set; }
         public string[] TransactionQueries { get; set; }
         public int Transaction_State { get; set; }
+        public string Current_Command { get; set; }
     }
 }
